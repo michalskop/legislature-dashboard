@@ -1,0 +1,200 @@
+@theme {
+  /* =====================================================
+   * Color scales — mahdalova-skop.cz design system
+   * Shade [6] is the primary shade for each scale.
+   * ===================================================== */
+
+  /* surface — Background */
+  --color-surface-0: #ffffff;
+  --color-surface-1: #fdfbf7;
+  --color-surface-2: #f8f6f0;
+  --color-surface-3: #f3f1e9;
+  --color-surface-4: #eeeae2;
+  --color-surface-5: #e9e9dd;
+  --color-surface-6: #e8e8dc;
+  --color-surface-7: #d4d4c8;
+  --color-surface-8: #c8c8bc;
+  --color-surface-9: #bcbcb0;
+
+  /* yellow */
+  --color-yellow-0: #fffdf0;
+  --color-yellow-1: #fff7d9;
+  --color-yellow-2: #fff0b3;
+  --color-yellow-3: #ffe680;
+  --color-yellow-4: #ffdc33;
+  --color-yellow-5: #ffd519;
+  --color-yellow-6: #ffcf02;
+  --color-yellow-7: #efb704;
+  --color-yellow-8: #bd9103;
+  --color-yellow-9: #a47d03;
+
+  /* orange */
+  --color-orange-0: #fff3e8;
+  --color-orange-1: #ffe0c7;
+  --color-orange-2: #ffc89f;
+  --color-orange-3: #fda668;
+  --color-orange-4: #ff934d;
+  --color-orange-5: #ff7f2a;
+  --color-orange-6: #f76800;
+  --color-orange-7: #cc5f00;
+  --color-orange-8: #994800;
+  --color-orange-9: #663200;
+
+  /* coral */
+  --color-coral-0: #fff0ed;
+  --color-coral-1: #ffcec6;
+  --color-coral-2: #ffa99c;
+  --color-coral-3: #ff7e6e;
+  --color-coral-4: #ff5c4a;
+  --color-coral-5: #ff3f30;
+  --color-coral-6: #e8412c;
+  --color-coral-7: #c93020;
+  --color-coral-8: #a32318;
+  --color-coral-9: #7d1810;
+
+  /* brand — Primary Red */
+  --color-brand-0: #fff4f6;
+  --color-brand-1: #ffb3c0;
+  --color-brand-2: #ff8099;
+  --color-brand-3: #ff4d70;
+  --color-brand-4: #ff1a4a;
+  --color-brand-5: #f01745;
+  --color-brand-6: #de1743;
+  --color-brand-7: #c5143c;
+  --color-brand-8: #a81134;
+  --color-brand-9: #8b0e2b;
+
+  /* deep-red */
+  --color-deep-red-0: #fbe8eb;
+  --color-deep-red-1: #f5c4c9;
+  --color-deep-red-2: #efa0af;
+  --color-deep-red-3: #e87c91;
+  --color-deep-red-4: #d85a74;
+  --color-deep-red-5: #bb3a5d;
+  --color-deep-red-6: #a03250;
+  --color-deep-red-7: #812840;
+  --color-deep-red-8: #621d30;
+  --color-deep-red-9: #431320;
+
+  /* royal — Royal Blue */
+  --color-royal-0: #e9ebfa;
+  --color-royal-1: #c9d0f5;
+  --color-royal-2: #a9b5f0;
+  --color-royal-3: #899aeb;
+  --color-royal-4: #697fe6;
+  --color-royal-5: #5e66d5;
+  --color-royal-6: #4a51ab;
+  --color-royal-7: #383d82;
+  --color-royal-8: #272a59;
+  --color-royal-9: #161730;
+
+  /* navy */
+  --color-navy-0: #e9ecf4;
+  --color-navy-1: #d2d8e9;
+  --color-navy-2: #bcc4df;
+  --color-navy-3: #a6b0d4;
+  --color-navy-4: #8f9dc9;
+  --color-navy-5: #7889be;
+  --color-navy-6: #6267a3;
+  --color-navy-7: #4c4f8e;
+  --color-navy-8: #2f325c;
+  --color-navy-9: #101432;
+
+  /* teal */
+  --color-teal-0: #e5fdfc;
+  --color-teal-1: #b8eff6;
+  --color-teal-2: #8cdfef;
+  --color-teal-3: #5fcce6;
+  --color-teal-4: #33b9d9;
+  --color-teal-5: #1a9fbd;
+  --color-teal-6: #0e839e;
+  --color-teal-7: #06677d;
+  --color-teal-8: #044d5e;
+  --color-teal-9: #023440;
+
+  /* emerald */
+  --color-emerald-0: #e8f9f4;
+  --color-emerald-1: #c2f0e4;
+  --color-emerald-2: #9be8d4;
+  --color-emerald-3: #75dfc4;
+  --color-emerald-4: #4fd6b4;
+  --color-emerald-5: #12b886;
+  --color-emerald-6: #0e926a;
+  --color-emerald-7: #0b6b4e;
+  --color-emerald-8: #084533;
+  --color-emerald-9: #042319;
+
+  /* forest */
+  --color-forest-0: #eaf7d6;
+  --color-forest-1: #cbeab1;
+  --color-forest-2: #acde8b;
+  --color-forest-3: #8dd265;
+  --color-forest-4: #6ec53f;
+  --color-forest-5: #639e0a;
+  --color-forest-6: #507e08;
+  --color-forest-7: #3d5f06;
+  --color-forest-8: #2a3f04;
+  --color-forest-9: #172002;
+
+  /* chocolate */
+  --color-chocolate-0: #f5f0eb;
+  --color-chocolate-1: #e6d5c3;
+  --color-chocolate-2: #d4b89e;
+  --color-chocolate-3: #c19a78;
+  --color-chocolate-4: #a87d58;
+  --color-chocolate-5: #8b6240;
+  --color-chocolate-6: #6e4a2c;
+  --color-chocolate-7: #53361e;
+  --color-chocolate-8: #3b2414;
+  --color-chocolate-9: #24150b;
+
+  /* =====================================================
+   * Semantic tokens
+   * ===================================================== */
+  --color-primary: #de1743;
+  --color-primary-foreground: #ffffff;
+  --color-background: #fdfbf7;
+  --color-foreground: #101432;
+  --color-muted: #f3f1e9;
+  --color-muted-foreground: #6267a3;
+  --color-border: #e8e8dc;
+  --color-destructive: #de1743;
+  --color-destructive-foreground: #ffffff;
+  --color-accent: #6267a3;
+  --color-accent-foreground: #ffffff;
+
+  /* =====================================================
+   * Typography
+   * --font-roboto-slab is injected by next/font at runtime.
+   * ===================================================== */
+  --font-sans: var(--font-roboto-slab), "Roboto Slab", ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, "Cascadia Code", monospace;
+
+  /* =====================================================
+   * Border radius
+   * ===================================================== */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+}
+
+/* =====================================================
+ * Shape convention: all corners rounded except upper-right.
+ * Matches the party badge aesthetic from mahdalova-skop.cz.
+ * ===================================================== */
+@utility rounded-badge {
+  border-radius: var(--radius-md) 0 var(--radius-md) var(--radius-md);
+}
+
+@utility rounded-badge-sm {
+  border-radius: var(--radius-sm) 0 var(--radius-sm) var(--radius-sm);
+}
+
+@utility rounded-badge-lg {
+  border-radius: var(--radius-lg) 0 var(--radius-lg) var(--radius-lg);
+}
+
+@utility rounded-badge-xl {
+  border-radius: var(--radius-xl) 0 var(--radius-xl) var(--radius-xl);
+}
