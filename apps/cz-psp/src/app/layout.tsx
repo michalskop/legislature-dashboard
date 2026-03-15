@@ -10,6 +10,7 @@ const robotoSlab = Roboto_Slab({
 });
 
 export const metadata: Metadata = {
+  icons: { icon: "/favicon.svg" },
   title: "snemovna.datatimes.cz — Poslanecká sněmovna",
   description:
     "Přehled aktivity poslanců a stran v české Poslanecké sněmovně.",
