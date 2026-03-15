@@ -60,7 +60,7 @@ export default function OProjektuPage() {
           </li>
           <li>
             <strong className="text-foreground">Opravy hlasování</strong> — počet
-            dodatečně opravených (tzv. „oops") hlasování.
+            dodatečně opravených (tzv. &bdquo;oops&ldquo;) hlasování.
           </li>
         </ul>
         <p>
