@@ -24,6 +24,8 @@ interface Props {
   height?: number;
   /** Highlight a single MP by personId */
   highlightId?: string;
+  /** Label for the party-average reference line. Defaults to "Průměr". */
+  averageLabel?: string;
 }
 
 function getValue(mp: MpProfile, metric: MpMetric): number | null {
@@ -72,6 +74,7 @@ export function MpMetricSwarmChart({
   extraReferenceLines = [],
   height = 360,
   highlightId,
+  averageLabel = "Průměr",
 }: Props) {
   const formatY = makeFormatY(yDecimals);
   const router = useRouter();
@@ -108,7 +111,7 @@ export function MpMetricSwarmChart({
     : [0, 1];
 
   const referenceLines: SwarmReferenceLine[] = [
-    ...(avg !== null ? [{ value: avg, label: `Průměr ${formatY(avg)}` }] : []),
+    ...(avg !== null ? [{ value: avg, label: `${averageLabel} ${formatY(avg)}` }] : []),
     ...extraReferenceLines,
   ];
 
@@ -121,7 +124,7 @@ export function MpMetricSwarmChart({
       dotSize={10}
       height={height}
       highlightId={highlightId}
-      onDotClick={(item) => router.push(`/poslanec/${item.id.split(":").at(-1)}`)}
+      onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
       watermark={
         <SnemovnaLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
       }

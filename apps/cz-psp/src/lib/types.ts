@@ -1,3 +1,6 @@
+// Re-export shared types from parliament-core
+export type { MpProfile, PartyProfile } from "@legislature/parliament-core";
+
 // Organization membership entry (appears in all analysis outputs)
 export interface OrgMembership {
   id: string;
@@ -97,49 +100,6 @@ export interface WpcaRecord {
   organizations: OrgMembership[];
 }
 
-// Combined MP profile (all analyses joined by person_id)
-export interface MpProfile {
-  personId: string; // "psp:person:6491"
-  slug: string;     // "6491"
-  name: string;
-  isCurrent: boolean; // true = active member, false = former member
-  givenName: string;
-  familyName: string;
-  image: string | null;
-  groupId: string | null;   // "psp:org:1750"
-  groupName: string | null; // "ANO 2011"
-  partyId: string | null;   // "ano" (badge ID)
-  constituency: string | null;
-  attendance: {
-    present_share: number;
-    present: number;
-    absent: number;
-    vote_events_total: number;
-  } | null;
-  rebelity: {
-    rebelity: number;
-    rebelity_total: number;
-    rebelity_possible: number;
-  } | null;
-  govity: {
-    govity: number;
-    govity_total: number;
-    govity_possible: number;
-  } | null;
-  voteCorrections: {
-    corrections_total: number;
-    corrections_announced: number;
-    corrections_invalidated: number;
-    vote_events_total: number;
-  } | null;
-  wpca: {
-    x: number;
-    y: number;
-    weight: number;
-    included: boolean;
-  } | null;
-}
-
 // Constituency (kraj) summary
 export interface KrajProfile {
   slug: string;        // URL-safe slug, e.g. "jihomoravsky-kraj"
@@ -150,14 +110,3 @@ export interface KrajProfile {
   avgGovity: number | null;
 }
 
-// Party summary (aggregated from member profiles)
-export interface PartyProfile {
-  groupId: string;   // "psp:org:1750"
-  slug: string;      // "1750"
-  name: string;      // "ANO 2011"
-  partyId: string;   // "ano"
-  memberCount: number;
-  avgAttendance: number | null;
-  avgRebelity: number | null;
-  avgGovity: number | null;
-}

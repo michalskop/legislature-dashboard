@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
+import { parliamentConfig } from "@/lib/parliament.config";
+import { getLang } from "@/lib/lang";
 
 function FooterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -23,7 +25,10 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const lang = await getLang();
+  const t = parliamentConfig.translations[lang] ?? parliamentConfig.translations[parliamentConfig.defaultLang]!;
+
   return (
     <footer className="w-full border-t border-border bg-surface-0 mt-auto">
       <div className="max-w-5xl mx-auto px-4 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8">
@@ -31,29 +36,26 @@ export function SiteFooter() {
         <div className="col-span-2 sm:col-span-1 flex flex-col gap-3">
           <SnemovnaLogotype size="sm" />
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Data: Poslanecká sněmovna ČR
+            {t.footer.dataSource}
           </p>
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} DataTimes.cz
           </p>
         </div>
 
-        {/* O projektu */}
-        <FooterSection title="O projektu">
-          <Link href="/o-projektu" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            O projektu
+        <FooterSection title={t.footer.aboutSection}>
+          <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            {t.footer.aboutSection}
           </Link>
         </FooterSection>
 
-        {/* Naše projekty */}
-        <FooterSection title="Naše projekty">
+        <FooterSection title={t.footer.projectsSection}>
           <FooterLink href="https://datatimes.cz">DataTimes.cz</FooterLink>
           <FooterLink href="https://volebnikalkulacka.cz">Volební kalkulačka</FooterLink>
           <FooterLink href="https://mandaty.cz">Mandáty.cz</FooterLink>
         </FooterSection>
 
-        {/* Kontakt */}
-        <FooterSection title="Kontakt">
+        <FooterSection title={t.footer.contactSection}>
           <FooterLink href="https://kohovolit.eu">KohoVolit.eu</FooterLink>
         </FooterSection>
       </div>

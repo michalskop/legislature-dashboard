@@ -13,9 +13,11 @@ interface Props {
   height?: number;
   highlightId?: string;
   highlightIds?: string[];
+  xLabel?: string;
+  yLabel?: string;
 }
 
-export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds }: Props) {
+export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Vládní koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Rozdíly v rámci koalice nebo opozice" }: Props) {
   const router = useRouter();
 
   // Sort parties by avg WPCA x (left→right) for a consistent legend order
@@ -53,13 +55,13 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
       groups={groups}
       dotSize={10}
       height={height}
-      xLabel="◄ ◄ ◄ Vládní koalice | Opozice ► ► ►"
-      yLabel="Rozdíly v rámci koalice nebo opozice"
+      xLabel={xLabel}
+      yLabel={yLabel}
       formatX={(v) => v.toFixed(2)}
       formatY={(v) => v.toFixed(2)}
       highlightId={highlightId}
       highlightIds={highlightIds}
-      onDotClick={(item) => router.push(`/poslanec/${item.id.split(":").at(-1)}`)}
+      onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
       watermark={
         <SnemovnaLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
       }
