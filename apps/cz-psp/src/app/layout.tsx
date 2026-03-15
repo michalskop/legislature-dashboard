@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto_Slab } from "next/font/google";
 import "./globals.css";
+import { parliamentConfig } from "@/lib/parliament.config";
+import { buildMetadata } from "@/lib/metadata";
 
 const robotoSlab = Roboto_Slab({
   subsets: ["latin", "latin-ext"],
@@ -9,18 +11,16 @@ const robotoSlab = Roboto_Slab({
   display: "swap",
 });
 
+const t = parliamentConfig.translations[parliamentConfig.defaultLang]!;
+
 export const metadata: Metadata = {
+  ...buildMetadata(null),
   icons: { icon: "/favicon.svg" },
-  title: "snemovna.datatimes.cz — Poslanecká sněmovna",
-  description:
-    "Přehled aktivity poslanců a stran v české Poslanecké sněmovně.",
   metadataBase: new URL("https://snemovna.datatimes.cz"),
   openGraph: {
-    title: "snemovna.datatimes.cz — Poslanecká sněmovna",
-    description:
-      "Přehled aktivity poslanců a stran v české Poslanecké sněmovně.",
-    siteName: "snemovna.datatimes.cz",
-    locale: "cs_CZ",
+    ...buildMetadata(null).openGraph,
+    siteName: t.seo.siteTitle,
+    locale: `${parliamentConfig.defaultLang}_CZ`,
     type: "website",
   },
 };

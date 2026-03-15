@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { getLang } from "@/lib/lang";
 import { aboutContent, type AboutSection } from "@/content/about";
+import { parliamentConfig } from "@/lib/parliament.config";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "O projektu — snemovna.datatimes.cz",
-};
+const t0 = parliamentConfig.translations[parliamentConfig.defaultLang]!;
+export const metadata = buildMetadata(t0.about.navLabel);
 
 function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (

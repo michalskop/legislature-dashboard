@@ -2,11 +2,10 @@ import { getAllMpProfiles } from "@/lib/data";
 import { SortableMpTable } from "@/components/SortableMpTable";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
-import type { Metadata } from "next";
+import { buildMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Poslanci — snemovna.datatimes.cz",
-};
+const t0 = parliamentConfig.translations[parliamentConfig.defaultLang]!;
+export const metadata = buildMetadata(t0.member.plural);
 
 export default async function PoslanciPage() {
   const [mps, lang] = await Promise.all([getAllMpProfiles(), getLang()]);

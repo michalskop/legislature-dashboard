@@ -2,12 +2,14 @@ import { getAllPartyProfiles } from "@/lib/data";
 import { PartyFace } from "@legislature/ui";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
+import { buildMetadata } from "@/lib/metadata";
 import Link from "next/link";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Strany — snemovna.datatimes.cz",
-};
+const t0 = parliamentConfig.translations[parliamentConfig.defaultLang]!;
+const groupOrg0 = parliamentConfig.organizations.find((o) => o.classification === "group");
+export const metadata = buildMetadata(
+  groupOrg0?.labels[parliamentConfig.defaultLang]?.listTitle ?? t0.home.groupsCardTitle
+);
 
 function pct(v: number | null) {
   if (v === null) return "—";

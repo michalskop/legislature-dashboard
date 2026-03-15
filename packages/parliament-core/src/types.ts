@@ -104,6 +104,11 @@ export interface ParliamentTranslations {
   about: {
     navLabel: string;       // "O projektu" / "About"
   };
+  seo: {
+    siteTitle: string;      // "snemovna.datatimes.cz"
+    titleSuffix: string;    // " — snemovna.datatimes.cz"
+    defaultDescription: string;
+  };
   footer: {
     dataSource: string;     // "Data: Poslanecká sněmovna ČR"
     aboutSection: string;   // "O projektu"

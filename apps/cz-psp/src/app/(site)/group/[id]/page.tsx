@@ -3,8 +3,8 @@ import { PartyFace } from "@legislature/ui";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
+import { buildMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -15,11 +15,11 @@ export async function generateStaticParams() {
   return parties.map((p) => ({ id: p.slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const data = await getPartyProfile(id);
   if (!data) return {};
-  return { title: `${data.party.name} — snemovna.datatimes.cz` };
+  return buildMetadata(data.party.name);
 }
 
 function pct(v: number | null) {

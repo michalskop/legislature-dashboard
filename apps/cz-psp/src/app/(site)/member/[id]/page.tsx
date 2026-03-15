@@ -3,10 +3,10 @@ import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
 import { constituencySlug } from "@/lib/groups";
+import { buildMetadata } from "@/lib/metadata";
 import { PartyFace } from "@legislature/ui";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import Image from "next/image";
 
 interface Props {
@@ -18,11 +18,11 @@ export async function generateStaticParams() {
   return mps.map((mp) => ({ id: mp.slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const mp = await getMpProfile(id);
   if (!mp) return {};
-  return { title: `${mp.name} — snemovna.datatimes.cz` };
+  return buildMetadata(mp.name);
 }
 
 function pct(v: number, decimals = 1) {

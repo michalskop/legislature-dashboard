@@ -74,6 +74,11 @@ export const parliamentConfig: ParliamentConfig = {
         groupsCardDescription: "Přehled stran a jejich poslaneckých klubů s agregovanými metrikami.",
       },
       about: { navLabel: "O projektu" },
+      seo: {
+        siteTitle: "Sněmovna.DataTimes.cz",
+        titleSuffix: " - Sněmovna.DataTimes.cz",
+        defaultDescription: "Přehled aktivity poslanců a stran v české Poslanecké sněmovně 2025–2029.",
+      },
       footer: {
         dataSource: "Data: Poslanecká sněmovna ČR",
         aboutSection: "O projektu",
@@ -132,6 +137,11 @@ export const parliamentConfig: ParliamentConfig = {
         groupsCardDescription: "Overview of parliamentary groups with aggregated metrics.",
       },
       about: { navLabel: "About" },
+      seo: {
+        siteTitle: "snemovna.datatimes.cz",
+        titleSuffix: " — snemovna.datatimes.cz",
+        defaultDescription: "Overview of activity of MPs and parties in the Czech Chamber of Deputies 2025–2029.",
+      },
       footer: {
         dataSource: "Data: Chamber of Deputies of the Czech Republic",
         aboutSection: "About",

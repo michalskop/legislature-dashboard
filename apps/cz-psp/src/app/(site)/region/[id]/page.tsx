@@ -2,8 +2,8 @@ import { getAllKrajProfiles, getKrajProfile } from "@/lib/data";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
+import { buildMetadata } from "@/lib/metadata";
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -14,11 +14,11 @@ export async function generateStaticParams() {
   return kraje.map((k) => ({ id: k.slug }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const data = await getKrajProfile(id);
   if (!data) return {};
-  return { title: `${data.kraj.name} — snemovna.datatimes.cz` };
+  return buildMetadata(data.kraj.name);
 }
 
 function pct(v: number | null) {

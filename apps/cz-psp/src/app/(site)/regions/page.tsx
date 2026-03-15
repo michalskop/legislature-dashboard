@@ -1,10 +1,12 @@
 import { getAllKrajProfiles } from "@/lib/data";
+import { parliamentConfig } from "@/lib/parliament.config";
+import { buildMetadata } from "@/lib/metadata";
 import Link from "next/link";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Kraje — snemovna.datatimes.cz",
-};
+const regionOrg0 = parliamentConfig.organizations.find((o) => o.classification === "constituency");
+export const metadata = buildMetadata(
+  regionOrg0?.labels[parliamentConfig.defaultLang]?.listTitle ?? "Kraje"
+);
 
 function pct(v: number | null) {
   if (v === null) return "—";
