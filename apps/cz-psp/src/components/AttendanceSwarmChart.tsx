@@ -85,7 +85,7 @@ export function AttendanceSwarmChart({ mps, parties }: Props) {
       formatY={(v) => `${(v * 100).toFixed(0)}\u00a0%`}
       dotSize={10}
       height={360}
-      onDotClick={(item) => router.push(`/poslanec/${item.id.split(":").at(-1)}`)}
+      onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
       watermark={
         <SnemovnaLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
       }

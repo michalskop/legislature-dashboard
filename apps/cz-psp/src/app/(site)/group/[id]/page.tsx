@@ -1,8 +1,8 @@
 import { getAllMpProfiles, getAllPartyProfiles, getPartyProfile } from "@/lib/data";
 import { PartyFace } from "@legislature/ui";
-import { MetricCard } from "@/components/MetricCard";
-import { SortableMpTable } from "@/components/SortableMpTable";
-import { WpcaScatterChart } from "@/components/WpcaScatterChart";
+import { PageBlockRenderer } from "@/components/PageBlockRenderer";
+import { parliamentConfig } from "@/lib/parliament.config";
+import { getLang } from "@/lib/lang";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 
@@ -40,6 +40,14 @@ export default async function StranaPage({ params }: Props) {
   const currentAllMps = allMps.filter((m) => m.isCurrent);
   const memberIds = members.filter((m) => m.isCurrent).map((m) => m.personId);
 
+  const lang = await getLang();
+  const t = parliamentConfig.translations[lang] ?? parliamentConfig.translations[parliamentConfig.defaultLang]!;
+  const metricValues = {
+    attendance: { value: pct(party.avgAttendance), description: t.metrics.attendance },
+    rebelity:   { value: pct(party.avgRebelity),   description: t.metrics.rebelity   },
+    govity:     { value: pct(party.avgGovity),     description: t.metrics.govity     },
+  };
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -47,41 +55,24 @@ export default async function StranaPage({ params }: Props) {
         <PartyFace partyId={party.partyId} size={40} />
         <div>
           <h1 className="text-2xl font-bold">{party.name}</h1>
-          <p className="text-sm text-muted-foreground">{party.memberCount} poslanců</p>
+          <p className="text-sm text-muted-foreground">{t.ui.memberCount.replace("{n}", String(party.memberCount))}</p>
         </div>
       </div>
 
-      {/* Aggregated metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <MetricCard
-          label="Průměrná účast"
-          value={pct(party.avgAttendance)}
-          description="Průměrná účast členů klubu na hlasování"
-        />
-        <MetricCard
-          label="Průměrná rebelita"
-          value={pct(party.avgRebelity)}
-          description="Průměrný podíl rebel. hlasování členů klubu"
-        />
-        <MetricCard
-          label="Průměrná vládnost"
-          value={pct(party.avgGovity)}
-          description="Průměrný podíl hlasování shodných s vládou"
-        />
-      </div>
-
-      {/* WPCA chart */}
-      <section>
-        <h2 className="text-lg font-semibold mb-1">Ideologické pozice (WPCA)</h2>
-        <p className="text-sm text-muted-foreground mb-3">Členové klubu v kontextu celé sněmovny.</p>
-        <WpcaScatterChart mps={currentAllMps} parties={allParties} highlightIds={memberIds} />
-      </section>
-
-      {/* Members table */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3">Členové klubu</h2>
-        <SortableMpTable mps={members} showPartyFilter={false} />
-      </div>
+      <PageBlockRenderer
+        blocks={parliamentConfig.pages.groupDetail}
+        ctx={{
+          lang,
+          mps: currentAllMps,
+          parties: allParties,
+          tableMembers: members,
+          highlightIds: memberIds,
+          metricValues,
+          formerLabel: t.member.former,
+          chartLabels: { average: t.charts.average, wpcaXLabel: t.charts.wpca.xLabel, wpcaYLabel: t.charts.wpca.yLabel },
+          tableLabels: t.table,
+        }}
+      />
     </div>
   );
 }

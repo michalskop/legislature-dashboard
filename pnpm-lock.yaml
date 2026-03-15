@@ -20,6 +20,9 @@ importers:
       '@legislature/charts':
         specifier: workspace:^
         version: link:../../packages/charts
+      '@legislature/parliament-core':
+        specifier: workspace:*
+        version: link:../../packages/parliament-core
       '@legislature/ui':
         specifier: workspace:^
         version: link:../../packages/ui
@@ -113,7 +116,17 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
+  packages/parliament-core:
+    devDependencies:
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.3
+
   packages/ui:
+    dependencies:
+      '@legislature/parliament-core':
+        specifier: workspace:*
+        version: link:../parliament-core
     devDependencies:
       '@types/react':
         specifier: ^19.0.7

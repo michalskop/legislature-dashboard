@@ -21,7 +21,7 @@ export default async function KrajePage() {
         {kraje.map((kraj) => (
           <Link
             key={kraj.slug}
-            href={`/kraj/${kraj.slug}`}
+            href={`/region/${kraj.slug}`}
             className="bg-surface-2 rounded-badge p-5 hover:bg-surface-3 transition-colors flex flex-col gap-3"
           >
             <div className="flex items-center justify-between">
