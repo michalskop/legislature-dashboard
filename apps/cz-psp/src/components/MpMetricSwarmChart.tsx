@@ -3,6 +3,7 @@
 import { SwarmPlot } from "@legislature/charts";
 import type { SwarmGroup, SwarmReferenceLine } from "@legislature/charts";
 import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "@legislature/ui";
+import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
@@ -85,6 +86,7 @@ export function MpMetricSwarmChart({
     const pid = party.partyId ?? "other";
     const meta = CZ_PSP_PARTY_META[pid];
     const color = CZ_PSP_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const dotColor = ensureChartContrast(color);
     return {
       id: party.groupId,
       label: party.name,
@@ -95,7 +97,7 @@ export function MpMetricSwarmChart({
         .map((mp) => {
           const value = getValue(mp, metric);
           if (value === null) return null;
-          return { id: mp.personId, label: mp.name, value, color };
+          return { id: mp.personId, label: mp.name, value, color: dotColor };
         })
         .filter((x): x is NonNullable<typeof x> => x !== null),
     };

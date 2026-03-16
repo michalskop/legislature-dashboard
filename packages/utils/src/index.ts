@@ -25,6 +25,32 @@ export function formatPercentRaw(value: number, decimals = 1): string {
 }
 
 /**
+ * Darken a hex color if its perceived brightness exceeds `maxBrightness` (0–1).
+ * Uses the NTSC perceived-brightness formula. Leaves dark colors unchanged.
+ * Intended for chart dots/lines where very light party colors become invisible
+ * on a light background.
+ *
+ * e.g. KDU yellow #ffcf02 (brightness ~0.78) → darkened to ~0.65 → #d4ac01
+ */
+export function ensureChartContrast(
+  hex: string,
+  maxBrightness = 0.65,
+  darkenStrength = 0.65,
+): string {
+  if (!hex.startsWith("#") || hex.length !== 7) return hex;
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  if (brightness <= maxBrightness) return hex;
+  const strength = Math.min(1, Math.max(0, darkenStrength));
+  const fullFactor = maxBrightness / brightness;
+  const factor = 1 - (1 - fullFactor) * strength;
+  const toHex = (v: number) => Math.round(v * factor).toString(16).padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+/**
  * Format a date as a human-readable relative string in Czech.
  */
 export function formatRelativeDate(date: Date): string {

@@ -3,6 +3,7 @@
 import { ScatterPlot } from "@legislature/charts";
 import type { ScatterGroup } from "@legislature/charts";
 import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "@legislature/ui";
+import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
 import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
@@ -33,6 +34,7 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
     const pid = party.partyId ?? "other";
     const meta = CZ_PSP_PARTY_META[pid];
     const color = CZ_PSP_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const dotColor = ensureChartContrast(color);
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId && mp.wpca?.included);
     return {
       id: party.groupId,
@@ -45,7 +47,7 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
         label: mp.name,
         x: mp.wpca!.x,
         y: mp.wpca!.y,
-        color,
+        color: dotColor,
       })),
     };
   }).filter((g) => g.items.length > 0);
