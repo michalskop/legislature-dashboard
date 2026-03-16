@@ -7,6 +7,11 @@ export const parliamentConfig: ParliamentConfig = {
   dataBase: "https://raw.githubusercontent.com/michalskop/cz-psp-data-2025-202x/main/analyses",
   analyses: ["attendance", "rebelity", "govity", "wpca", "vote-corrections"],
 
+  matomo: {
+    url: "//matomo.kohovolit.eu/",
+    siteId: "6",
+  },
+
   organizations: [
     {
       classification: "group",

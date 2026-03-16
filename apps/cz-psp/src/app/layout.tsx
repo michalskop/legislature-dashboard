@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Roboto_Slab } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { buildMetadata } from "@/lib/metadata";
+import { MatomoScript } from "@/components/MatomoScript";
 
 const robotoSlab = Roboto_Slab({
   subsets: ["latin", "latin-ext"],
@@ -34,6 +36,11 @@ export default function RootLayout({
     <html lang="cs" className={`${robotoSlab.variable} overflow-x-hidden`}>
       <body className="bg-surface-1 text-foreground font-sans antialiased flex flex-col min-h-screen">
         {children}
+        {parliamentConfig.matomo && (
+          <Suspense>
+            <MatomoScript url={parliamentConfig.matomo.url} siteId={parliamentConfig.matomo.siteId} />
+          </Suspense>
+        )}
       </body>
     </html>
   );

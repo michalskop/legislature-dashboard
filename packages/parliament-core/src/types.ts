@@ -210,4 +210,8 @@ export interface ParliamentConfig {
     groupDetail: PageBlock[];
     regionDetail?: PageBlock[];
   };
+  matomo?: {
+    url: string;    // e.g. "//matomo.kohovolit.eu/"
+    siteId: string; // e.g. "6"
+  };
 }
