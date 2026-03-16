@@ -17,7 +17,7 @@ export interface AboutContent {
 
 const cs: AboutContent = {
   pageTitle: "O projektu",
-  intro: "snemovna.datatimes.cz je otevřený přehled aktivity poslanců a stran v Poslanecké sněmovně Parlamentu České republiky.",
+  intro: "Sněmovna.DataTimes.cz je otevřený přehled aktivity poslanců a stran v Poslanecké sněmovně Parlamentu České republiky.",
   backLabel: "← Zpět na přehled",
   sections: [
     {
@@ -27,13 +27,13 @@ const cs: AboutContent = {
         {
           type: "list",
           items: [
-            { label: "Účast na hlasování", description: "podíl hlasování, na nichž byl/a poslanec/poslankyně přítomen/přítomna." },
-            { label: "Rebelita", description: "jak často hlasuje proti stanovisku vlastního poslaneckého klubu." },
-            { label: "Vládnost", description: "jak často hlasuje shodně s vládní koalicí." },
+            { label: "Účast na hlasováních", description: "podíl hlasování, na nichž byl/a poslanec/poslankyně přítomen/přítomna." },
+            { label: "Rebelování", description: "jak často hlasuje proti stanovisku vlastního poslaneckého klubu." },
+            { label: "Shoda s vládou", description: "jak často hlasuje shodně s vládní koalicí." },
             { label: "Opravy hlasování", description: 'počet dodatečně opravených (tzv. \u201eoops\u201c) hlasování.' },
           ],
         },
-        { type: "text", text: "Dále zobrazujeme ideologické pozice poslanců metodou WPCA (vážená analýza hlavních komponent), která odhaluje, kdo v sněmovně hlasuje podobně." },
+        { type: "text", text: "Dále zobrazujeme pozice poslanců na základě jejich hlasování vypočtené metodou WPCA (vážená analýza hlavních komponent), která odhaluje, kdo v sněmovně hlasuje podobně." },
       ],
     },
     {
@@ -61,7 +61,7 @@ const cs: AboutContent = {
       ],
     },
     {
-      title: "Podobné projekty",
+      title: "Další projekty",
       paragraphs: [
         {
           type: "links",

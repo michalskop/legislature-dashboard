@@ -55,11 +55,11 @@ export const parliamentConfig: ParliamentConfig = {
         former: "Bývalí poslanci",
       },
       metrics: {
-        attendance: "Účast na hlasování",
-        rebelity: "Rebelita",
-        govity: "Vládnost",
+        attendance: "Účast na hlasováních",
+        rebelity: "Rebelování",
+        govity: "Shoda s vládou",
         corrections: "Opravy hlasování",
-        wpca: "Ideologické pozice (WPCA)",
+        wpca: "Pozice na základě hlasování",
       },
       ui: {
         memberCount: "{n} poslanců",
@@ -72,7 +72,7 @@ export const parliamentConfig: ParliamentConfig = {
       },
       home: {
         title: "Poslanecká sněmovna",
-        description: "Přehled aktivity poslanců a stran v české Poslanecké sněmovně 2025–2029.",
+        description: "Přehled aktivity poslanců a stran v Poslanecké sněmovně 2025–2029.",
         membersCardTitle: "Poslanci",
         membersCardDescription: "Účast na hlasování, věrnost straně a další metriky pro každého poslance.",
         groupsCardTitle: "Strany",
@@ -82,7 +82,7 @@ export const parliamentConfig: ParliamentConfig = {
       seo: {
         siteTitle: "Sněmovna.DataTimes.cz",
         titleSuffix: " - Sněmovna.DataTimes.cz",
-        defaultDescription: "Přehled aktivity poslanců a stran v české Poslanecké sněmovně 2025–2029.",
+        defaultDescription: "Přehled aktivity poslanců a stran v Poslanecké sněmovně 2025–2029.",
       },
       footer: {
         dataSource: "Data: Poslanecká sněmovna ČR",
@@ -97,8 +97,8 @@ export const parliamentConfig: ParliamentConfig = {
         name: "Poslanec/kyně",
         party: "Strana",
         attendance: "Účast",
-        rebelity: "Rebelita",
-        govity: "Vládnost",
+        rebelity: "Rebelování",
+        govity: "Shoda s vládou",
         corrections: "Opravy hlasování",
       },
       charts: {
@@ -184,7 +184,7 @@ export const parliamentConfig: ParliamentConfig = {
           referenceLines: [{ value: 0.5, label: "50\u00a0%" }],
         },
         labels: {
-          cs: { title: "Účast na hlasování", description: "Každý bod = jeden poslanec/poslankyně. Kliknutím přejdete na jeho/její profil." },
+          cs: { title: "Účast na hlasováních", description: "Jeden bod = jeden poslanec/poslankyně. Kliknutím přejdete na jejich profil." },
           en: { title: "Attendance", description: "Each dot = one MP. Click to open their profile." },
         },
       },
@@ -192,15 +192,15 @@ export const parliamentConfig: ParliamentConfig = {
         id: "wpca-scatter",
         config: { type: "scatter-chart", analysis: "wpca" },
         labels: {
-          cs: { title: "Ideologické pozice", description: "2D mapa poslanců podle způsobu hlasování (WPCA). Kliknutím přejdete na profil." },
-          en: { title: "Ideological positions", description: "2D map of MPs by voting patterns (WPCA). Click to open their profile." },
+          cs: { title: "Pozice na základě hlasování", description: "2D mapa poslanců podle způsobu hlasování (WPCA). Kliknutím přejdete na jejich profil." },
+          en: { title: "Positions based on voting behaviour", description: "2D map of MPs by voting patterns (WPCA). Click to open their profile." },
         },
       },
       {
         id: "rebelity-swarm",
         config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
         labels: {
-          cs: { title: "Rebelita", description: "Jak často poslanec/poslankyně hlasuje proti svému klubu." },
+          cs: { title: "Rebelování", description: "Jak často poslanec/poslankyně hlasuje proti svému klubu." },
           en: { title: "Rebelliousness", description: "How often the MP votes against their own club." },
         },
       },
@@ -208,7 +208,7 @@ export const parliamentConfig: ParliamentConfig = {
         id: "govity-swarm",
         config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
         labels: {
-          cs: { title: "Vládnost", description: "Jak často poslanec/poslankyně hlasuje shodně s vládní koalicí." },
+          cs: { title: "Shoda s vládou", description: "Jak často poslanec/poslankyně hlasuje shodně s vládní koalicí." },
           en: { title: "Gov. alignment", description: "How often the MP votes in line with the government coalition." },
         },
       },
@@ -227,7 +227,7 @@ export const parliamentConfig: ParliamentConfig = {
           referenceLines: [{ value: 0.5, label: "50\u00a0%" }],
         },
         labels: {
-          cs: { title: "Účast na hlasování", description: "Pozice v rámci sněmovny." },
+          cs: { title: "Účast na hlasováních", description: "Pozice v rámci sněmovny." },
           en: { title: "Attendance", description: "Position within the parliament." },
         },
       },
@@ -235,15 +235,15 @@ export const parliamentConfig: ParliamentConfig = {
         id: "wpca-scatter",
         config: { type: "scatter-chart", analysis: "wpca" },
         labels: {
-          cs: { title: "Ideologické pozice (WPCA)", description: "Poloha na základě analýzy hlasování." },
-          en: { title: "Ideological positions (WPCA)", description: "Position based on voting analysis." },
+          cs: { title: "Pozice na základě hlasování", description: "Poloha na základě analýzy hlasování." },
+          en: { title: "Positions based on voting behaviour", description: "Position based on voting analysis." },
         },
       },
       {
         id: "rebelity-swarm",
         config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
         labels: {
-          cs: { title: "Rebelita", description: "Jak často hlasuje proti svému klubu." },
+          cs: { title: "Rebelování", description: "Jak často hlasuje proti svému klubu." },
           en: { title: "Rebelliousness", description: "How often they vote against their club." },
         },
       },
@@ -251,7 +251,7 @@ export const parliamentConfig: ParliamentConfig = {
         id: "govity-swarm",
         config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
         labels: {
-          cs: { title: "Vládnost", description: "Jak často hlasuje shodně s vládní koalicí." },
+          cs: { title: "Shoda s vládou", description: "Jak často hlasuje shodně s vládní koalicí." },
           en: { title: "Gov. alignment", description: "How often they vote in line with the government coalition." },
         },
       },
@@ -266,8 +266,8 @@ export const parliamentConfig: ParliamentConfig = {
         id: "wpca-scatter",
         config: { type: "scatter-chart", analysis: "wpca" },
         labels: {
-          cs: { title: "Ideologické pozice (WPCA)", description: "Členové klubu v kontextu celé sněmovny." },
-          en: { title: "Ideological positions (WPCA)", description: "Group members in the context of the full parliament." },
+          cs: { title: "Pozice na základě hlasování", description: "Členové klubu v kontextu celé sněmovny." },
+          en: { title: "Positions based on voting behaviour", description: "Group members in the context of the full parliament." },
         },
       },
       {
@@ -289,8 +289,8 @@ export const parliamentConfig: ParliamentConfig = {
         id: "member-table",
         config: { type: "member-table", showPartyFilter: true },
         labels: {
-          cs: { title: "Poslanci z kraje" },
-          en: { title: "MPs from this region" },
+          cs: { title: "Poslanci za kraj" },
+          en: { title: "MPs for this region" },
         },
       },
     ],

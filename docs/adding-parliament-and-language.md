@@ -15,14 +15,43 @@ translations: {
   en: { /* existing */ },
   sk: {                          // ← new language
     nav: { overview: "Prehľad", members: "Poslanci" },
-    member: { singular: "poslanec/kyňa", plural: "poslanci", current: "Súčasní poslanci", former: "Bývalí poslanci" },
-    metrics: { attendance: "Účasť", rebelity: "Rebelita", govity: "Vládnosť", corrections: "Opravy hlasovania", wpca: "Ideologické pozície (WPCA)" },
-    ui: { memberCount: "{n} poslancov", voteCount: "z {total} hlasovaní", rebelVotes: "{n} rebel. hlasovaní", announcedCorrections: "{n} oznámených", outOf: "z", currentMembers: "Súčasní poslanci", backToOverview: "← Späť na prehľad" },
-    home: { title: "...", description: "...", membersCardTitle: "Poslanci", membersCardDescription: "...", groupsCardTitle: "Skupiny", groupsCardDescription: "..." },
+    member: {
+      singular: "poslanec/kyňa", plural: "poslanci",
+      current: "Súčasní poslanci", former: "Bývalí poslanci",
+    },
+    metrics: {
+      attendance: "Účasť", rebelity: "Rebelita", govity: "Vládnosť",
+      corrections: "Opravy hlasovania", wpca: "Ideologické pozície (WPCA)",
+    },
+    ui: {
+      memberCount: "{n} poslancov", voteCount: "z {total} hlasovaní",
+      rebelVotes: "{n} rebel. hlasovaní", announcedCorrections: "{n} oznámených",
+      outOf: "z", currentMembers: "Súčasní poslanci", backToOverview: "← Späť na prehľad",
+    },
+    home: {
+      title: "Národná rada SR", description: "...",
+      membersCardTitle: "Poslanci", membersCardDescription: "...",
+      groupsCardTitle: "Kluby", groupsCardDescription: "...",
+    },
     about: { navLabel: "O projekte" },
-    footer: { dataSource: "...", aboutSection: "O projekte", projectsSection: "Naše projekty", contactSection: "Kontakt" },
-    charts: { average: "Priemer", wpca: { xLabel: "...", yLabel: "..." } },
-    table: { allFilter: "Všetci", sortAsc: "Zoradiť vzostupne", sortDesc: "Zoradiť zostupne", name: "Poslanec/kyňa", party: "Strana", attendance: "Účasť", rebelity: "Rebelita", govity: "Vládnosť", corrections: "Opravy hlasovania" },
+    seo: {
+      siteTitle: "nrsr.datatimes.sk",
+      titleSuffix: " - nrsr.datatimes.sk",
+      defaultDescription: "...",
+    },
+    footer: {
+      dataSource: "Dáta: Národná rada SR",
+      aboutSection: "O projekte", projectsSection: "Naše projekty", contactSection: "Kontakt",
+    },
+    charts: {
+      average: "Priemer",
+      wpca: { xLabel: "◄ ◄ ◄ Koalícia | Opozícia ► ► ►", yLabel: "Rozdiely v rámci koalície alebo opozície" },
+    },
+    table: {
+      allFilter: "Všetci", sortAsc: "Zoradiť vzostupne", sortDesc: "Zoradiť zostupne",
+      name: "Poslanec/kyňa", party: "Strana", attendance: "Účasť",
+      rebelity: "Rebelita", govity: "Vládnosť", corrections: "Opravy hlasovania",
+    },
   },
 },
 ```
@@ -39,7 +68,7 @@ organizations: [
       sk: { singular: "klub", plural: "kluby", listTitle: "Poslanecké kluby" },  // ← add
     },
   },
-  // ... same for constituency
+  // ... same for constituency org if present
 ],
 ```
 
@@ -72,7 +101,7 @@ export const aboutContent: Record<string, AboutContent> = {
 
 ### 3. Done
 
-`getLang()` reads supported languages automatically from `Object.keys(parliamentConfig.translations)`.
+`getLang()` derives supported languages automatically from `Object.keys(parliamentConfig.translations)`.
 The language switcher in the header appears automatically when ≥ 2 languages are configured.
 No other code changes are needed.
 
@@ -94,11 +123,44 @@ Update `package.json`:
 { "name": "@legislature/sk-nrsr" }
 ```
 
-Update `next.config.ts` — remove the Czech-specific redirects and add any parliament-specific ones.
+Update `next.config.ts` — remove any parliament-specific redirects (e.g. old Czech URLs) and add new ones if needed.
 
-### 2. Write `parliament.config.ts`
+### 2. Set up the data source
 
-This is the main configuration file. Fill in all fields of `ParliamentConfig`:
+Data is fetched at runtime from raw GitHub file URLs — no build step in the data repo is needed.
+The app reads files like:
+
+```
+https://raw.githubusercontent.com/<org>/<data-repo>/main/analyses/attendance/attendance.json
+```
+
+Set `dataBase` in `parliament.config.ts` to the base URL of the analyses folder:
+
+```ts
+dataBase: "https://raw.githubusercontent.com/michalskop/sk-nrsr-data/main/analyses",
+```
+
+Next.js ISR (`revalidate: 3600` by default) means the app re-fetches data at most every hour.
+The data repo runs a nightly GitHub Actions workflow that updates the JSON files.
+No manual deploy or webhook is needed — the app picks up new data automatically within 1 hour.
+
+Key data files expected under `{dataBase}/`:
+
+```
+current_members.json
+current_groups.json
+attendance/attendance.json
+rebelity/rebelity.json
+govity/govity.json
+wpca/wpca.json
+vote-corrections/vote-corrections.json   ← optional
+```
+
+Copy `apps/cz-psp/src/lib/data.ts` and update the fetch paths. Omit fetch calls for analyses not in `config.analyses`.
+
+### 3. Write `parliament.config.ts`
+
+This is the single source of truth. Fill in all fields of `ParliamentConfig`:
 
 ```ts
 export const parliamentConfig: ParliamentConfig = {
@@ -106,7 +168,12 @@ export const parliamentConfig: ParliamentConfig = {
   name: "Národná rada SR",
   defaultLang: "sk",
   dataBase: "https://raw.githubusercontent.com/.../analyses",
-  analyses: ["attendance", "rebelity", "govity", "wpca"],  // omit analyses not available
+  analyses: ["attendance", "rebelity", "govity", "wpca"],  // omit unavailable analyses
+
+  matomo: {          // optional — omit if not using Matomo
+    url: "//matomo.kohovolit.eu/",
+    siteId: "7",
+  },
 
   organizations: [
     {
@@ -116,17 +183,16 @@ export const parliamentConfig: ParliamentConfig = {
       hasPage: true,
       labels: { sk: { singular: "klub", plural: "kluby", listTitle: "Poslanecké kluby" } },
     },
-    // Add "constituency" org if the parliament has regional constituencies
-    // Add "candidate_list" org if needed
+    // Add "constituency" if the parliament has regional constituencies
   ],
 
-  translations: { sk: { /* all fields */ } },
+  translations: { sk: { /* all fields — see section above */ } },
 
   pages: {
     home: [ /* PageBlock[] */ ],
     memberDetail: [ /* PageBlock[] */ ],
     groupDetail: [ /* PageBlock[] */ ],
-    regionDetail: [ /* PageBlock[] — omit if no regional org */ ],
+    regionDetail: [ /* PageBlock[] — omit key if no constituency org */ ],
   },
 };
 ```
@@ -141,52 +207,54 @@ export const parliamentConfig: ParliamentConfig = {
 | `scatter-chart` (WPCA) | If WPCA analysis is available |
 | `member-table` with `columns: ["attendance", "rebelity"]` | Use `columns` to hide metrics not available for this parliament |
 
-### 3. Add party/group metadata
+### 4. Add party/group metadata
 
 Party badge colors and abbreviations live in `packages/ui/src/components/PartyBadge.tsx`.
-Add entries for the new parliament's parties to `CZ_PSP_PARTY_META` — or create a separate `SK_NRSR_PARTY_META` and export it alongside.
+Create a new metadata export alongside the existing `CZ_PSP_PARTY_META`:
 
 ```ts
 export const SK_NRSR_PARTY_META: Record<string, PartyMeta> = {
-  smer: { shortName: "Smer", faceAbbr: "SD", darkText: false },
+  smer:  { shortName: "Smer-SD", faceAbbr: "SD",  darkText: false },
+  ps:    { shortName: "PS",      faceAbbr: "PS",   darkText: false },
+  // ...
+};
+
+export const SK_NRSR_PARTY_COLORS: Record<string, string> = {
+  smer: "#c8102e",
+  ps:   "#0057a8",
   // ...
 };
 ```
 
-Then use the new meta in the parliament's chart components (or pass it via config — this is a planned improvement).
-
-### 4. Set up data fetching
-
-Copy `apps/cz-psp/src/lib/data.ts` and update the fetch functions to point to the new parliament's data files.
-The data format must follow `legislature-data-standard`. Key files:
-
-```
-{dataBase}/current_members.json
-{dataBase}/current_groups.json
-{dataBase}/attendance/attendance.json
-{dataBase}/rebelity/rebelity.json
-{dataBase}/govity/govity.json
-{dataBase}/wpca/wpca.json
-{dataBase}/vote-corrections/vote-corrections.json   ← optional
-```
-
-Omit fetch calls for analyses not present in `config.analyses`.
+Note: chart dot colors are automatically darkened if too light (perceived brightness > 0.65) via
+`ensureChartContrast()` from `@legislature/utils` — no manual adjustment needed for light colors like yellows.
 
 ### 5. Update `about.ts`
 
 Write the about-page content for the new parliament in `apps/<id>/src/content/about.ts`.
 
-### 6. Configure Vercel / deployment
+### 6. Update `layout.tsx`
+
+Set the correct `metadataBase` URL and `locale` for the new parliament:
+
+```ts
+metadataBase: new URL("https://nrsr.datatimes.sk"),
+openGraph: { locale: "sk_SK", ... },
+```
+
+### 7. Configure Vercel / deployment
 
 Add the new app to `turbo.json` and create a new Vercel project pointing to `apps/<id>`.
 
-### 7. Checklist
+### 8. Checklist
 
 - [ ] `parliament.config.ts` — all fields filled, `analyses` matches available data
-- [ ] `data.ts` — fetch functions updated, `revalidate` set
-- [ ] Party metadata added to `packages/ui`
+- [ ] `data.ts` — fetch functions updated, `dataBase` URL correct, `revalidate` set
+- [ ] Party metadata and colors added to `packages/ui`
 - [ ] `about.ts` written
 - [ ] `public/favicon.svg` updated
-- [ ] `globals.css` — party color CSS variables added
-- [ ] Typecheck passes: `pnpm typecheck`
-- [ ] Dev server runs: `pnpm dev`
+- [ ] `globals.css` — party color CSS variables added if needed
+- [ ] `layout.tsx` — `metadataBase` and `locale` updated
+- [ ] `matomo.siteId` set (or key omitted if not using Matomo)
+- [ ] `pnpm typecheck` passes
+- [ ] `pnpm dev` runs without errors
