@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "czech-chamber-dashboard",
+      "type": "skill-md",
+      "description": "Discover public dashboard pages and metrics for the Czech Chamber of Deputies 2025-2029 term.",
+      "url": "/.well-known/agent-skills/czech-chamber-dashboard/SKILL.md",
+      "digest": "sha256:5ecfb8668844933ef3a31c361d4cb21295ac1c6d8a7e80b7b4e9ea64e9a1217b"
+    },
+    {
+      "name": "czech-chamber-datasets",
+      "type": "skill-md",
+      "description": "Discover source data categories and derived analysis outputs used by Sněmovna.DataTimes.cz.",
+      "url": "/.well-known/agent-skills/czech-chamber-datasets/SKILL.md",
+      "digest": "sha256:babeb7ebceea923d5394f0861c2151cdf1a1c67904fd835fada4796f3efe5706"
+    }
+  ]
+}

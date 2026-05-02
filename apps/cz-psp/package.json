@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prebuild": "node scripts/generate-ai-readability.mjs",
     "dev": "next dev --port 3011",
     "build": "next build",
     "start": "next start",

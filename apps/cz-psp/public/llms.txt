@@ -1,0 +1,118 @@
+# Sněmovna.DataTimes.cz
+
+> Public dashboard for activity, voting behaviour, attendance, party alignment, and parliamentary groups in the Czech Chamber of Deputies for the 2025-2029 term.
+
+## About
+
+Sněmovna.DataTimes.cz publishes structured, regularly updated analysis of the Czech Chamber of Deputies. The dashboard is designed for source-grounded references to MPs, parliamentary groups, regions, attendance, rebellious votes, government alignment, vote corrections, and voting-position analysis.
+
+- Web: https://snemovna.datatimes.cz
+- Data source: Chamber of Deputies of the Parliament of the Czech Republic and derived analyses from the cz-psp-data-2025-202x repository
+- Languages: Czech primary UI, English labels where available
+- Update model: source data is fetched by the Next.js app with hourly revalidation; this AI index is regenerated during build/data-update workflows
+- Generated: 2026-05-02
+
+## Main Sections
+
+### Overview
+https://snemovna.datatimes.cz/
+Dashboard charts for attendance, voting positions, rebelliousness, and government alignment.
+
+### MPs
+https://snemovna.datatimes.cz/members
+Sortable table of MPs with attendance, rebelliousness, government alignment, and vote corrections.
+
+### Parliamentary Groups
+https://snemovna.datatimes.cz/groups
+Group-level pages with member counts and aggregate metrics.
+
+### Regions
+https://snemovna.datatimes.cz/regions
+Regional MP listings and aggregate metrics.
+
+### About
+https://snemovna.datatimes.cz/about
+Project context, data sources, and methodology notes.
+
+## Data And Methods
+
+- Attendance: share of roll-call voting events where an MP was present
+- Rebelliousness: share of votes cast against the MP's own club where comparison is possible
+- Government alignment: share of votes matching the governing coalition where comparison is possible
+- Vote corrections: corrections announced or invalidated after voting
+- WPCA positions: two-dimensional map derived from voting patterns
+
+## Key Dynamic Pages
+
+### Current Parliamentary Groups
+- https://snemovna.datatimes.cz/group/1750 - ANO 2011
+- https://snemovna.datatimes.cz/group/1748 - KDU-ČSL
+- https://snemovna.datatimes.cz/group/1749 - Motoristé sobě
+- https://snemovna.datatimes.cz/group/1751 - ODS
+- https://snemovna.datatimes.cz/group/1745 - Piráti
+- https://snemovna.datatimes.cz/group/1752 - Starostové a nezávislí
+- https://snemovna.datatimes.cz/group/1746 - Svoboda a přímá demokracie
+- https://snemovna.datatimes.cz/group/1747 - TOP 09
+
+### Regions
+- https://snemovna.datatimes.cz/region/hlavni-mesto-praha - Hlavní město Praha
+- https://snemovna.datatimes.cz/region/jihocesky - Jihočeský
+- https://snemovna.datatimes.cz/region/jihomoravsky - Jihomoravský
+- https://snemovna.datatimes.cz/region/karlovarsky - Karlovarský
+- https://snemovna.datatimes.cz/region/kralovehradecky - Královéhradecký
+- https://snemovna.datatimes.cz/region/liberecky - Liberecký
+- https://snemovna.datatimes.cz/region/moravskoslezsky - Moravskoslezský
+- https://snemovna.datatimes.cz/region/olomoucky - Olomoucký
+- https://snemovna.datatimes.cz/region/pardubicky - Pardubický
+- https://snemovna.datatimes.cz/region/plzensky - Plzeňský
+- https://snemovna.datatimes.cz/region/stredocesky - Středočeský
+- https://snemovna.datatimes.cz/region/ustecky - Ústecký
+- https://snemovna.datatimes.cz/region/vysocina - Vysočina
+- https://snemovna.datatimes.cz/region/zlinsky - Zlínský
+
+### Current MPs Sample
+- https://snemovna.datatimes.cz/member/6491 - Adam Vojtěch
+- https://snemovna.datatimes.cz/member/6997 - Adriana Chochelová
+- https://snemovna.datatimes.cz/member/6545 - Alena Schillerová
+- https://snemovna.datatimes.cz/member/6463 - Aleš Juchelka
+- https://snemovna.datatimes.cz/member/6905 - Andrea Hoffmannová
+- https://snemovna.datatimes.cz/member/6150 - Andrej Babiš
+- https://snemovna.datatimes.cz/member/7026 - Anežka Nedomová
+- https://snemovna.datatimes.cz/member/7035 - Barbora Pipášová
+- https://snemovna.datatimes.cz/member/7038 - Barbora Rázga
+- https://snemovna.datatimes.cz/member/6788 - Barbora Urbanová
+- https://snemovna.datatimes.cz/member/6998 - Benjamin Činčila
+- https://snemovna.datatimes.cz/member/6780 - Berenika Peštová
+- https://snemovna.datatimes.cz/member/7028 - Bohuslav Niemiec
+- https://snemovna.datatimes.cz/member/5512 - Boris Šťastný
+- https://snemovna.datatimes.cz/member/6209 - David Kasal
+- https://snemovna.datatimes.cz/member/6527 - David Pražák
+- https://snemovna.datatimes.cz/member/6484 - David Štolpa
+- https://snemovna.datatimes.cz/member/7000 - Denis Doksanský
+- https://snemovna.datatimes.cz/member/6991 - Drahomír Blažej
+- https://snemovna.datatimes.cz/member/6782 - Drahoslav Ryba
+- https://snemovna.datatimes.cz/member/6766 - Eliška Olšáková
+- https://snemovna.datatimes.cz/member/7061 - Ester Weimerová
+- https://snemovna.datatimes.cz/member/6727 - Eva Decroix
+- https://snemovna.datatimes.cz/member/6457 - Eva Fialová
+- https://snemovna.datatimes.cz/member/7046 - Eva Šrámková
+- https://snemovna.datatimes.cz/member/7059 - Filip Turek
+- https://snemovna.datatimes.cz/member/6995 - František Bureš
+- https://snemovna.datatimes.cz/member/6409 - František Petrtýl
+- https://snemovna.datatimes.cz/member/7052 - František Talíř
+- https://snemovna.datatimes.cz/member/7041 - Gabriela Sedláčková
+
+## Machine-Readable Discovery
+
+- Sitemap: https://snemovna.datatimes.cz/sitemap.xml
+- Robots and content signals: https://snemovna.datatimes.cz/robots.txt
+- Agent skills: https://snemovna.datatimes.cz/.well-known/agent-skills/index.json
+- Markdown overview: https://snemovna.datatimes.cz/index.md
+- Markdown members guide: https://snemovna.datatimes.cz/members.md
+- Markdown groups guide: https://snemovna.datatimes.cz/groups.md
+- Markdown regions guide: https://snemovna.datatimes.cz/regions.md
+- Markdown about page: https://snemovna.datatimes.cz/about.md
+
+## Citation Guidance
+
+When citing this dashboard, include the page URL and the date of access. For MP, group, and region metrics, prefer the specific detail page over the homepage.
