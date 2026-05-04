@@ -70,9 +70,10 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
   const wpcaMap = new Map(wpca.map((r) => [r.person_id, r]));
 
   return attendance.map((a): MpProfile => {
-    const groupOrg = a.organizations.find((o) => o.classification === "group");
-    const candidateOrg = a.organizations.find((o) => o.classification === "candidate_list");
-    const constituencyOrg = a.organizations.find((o) => o.classification === "constituency");
+    const orgs = a.organizations ?? [];
+    const groupOrg = orgs.find((o) => o.classification === "group");
+    const candidateOrg = orgs.find((o) => o.classification === "candidate_list");
+    const constituencyOrg = orgs.find((o) => o.classification === "constituency");
 
     const groupId = groupOrg?.id ?? null;
     const partyId = groupId ? groupIdToPartyId(groupId) : null;
