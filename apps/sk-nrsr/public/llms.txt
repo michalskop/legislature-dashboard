@@ -1,0 +1,52 @@
+# nrsr.datatimes.cz
+
+> Public dashboard for activity, voting behaviour, attendance, party alignment, and parliamentary groups in the Slovak National Council (Národná rada SR) 2023– term.
+
+## About
+
+nrsr.datatimes.cz publishes structured, regularly updated analysis of the Slovak National Council. The dashboard is designed for source-grounded references to MPs, parliamentary groups, attendance, rebellious votes, government alignment, and voting-position analysis.
+
+- Web: https://nrsr.datatimes.cz
+- Data source: Národná rada SR (nrsr.sk) and derived analyses from the sk-nrsr-data-2023-202x repository
+- Languages: Slovak primary UI, English labels where available
+- Update model: source data is fetched by the Next.js app with hourly revalidation; this AI index is regenerated during build/data-update workflows
+- Generated: 2026-05-04
+
+## Main Sections
+
+### Overview
+https://nrsr.datatimes.cz/
+Dashboard charts for attendance, voting positions, rebelliousness, and government alignment.
+
+### MPs
+https://nrsr.datatimes.cz/members
+Sortable table of MPs with attendance, rebelliousness, and government alignment.
+
+### Parliamentary Groups
+https://nrsr.datatimes.cz/groups
+Group-level pages with member counts and aggregate metrics.
+
+### About
+https://nrsr.datatimes.cz/about
+Project context, data sources, and methodology notes.
+
+## Data And Methods
+
+- Attendance: share of roll-call voting events where an MP was present
+- Rebelliousness: share of votes cast against the MP's own club where comparison is possible
+- Government alignment: share of votes matching the governing coalition where comparison is possible
+- WPCA positions: two-dimensional map derived from voting patterns
+
+## Machine-Readable Discovery
+
+- Sitemap: https://nrsr.datatimes.cz/sitemap.xml
+- Robots and content signals: https://nrsr.datatimes.cz/robots.txt
+- Agent skills: https://nrsr.datatimes.cz/.well-known/agent-skills/index.json
+- Markdown overview: https://nrsr.datatimes.cz/index.md
+- Markdown members guide: https://nrsr.datatimes.cz/members.md
+- Markdown groups guide: https://nrsr.datatimes.cz/groups.md
+- Markdown about page: https://nrsr.datatimes.cz/about.md
+
+## Citation Guidance
+
+When citing this dashboard, include the page URL and the date of access. For MP and group metrics, prefer the specific detail page over the homepage.

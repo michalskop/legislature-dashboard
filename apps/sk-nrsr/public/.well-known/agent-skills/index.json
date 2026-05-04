@@ -1,0 +1,17 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "slovak-national-council-dashboard",
+      "type": "skill-md",
+      "description": "Discover public dashboard pages and metrics for the Slovak National Council (Národná rada SR) 2023– term.",
+      "url": "/.well-known/agent-skills/slovak-national-council-dashboard/SKILL.md"
+    },
+    {
+      "name": "slovak-national-council-datasets",
+      "type": "skill-md",
+      "description": "Discover source data categories and derived analysis outputs used by nrsr.datatimes.cz.",
+      "url": "/.well-known/agent-skills/slovak-national-council-datasets/SKILL.md"
+    }
+  ]
+}
