@@ -5,21 +5,17 @@
 @source "../../../../packages/ui/src/**/*.{ts,tsx}";
 
 /* =====================================================
- * Czech PSP 2025 party colors
+ * Slovak NRSR 2023 party colors (from Wikipedia)
  * ===================================================== */
 @theme {
-  --color-party-ano: #272a59;
-  --color-party-ods: #5e66d5;
-  --color-party-spolu: #5e66d5;
-  --color-party-kdu: #ffcf02;
-  --color-party-top09: #812840;
-  --color-party-pirati: #111111;
-  --color-party-stan: #ff1a4a;
-  --color-party-spd: #a47d03;
-  --color-party-motoriste: #1a9fbd;
-  --color-party-prisaha: #a9b5f0;
-  --color-party-szs: #639e0a;
-  --color-party-other: #bcbcb0;
+  --color-party-smer:      #d82222; /* SMER - sociálna demokracia */
+  --color-party-hlas:      #e4007c; /* HLAS - sociálna demokracia */
+  --color-party-ps:        #00bdff; /* Progresívne Slovensko */
+  --color-party-slovensko: #f97316; /* SLOVENSKO - ZA ĽUDÍ */
+  --color-party-kdh:       #173a70; /* KDH */
+  --color-party-sas:       #9bc31c; /* Sloboda a Solidarita */
+  --color-party-sns:       #253a79; /* Slovenská národná strana */
+  --color-party-other:     #bcbcb0;
 }
 
 /* ---- Prose styles for static content ---- */

@@ -1,4 +1,7 @@
-import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "./PartyBadge";
+import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META, SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "./PartyBadge";
+
+const ALL_PARTY_COLORS = { ...CZ_PSP_PARTY_COLORS, ...SK_NRSR_PARTY_COLORS };
+const ALL_PARTY_META = { ...CZ_PSP_PARTY_META, ...SK_NRSR_PARTY_META };
 
 // Square with 3 rounded corners (top-right sharp) — same shape used in charts
 const FACE_PATH =
@@ -19,8 +22,8 @@ export interface PartyFaceProps {
 }
 
 export function PartyFace({ partyId, size = 24, className, title }: PartyFaceProps) {
-  const meta = CZ_PSP_PARTY_META[partyId];
-  const color = CZ_PSP_PARTY_COLORS[partyId] ?? "#bcbcb0";
+  const meta = ALL_PARTY_META[partyId];
+  const color = ALL_PARTY_COLORS[partyId] ?? "#bcbcb0";
   const abbr = meta?.faceAbbr ?? partyId.toUpperCase();
   const textColor = meta?.darkText ? "#1a1a1a" : "#ffffff";
   const scale = size / 30;

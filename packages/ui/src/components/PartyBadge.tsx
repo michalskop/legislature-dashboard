@@ -30,6 +30,31 @@ export const CZ_PSP_PARTY_META: Record<
   other:     { shortName: "Jiní",      faceAbbr: "Jiní", darkText: true },
 };
 
+/** Visual display metadata for Slovak NRSR 2023 parties */
+export const SK_NRSR_PARTY_META: Record<
+  string,
+  { shortName: string; faceAbbr: string; darkText?: true }
+> = {
+  smer:      { shortName: "SMER",      faceAbbr: "SMER" },
+  hlas:      { shortName: "HLAS",      faceAbbr: "HLAS" },
+  ps:        { shortName: "PS",        faceAbbr: "PS",   darkText: true },
+  slovensko: { shortName: "SLOVENSKO", faceAbbr: "SLOV" },
+  kdh:       { shortName: "KDH",       faceAbbr: "KDH" },
+  sas:       { shortName: "SaS",       faceAbbr: "SaS",  darkText: true },
+  sns:       { shortName: "SNS",       faceAbbr: "SNS" },
+};
+
+/** Hex colors for Slovak NRSR 2023 parties */
+export const SK_NRSR_PARTY_COLORS: Record<string, string> = {
+  smer:      "#d82222",
+  hlas:      "#e4007c",
+  ps:        "#00bdff",
+  slovensko: "#f97316",
+  kdh:       "#173a70",
+  sas:       "#9bc31c",
+  sns:       "#253a79",
+};
+
 /** Hex colors matching --color-party-* CSS variables */
 export const CZ_PSP_PARTY_COLORS: Record<string, string> = {
   ano:       "#272a59",
@@ -57,7 +82,7 @@ export function PartyBadge({
   size = "md",
   className = "",
 }: PartyBadgeProps) {
-  const meta = CZ_PSP_PARTY_META[partyId];
+  const meta = CZ_PSP_PARTY_META[partyId] ?? SK_NRSR_PARTY_META[partyId];
   const displayLabel =
     label !== undefined ? label : (meta?.shortName ?? partyId.toUpperCase());
   const darkText = meta?.darkText ?? false;
