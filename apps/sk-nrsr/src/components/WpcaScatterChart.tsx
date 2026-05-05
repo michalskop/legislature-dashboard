@@ -2,11 +2,10 @@
 
 import { ScatterPlot } from "@legislature/charts";
 import type { ScatterGroup } from "@legislature/charts";
-import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "@legislature/ui";
+import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
 
 interface Props {
   mps: MpProfile[];
@@ -18,7 +17,7 @@ interface Props {
   yLabel?: string;
 }
 
-export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Vládní koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Rozdíly v rámci koalice nebo opozice" }: Props) {
+export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Vládna koalícia | Opozícia ► ► ►", yLabel = "Rozdiely v rámci koalície alebo opozície" }: Props) {
   const router = useRouter();
 
   // Sort parties by avg WPCA x (left→right) for a consistent legend order
@@ -32,8 +31,8 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
 
   const groups: ScatterGroup[] = orderedParties.map((party) => {
     const pid = party.partyId ?? "other";
-    const meta = CZ_PSP_PARTY_META[pid];
-    const color = CZ_PSP_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const meta = SK_NRSR_PARTY_META[pid];
+    const color = SK_NRSR_PARTY_COLORS[pid] ?? "#bcbcb0";
     const dotColor = ensureChartContrast(color);
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId && mp.wpca?.included);
     return {
@@ -64,9 +63,6 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
       highlightId={highlightId}
       highlightIds={highlightIds}
       onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
-      watermark={
-        <SnemovnaLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
-      }
     />
   );
 }

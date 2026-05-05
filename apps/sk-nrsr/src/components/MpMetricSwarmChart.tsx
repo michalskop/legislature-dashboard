@@ -2,11 +2,10 @@
 
 import { SwarmPlot } from "@legislature/charts";
 import type { SwarmGroup, SwarmReferenceLine } from "@legislature/charts";
-import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "@legislature/ui";
+import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
 
 export type MpMetric = "attendance" | "rebelity" | "govity";
 
@@ -25,7 +24,7 @@ interface Props {
   height?: number;
   /** Highlight a single MP by personId */
   highlightId?: string;
-  /** Label for the party-average reference line. Defaults to "Průměr". */
+  /** Label for the party-average reference line. Defaults to "Priemer". */
   averageLabel?: string;
 }
 
@@ -56,7 +55,7 @@ function sortedParties(mps: MpProfile[], parties: PartyProfile[]): PartyProfile[
 }
 
 const makeFormatY = (decimals: number) => (v: number) =>
-  `${(v * 100).toFixed(decimals)}\u00a0%`;
+  `${(v * 100).toFixed(decimals)} %`;
 
 /** Round up to a nice boundary with at most ~5–10 ticks */
 function niceUpperBound(max: number): number {
@@ -75,7 +74,7 @@ export function MpMetricSwarmChart({
   extraReferenceLines = [],
   height = 360,
   highlightId,
-  averageLabel = "Průměr",
+  averageLabel = "Priemer",
 }: Props) {
   const formatY = makeFormatY(yDecimals);
   const router = useRouter();
@@ -84,8 +83,8 @@ export function MpMetricSwarmChart({
   const groups: SwarmGroup[] = orderedParties.map((party) => {
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId);
     const pid = party.partyId ?? "other";
-    const meta = CZ_PSP_PARTY_META[pid];
-    const color = CZ_PSP_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const meta = SK_NRSR_PARTY_META[pid];
+    const color = SK_NRSR_PARTY_COLORS[pid] ?? "#bcbcb0";
     const dotColor = ensureChartContrast(color);
     return {
       id: party.groupId,
@@ -127,9 +126,6 @@ export function MpMetricSwarmChart({
       height={height}
       highlightId={highlightId}
       onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
-      watermark={
-        <SnemovnaLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
-      }
     />
   );
 }

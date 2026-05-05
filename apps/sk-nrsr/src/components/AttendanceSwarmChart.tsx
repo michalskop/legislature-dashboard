@@ -2,10 +2,9 @@
 
 import { SwarmPlot } from "@legislature/charts";
 import type { SwarmGroup, SwarmReferenceLine } from "@legislature/charts";
-import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "@legislature/ui";
+import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
-import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
 
 interface Props {
   mps: MpProfile[];
@@ -44,8 +43,8 @@ export function AttendanceSwarmChart({ mps, parties }: Props) {
   const groups: SwarmGroup[] = orderedParties.map((party) => {
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId);
     const pid = party.partyId ?? "other";
-    const meta = CZ_PSP_PARTY_META[pid];
-    const color = CZ_PSP_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const meta = SK_NRSR_PARTY_META[pid];
+    const color = SK_NRSR_PARTY_COLORS[pid] ?? "#bcbcb0";
     return {
       id: party.groupId,
       label: party.name,
@@ -72,9 +71,9 @@ export function AttendanceSwarmChart({ mps, parties }: Props) {
 
   const referenceLines: SwarmReferenceLine[] = [
     ...(avg !== null
-      ? [{ value: avg, label: `Průměr ${(avg * 100).toFixed(0)}\u00a0%` }]
+      ? [{ value: avg, label: `Priemer ${(avg * 100).toFixed(0)} %` }]
       : []),
-    { value: 0.5, label: "50\u00a0%" },
+    { value: 0.5, label: "50 %" },
   ];
 
   return (
@@ -82,13 +81,10 @@ export function AttendanceSwarmChart({ mps, parties }: Props) {
       groups={groups}
       referenceLines={referenceLines}
       yDomain={[0, 1]}
-      formatY={(v) => `${(v * 100).toFixed(0)}\u00a0%`}
+      formatY={(v) => `${(v * 100).toFixed(0)} %`}
       dotSize={10}
       height={360}
       onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
-      watermark={
-        <SnemovnaLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
-      }
     />
   );
 }
