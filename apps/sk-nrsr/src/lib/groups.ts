@@ -12,6 +12,8 @@ export const GROUP_ID_TO_PARTY_ID: Record<string, string> = {
   "nrsr:org:club:9": "smer",      // SMER (old name variant)
   "nrsr:org:club:10": "sns",      // SNS (old name)
   "nrsr:org:club:13": "sns",      // SNS (old name variant)
+  // independent MPs (not members of any club)
+  "nrsr:org:nezavisli": "nezavisli",
 };
 
 export function groupIdToPartyId(groupId: string): string {

@@ -75,7 +75,8 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
     const candidateOrg = orgs.find((o) => o.classification === "candidate_list");
     const constituencyOrg = orgs.find((o) => o.classification === "constituency");
 
-    const groupId = groupOrg?.id ?? null;
+    const isCurrent = currentIds.has(a.person_id);
+    const groupId = groupOrg?.id ?? (isCurrent ? "nrsr:org:nezavisli" : null);
     const partyId = groupId ? groupIdToPartyId(groupId) : null;
 
     const reb = rebelityMap.get(a.person_id);
@@ -91,7 +92,7 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
       familyName: a.family_names[0] ?? "",
       image: a.extras?.image ?? null,
       groupId,
-      groupName: groupOrg?.name ?? candidateOrg?.name ?? null,
+      groupName: groupOrg?.name ?? candidateOrg?.name ?? (isCurrent ? "Nezávislí" : null),
       partyId,
       constituency: constituencyOrg?.name ?? null,
       attendance: {

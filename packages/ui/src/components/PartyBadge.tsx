@@ -42,6 +42,7 @@ export const SK_NRSR_PARTY_META: Record<
   kdh:       { shortName: "KDH",       faceAbbr: "KDH" },
   sas:       { shortName: "SaS",       faceAbbr: "SaS",  darkText: true },
   sns:       { shortName: "SNS",       faceAbbr: "SNS" },
+  nezavisli: { shortName: "Nezáv.",    faceAbbr: "Nez.", darkText: true },
 };
 
 /** Hex colors for Slovak NRSR 2023 parties */
@@ -53,6 +54,7 @@ export const SK_NRSR_PARTY_COLORS: Record<string, string> = {
   kdh:       "#173a70",
   sas:       "#9bc31c",
   sns:       "#253a79",
+  nezavisli: "#8d8d8d",
 };
 
 /** Hex colors matching --color-party-* CSS variables */
