@@ -50,6 +50,11 @@ Use Next.js server components with `revalidate` for ISR.
 - `michalskop/legislature-data-analyses` — analysis scripts
 - `michalskop/legislature-data-standard` — data type schemas
 
+## Guides
+
+- [Adding a new parliament or language](./docs/adding-parliament-and-language.md)
+- [Adding or updating an analysis](./docs/adding-or-updating-analysis.md)
+
 ## Commands
 
 ```bash
