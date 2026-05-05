@@ -140,39 +140,40 @@ export async function getAllPartyProfiles(): Promise<PartyProfile[]> {
 
   const groupMap = new Map(groups.map((g) => [g.id, g]));
 
-  // Aggregate by groupId — current MPs only
+  // Aggregate by groupId — all MPs (current and former)
   const byGroup = new Map<string, MpProfile[]>();
-  for (const mp of mps.filter((m) => m.isCurrent)) {
+  for (const mp of mps) {
     if (!mp.groupId) continue;
     const arr = byGroup.get(mp.groupId) ?? [];
     arr.push(mp);
     byGroup.set(mp.groupId, arr);
   }
 
+  const avg = (arr: number[]) =>
+    arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
+
   const parties: PartyProfile[] = [];
   for (const [gid, members] of byGroup.entries()) {
     const group = groupMap.get(gid);
     const name = group?.name ?? members[0]?.groupName ?? gid;
+    const currentMembers = members.filter((m) => m.isCurrent);
 
-    const attendanceValues = members
+    const attendanceValues = currentMembers
       .map((m) => m.attendance?.present_share)
       .filter((v): v is number => v !== undefined && v !== null);
-    const rebelityValues = members
+    const rebelityValues = currentMembers
       .map((m) => m.rebelity?.rebelity)
       .filter((v): v is number => v !== undefined && v !== null);
-    const govityValues = members
+    const govityValues = currentMembers
       .map((m) => m.govity?.govity)
       .filter((v): v is number => v !== undefined && v !== null);
-
-    const avg = (arr: number[]) =>
-      arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
 
     parties.push({
       groupId: gid,
       slug: groupSlug(gid),
       name,
       partyId: groupIdToPartyId(gid),
-      memberCount: members.length,
+      memberCount: currentMembers.length,
       avgAttendance: avg(attendanceValues),
       avgRebelity: avg(rebelityValues),
       avgGovity: avg(govityValues),
