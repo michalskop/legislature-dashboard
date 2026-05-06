@@ -5,6 +5,7 @@ import type { SwarmGroup, SwarmReferenceLine } from "@legislature/charts";
 import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { NrsrLogotype } from "@/components/NrsrLogotype";
 
 interface Props {
   mps: MpProfile[];
@@ -81,10 +82,13 @@ export function AttendanceSwarmChart({ mps, parties }: Props) {
       groups={groups}
       referenceLines={referenceLines}
       yDomain={[0, 1]}
-      formatY={(v) => `${(v * 100).toFixed(0)} %`}
+      formatY={(v) => `${(v * 100).toFixed(0)} %`}
       dotSize={10}
       height={360}
       onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
+      watermark={
+        <NrsrLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
+      }
     />
   );
 }

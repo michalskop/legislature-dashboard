@@ -50,7 +50,7 @@ export function NavLinks({ lang, langs }: Props) {
     { href: "/",        label: t.nav.overview },
     { href: "/members", label: t.nav.members },
     { href: "/groups",  label: groupOrg?.labels[lang]?.plural ?? groupOrg?.labels[parliamentConfig.defaultLang]?.plural ?? "Groups" },
-    { href: "/regions", label: regionOrg?.labels[lang]?.plural ?? regionOrg?.labels[parliamentConfig.defaultLang]?.plural ?? "Regions" },
+    ...(regionOrg ? [{ href: "/regions", label: regionOrg.labels[lang]?.plural ?? regionOrg.labels[parliamentConfig.defaultLang]?.plural ?? "Regions" }] : []),
   ];
 
   return (

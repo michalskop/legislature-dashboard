@@ -233,7 +233,17 @@ Note: chart dot colors are automatically darkened if too light (perceived bright
 
 Write the about-page content for the new parliament in `apps/<id>/src/content/about.ts`.
 
-### 6. Update `layout.tsx`
+### 6. Update branding assets
+
+Update the site logotype and favicon:
+
+- **Logotype component**: Create a new logotype component (e.g., `NrsrLogotype.tsx` for Slovak parliament) based on the existing logotype component. Update the text to match your parliament (e.g., "NRSR.DataTimes.sk" instead of "Sněmovna.DataTimes.cz")
+- **Update imports**: Replace all imports of the old logotype component in `SiteHeader.tsx`, `SiteFooter.tsx`, and `opengraph-image.tsx`
+- **Favicon**: Edit `apps/<id>/public/favicon.svg` to reflect the parliament's branding (e.g., change "S" to "NR" for NRSR, or use appropriate abbreviation)
+- **Colors**: Adjust the gradient colors in the favicon SVG to match the parliament's visual identity
+- Consider updating the text size if using multi-character abbreviations
+
+### 8. Update `layout.tsx`
 
 Set the correct `metadataBase` URL and `locale` for the new parliament:
 
@@ -242,19 +252,23 @@ metadataBase: new URL("https://nrsr.datatimes.sk"),
 openGraph: { locale: "sk_SK", ... },
 ```
 
-### 7. Configure Vercel / deployment
+### 9. Configure Vercel / deployment
 
 Add the new app to `turbo.json` and create a new Vercel project pointing to `apps/<id>`.
 
-### 8. Checklist
+### 10. Checklist
 
-- [ ] `parliament.config.ts` — all fields filled, `analyses` matches available data
+- [ ] `parliament.config.ts` — all fields filled, `analyses` matches available data, constituency org omitted if not applicable
 - [ ] `data.ts` — fetch functions updated, `dataBase` URL correct, `revalidate` set
 - [ ] Party metadata and colors added to `packages/ui`
 - [ ] `about.ts` written
-- [ ] `public/favicon.svg` updated
+- [ ] Logotype component created and imported in header, footer, and OpenGraph image
+- [ ] `public/favicon.svg` updated with parliament branding (abbreviation, colors)
 - [ ] `globals.css` — party color CSS variables added if needed
 - [ ] `layout.tsx` — `metadataBase` and `locale` updated
+- [ ] `app/(site)/page.tsx` — JSON-LD structured data updated with correct site URL, parliament name, and temporal coverage
+- [ ] `scripts/generate-ai-readability.mjs` — base URL and data repository references updated
 - [ ] `matomo.siteId` set (or key omitted if not using Matomo)
+- [ ] Navigation links filtered correctly (regions hidden if no constituency org)
 - [ ] `pnpm typecheck` passes
 - [ ] `pnpm dev` runs without errors

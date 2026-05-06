@@ -3,7 +3,7 @@ import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
 
-const siteUrl = "https://snemovna.datatimes.cz";
+const siteUrl = "https://nrsr.datatimes.sk";
 
 function DashboardJsonLd({
   currentMpCount,
@@ -24,27 +24,27 @@ function DashboardJsonLd({
       {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
-        name: "Sněmovna.DataTimes.cz",
+        name: "NRSR.DataTimes.sk",
         url: siteUrl,
-        inLanguage: ["cs", "en"],
+        inLanguage: ["sk", "en"],
         publisher: { "@id": `${siteUrl}/#organization` },
         description:
-          "Public dashboard for activity, voting behaviour, attendance, party alignment, and parliamentary groups in the Czech Chamber of Deputies for the 2025-2029 term.",
+          "Public dashboard for activity, voting behaviour, attendance, party alignment, and parliamentary groups in the Slovak National Council for the 2023-2027 term.",
       },
       {
         "@type": "Dataset",
         "@id": `${siteUrl}/#dataset`,
-        name: "Czech Chamber of Deputies 2025-2029 dashboard analyses",
+        name: "Slovak National Council 2023-2027 dashboard analyses",
         url: siteUrl,
         creator: { "@id": `${siteUrl}/#organization` },
         publisher: { "@id": `${siteUrl}/#organization` },
-        inLanguage: ["cs", "en"],
+        inLanguage: ["sk", "en"],
         isAccessibleForFree: true,
-        license: "https://snemovna.datatimes.cz/about",
-        temporalCoverage: "2025/2029",
+        license: "https://nrsr.datatimes.sk/about",
+        temporalCoverage: "2023/2027",
         spatialCoverage: {
           "@type": "Country",
-          name: "Czechia",
+          name: "Slovakia",
         },
         variableMeasured: [
           "MP attendance",
@@ -54,7 +54,7 @@ function DashboardJsonLd({
           "WPCA voting positions",
         ],
         measurementTechnique: "Derived analysis of public parliamentary voting data",
-        description: `Hourly refreshed dashboard data for ${currentMpCount} current MPs and ${groupCount} parliamentary groups in the Czech Chamber of Deputies.`,
+        description: `Hourly refreshed dashboard data for ${currentMpCount} current MPs and ${groupCount} parliamentary groups in the Slovak National Council.`,
         distribution: [
           {
             "@type": "DataDownload",

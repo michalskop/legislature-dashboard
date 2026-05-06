@@ -53,7 +53,7 @@ const sk: AboutContent = {
         {
           type: "links",
           items: [
-            { href: "https://datatimes.cz", label: "DataTimes.cz", description: "" },
+            { href: "https://datatimes.sk", label: "DataTimes.sk", description: "" },
             { href: "https://kohovolit.eu", label: "KohoVolit.eu", description: "" },
           ],
         },
@@ -65,8 +65,7 @@ const sk: AboutContent = {
         {
           type: "links",
           items: [
-            { href: "https://mandaty.cz", label: "Mandáty.cz", description: "— Agregácia volebných prieskumov" },
-            { href: "https://volebnikalkulacka.cz", label: "Volebná kalkulačka", description: "— porovnajte svoj postoj s postojmi strán a kandidátov" },
+            { href: "https://volebnakalkulacka.sk", label: "Volebná kalkulačka", description: "— porovnajte svoj postoj s postojmi strán a kandidátov" },
           ],
         },
       ],
@@ -112,7 +111,7 @@ const en: AboutContent = {
         {
           type: "links",
           items: [
-            { href: "https://datatimes.cz", label: "DataTimes.cz", description: "" },
+            { href: "https://datatimes.sk", label: "DataTimes.sk", description: "" },
             { href: "https://kohovolit.eu", label: "KohoVolit.eu", description: "" },
           ],
         },

@@ -9,7 +9,7 @@ export const parliamentConfig: ParliamentConfig = {
 
   matomo: {
     url: "//matomo.kohovolit.eu/",
-    siteId: "7",
+    siteId: "3",
   },
 
   organizations: [
@@ -62,7 +62,7 @@ export const parliamentConfig: ParliamentConfig = {
       seo: {
         siteTitle: "nrsr.datatimes.cz",
         titleSuffix: " - nrsr.datatimes.cz",
-        defaultDescription: "Prehľad aktivity poslancov a strán v Národnej rade SR 2023–.",
+        defaultDescription: "Prehľad aktivity poslancov a strán v Národnej rade SR 2023-.",
       },
       footer: {
         dataSource: "Dáta: Národná rada SR",

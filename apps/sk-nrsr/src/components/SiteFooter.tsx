@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
+import { NrsrLogotype } from "@/components/NrsrLogotype";
 import { parliamentConfig } from "@/lib/parliament.config";
 import { getLang } from "@/lib/lang";
 
@@ -34,12 +34,12 @@ export async function SiteFooter() {
       <div className="max-w-5xl mx-auto px-4 py-10 grid grid-cols-2 sm:grid-cols-4 gap-8">
         {/* Brand */}
         <div className="col-span-2 sm:col-span-1 flex flex-col gap-3">
-          <SnemovnaLogotype size="sm" />
+          <NrsrLogotype size="sm" />
           <p className="text-xs text-muted-foreground leading-relaxed">
             {t.footer.dataSource}
           </p>
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} DataTimes.cz
+            © {new Date().getFullYear()} DataTimes.sk
           </p>
         </div>
 
@@ -51,7 +51,7 @@ export async function SiteFooter() {
 
         <FooterSection title={t.footer.projectsSection}>
           <FooterLink href="https://datatimes.cz">DataTimes.cz</FooterLink>
-          <FooterLink href="https://volebnikalkulacka.cz">Volební kalkulačka</FooterLink>
+          <FooterLink href="https://volebnakalkulacka.sk">Volebná kalkulačka</FooterLink>
           <FooterLink href="https://mandaty.cz">Mandáty.cz</FooterLink>
         </FooterSection>
 

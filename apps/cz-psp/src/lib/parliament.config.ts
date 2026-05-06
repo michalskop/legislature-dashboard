@@ -9,7 +9,7 @@ export const parliamentConfig: ParliamentConfig = {
 
   matomo: {
     url: "//matomo.kohovolit.eu/",
-    siteId: "6",
+    siteId: "2",
   },
 
   organizations: [

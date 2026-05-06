@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { parliamentConfig } from "@/lib/parliament.config";
-import { SnemovnaLogotype } from "@/components/SnemovnaLogotype";
+import { NrsrLogotype } from "@/components/NrsrLogotype";
 import { palette } from "@legislature/ui";
 
 export const runtime = "edge";
@@ -67,7 +67,7 @@ export default async function OgImage() {
         </div>
 
         {/* Site title */}
-        <SnemovnaLogotype size="lg" variant="dark" renderMode="inline" />
+        <NrsrLogotype size="lg" variant="dark" renderMode="inline" />
       </div>
     ),
     {

@@ -6,6 +6,7 @@ import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { NrsrLogotype } from "@/components/NrsrLogotype";
 
 interface Props {
   mps: MpProfile[];
@@ -63,6 +64,9 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
       highlightId={highlightId}
       highlightIds={highlightIds}
       onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
+      watermark={
+        <NrsrLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
+      }
     />
   );
 }

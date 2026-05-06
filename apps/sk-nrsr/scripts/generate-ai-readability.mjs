@@ -8,9 +8,9 @@ const appRoot = path.resolve(__dirname, "..");
 const publicDir = path.join(appRoot, "public");
 const skillsDir = path.join(publicDir, ".well-known", "agent-skills");
 
-const baseUrl = "https://snemovna.datatimes.cz";
+const baseUrl = "https://nrsr.datatimes.sk";
 const dataBase =
-  "https://raw.githubusercontent.com/michalskop/cz-psp-data-2025-202x/main/analyses";
+  "https://raw.githubusercontent.com/michalskop/sk-nrsr-data-2023-202x/main/analyses";
 const generatedAt = new Date().toISOString().slice(0, 10);
 
 const staticRoutes = [
@@ -149,17 +149,17 @@ function buildLlmsTxt({ members, groups, regionNames }) {
   const listedMembers = members.slice(0, 30);
   const listedGroups = groups.slice(0, 20);
 
-  return `# Sněmovna.DataTimes.cz
+  return `# NRSR.DataTimes.sk
 
-> Public dashboard for activity, voting behaviour, attendance, party alignment, and parliamentary groups in the Czech Chamber of Deputies for the 2025-2029 term.
+> Public dashboard for activity, voting behaviour, attendance, party alignment, and parliamentary groups in the Slovak National Council for the 2023-2027 term.
 
 ## About
 
-Sněmovna.DataTimes.cz publishes structured, regularly updated analysis of the Czech Chamber of Deputies. The dashboard is designed for source-grounded references to MPs, parliamentary groups, regions, attendance, rebellious votes, government alignment, vote corrections, and voting-position analysis.
+NRSR.DataTimes.sk publishes structured, regularly updated analysis of the Slovak National Council. The dashboard is designed for source-grounded references to MPs, parliamentary groups, attendance, rebellious votes, government alignment, and voting-position analysis.
 
 - Web: ${baseUrl}
-- Data source: Chamber of Deputies of the Parliament of the Czech Republic and derived analyses from the cz-psp-data-2025-202x repository
-- Languages: Czech primary UI, English labels where available
+- Data source: Národná rada SR (nrsr.sk) and derived analyses from the sk-nrsr-data-2023-202x repository
+- Languages: Slovak primary UI, English labels where available
 - Update model: source data is fetched by the Next.js app with hourly revalidation; this AI index is regenerated during build/data-update workflows
 - Generated: ${generatedAt}
 

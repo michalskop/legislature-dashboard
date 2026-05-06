@@ -6,6 +6,7 @@ import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
+import { NrsrLogotype } from "@/components/NrsrLogotype";
 
 export type MpMetric = "attendance" | "rebelity" | "govity";
 
@@ -126,6 +127,9 @@ export function MpMetricSwarmChart({
       height={height}
       highlightId={highlightId}
       onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
+      watermark={
+        <NrsrLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
+      }
     />
   );
 }

@@ -18,7 +18,7 @@ const t = parliamentConfig.translations[parliamentConfig.defaultLang]!;
 export const metadata: Metadata = {
   ...buildMetadata(null),
   icons: { icon: "/favicon.svg" },
-  metadataBase: new URL("https://snemovna.datatimes.cz"),
+  metadataBase: new URL("https://nrsr.datatimes.sk"),
   openGraph: {
     ...buildMetadata(null).openGraph,
     siteName: t.seo.siteTitle,
