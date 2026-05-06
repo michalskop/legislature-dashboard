@@ -5,7 +5,7 @@ export const parliamentConfig: ParliamentConfig = {
   name: "Poslanecká sněmovna",
   defaultLang: "cs",
   dataBase: "https://raw.githubusercontent.com/michalskop/cz-psp-data-2025-202x/main/analyses",
-  analyses: ["attendance", "rebelity", "govity", "wpca", "vote-corrections"],
+  analyses: ["attendance", "rebelity", "govity", "wpca"],
 
   matomo: {
     url: "//matomo.kohovolit.eu/",

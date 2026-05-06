@@ -58,12 +58,11 @@ export function fetchCurrentGroups() {
 // --- Combined MP profiles ---
 
 export async function getAllMpProfiles(): Promise<MpProfile[]> {
-  const [attendance, rebelity, govity, voteCorrections, wpca, currentMembers] =
+  const [attendance, rebelity, govity, wpca, currentMembers] =
     await Promise.all([
       fetchAttendance(),
       fetchRebelity(),
       fetchGovity(),
-      fetchVoteCorrections(),
       fetchWpca(),
       fetchCurrentMembers(),
     ]);
@@ -73,7 +72,6 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
   // Index secondary analyses by person_id
   const rebelityMap = new Map(rebelity.map((r) => [r.person_id, r]));
   const govityMap = new Map(govity.map((r) => [r.person_id, r]));
-  const correctionsMap = new Map(voteCorrections.map((r) => [r.person_id, r]));
   const wpcaMap = new Map(wpca.map((r) => [r.person_id, r]));
 
   return attendance.map((a): MpProfile => {
@@ -86,7 +84,6 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
 
     const reb = rebelityMap.get(a.person_id);
     const gov = govityMap.get(a.person_id);
-    const cor = correctionsMap.get(a.person_id);
     const w = wpcaMap.get(a.person_id);
 
     return {
@@ -113,14 +110,7 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
       govity: gov
         ? { govity: gov.govity, govity_total: gov.govity_total, govity_possible: gov.govity_possible }
         : null,
-      voteCorrections: cor
-        ? {
-            corrections_total: cor.corrections_total,
-            corrections_announced: cor.corrections_announced,
-            corrections_invalidated: cor.corrections_invalidated,
-            vote_events_total: cor.vote_events_total,
-          }
-        : null,
+      voteCorrections: null,
       wpca: w && w.included
         ? { x: w.dims[0] ?? 0, y: w.dims[1] ?? 0, weight: w.weight, included: w.included }
         : null,

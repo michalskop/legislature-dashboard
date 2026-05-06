@@ -23,14 +23,13 @@ const cs: AboutContent = {
     {
       title: "Co zobrazujeme",
       paragraphs: [
-        { type: "text", text: "Pro každého poslance a každou poslankyni zobrazujeme čtyři základní metriky vypočítané z hlasování ve sněmovně:" },
+        { type: "text", text: "Pro každého poslance a každou poslankyni zobrazujeme tři základní metriky vypočítané z hlasování ve sněmovně:" },
         {
           type: "list",
           items: [
             { label: "Účast na hlasováních", description: "podíl hlasování, na nichž byl/a poslanec/poslankyně přítomen/přítomna." },
             { label: "Rebelování", description: "jak často hlasuje proti stanovisku vlastního poslaneckého klubu." },
             { label: "Shoda s vládou", description: "jak často hlasuje shodně s vládní koalicí." },
-            { label: "Opravy hlasování", description: 'počet dodatečně opravených (tzv. \u201eoops\u201c) hlasování.' },
           ],
         },
         { type: "text", text: "Dále zobrazujeme pozice poslanců na základě jejich hlasování vypočtené metodou WPCA (vážená analýza hlavních komponent), která odhaluje, kdo v sněmovně hlasuje podobně." },

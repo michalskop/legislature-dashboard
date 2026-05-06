@@ -50,7 +50,6 @@ function DashboardJsonLd({
           "MP attendance",
           "Rebellious votes",
           "Government alignment",
-          "Vote corrections",
           "WPCA voting positions",
         ],
         measurementTechnique: "Derived analysis of public parliamentary voting data",
