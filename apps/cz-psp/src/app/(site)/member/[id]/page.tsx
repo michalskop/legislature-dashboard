@@ -87,6 +87,16 @@ export default async function PoslanecPage({ params }: Props) {
         )}
         <div className="space-y-2">
           <h1 className="text-2xl font-bold">{mp.name}</h1>
+          {!mp.isCurrent && (
+            <p className="text-sm font-medium text-muted-foreground">
+              <span className="inline-block bg-surface-2 rounded px-2 py-0.5">
+                {t.member.former}
+                {mp.mandateSince && (
+                  <> · {mp.mandateSince}{mp.mandateUntil ? ` – ${mp.mandateUntil}` : ""}</>
+                )}
+              </span>
+            </p>
+          )}
           {mp.constituency && (
             <p className="text-sm text-muted-foreground flex items-center gap-1.5">
               <span className="capitalize">{regionLabel}:</span>

@@ -55,19 +55,32 @@ export function fetchCurrentGroups() {
   return fetchJson<CurrentGroup[]>("current-groups/outputs/current_groups.json");
 }
 
+export function fetchAllMembers() {
+  return fetchJson<CurrentMember[]>("all-members/outputs/all_members.json");
+}
+
 // --- Combined MP profiles ---
 
 export async function getAllMpProfiles(): Promise<MpProfile[]> {
-  const [attendance, rebelity, govity, wpca, currentMembers] =
+  const [attendance, rebelity, govity, wpca, currentMembers, allMembers] =
     await Promise.all([
       fetchAttendance(),
       fetchRebelity(),
       fetchGovity(),
       fetchWpca(),
       fetchCurrentMembers(),
+      fetchAllMembers(),
     ]);
 
   const currentIds = new Set(currentMembers.map((m) => m.id));
+
+  const mandateMap = new Map(allMembers.map((m) => {
+    const parl = m.memberships.parliament[m.memberships.parliament.length - 1];
+    return [m.id, {
+      mandateSince: parl?.start_date || null,
+      mandateUntil: parl?.end_date || null,
+    }];
+  }));
 
   // Index secondary analyses by person_id
   const rebelityMap = new Map(rebelity.map((r) => [r.person_id, r]));
@@ -86,10 +99,14 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
     const gov = govityMap.get(a.person_id);
     const w = wpcaMap.get(a.person_id);
 
+    const mandate = mandateMap.get(a.person_id);
+
     return {
       personId: a.person_id,
       slug: personSlug(a.person_id),
       isCurrent: currentIds.has(a.person_id),
+      mandateSince: mandate?.mandateSince ?? null,
+      mandateUntil: mandate?.mandateUntil || null,
       name: a.name,
       givenName: a.given_names[0] ?? "",
       familyName: a.family_names[0] ?? "",

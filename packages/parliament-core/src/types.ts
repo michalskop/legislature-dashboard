@@ -5,6 +5,8 @@ export interface MpProfile {
   slug: string;
   name: string;
   isCurrent: boolean;
+  mandateSince: string | null;
+  mandateUntil: string | null;
   givenName: string;
   familyName: string;
   image: string | null;
