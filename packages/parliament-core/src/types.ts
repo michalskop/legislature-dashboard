@@ -7,6 +7,7 @@ export interface MpProfile {
   isCurrent: boolean;
   mandateSince: string | null;
   mandateUntil: string | null;
+  previousGroupIds: string[];
   givenName: string;
   familyName: string;
   image: string | null;

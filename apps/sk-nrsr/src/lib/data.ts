@@ -69,6 +69,8 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
 
   const currentIds = new Set(currentMembers.map((m) => m.id));
 
+  const allMemberMap = new Map(allMembers.map((m) => [m.id, m]));
+
   const mandateMap = new Map(allMembers.map((m) => {
     const parl = m.memberships.parliament[m.memberships.parliament.length - 1];
     return [m.id, {
@@ -97,6 +99,10 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
     const w = wpcaMap.get(a.person_id);
 
     const mandate = mandateMap.get(a.person_id);
+    const allMemberRecord = allMemberMap.get(a.person_id);
+    const previousGroupIds = (allMemberRecord?.memberships.groups ?? [])
+      .filter((g) => g.end_date)
+      .map((g) => g.id);
 
     return {
       personId: a.person_id,
@@ -104,6 +110,7 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
       isCurrent: currentIds.has(a.person_id),
       mandateSince: mandate?.mandateSince ?? null,
       mandateUntil: mandate?.mandateUntil || null,
+      previousGroupIds,
       name: a.name,
       givenName: a.given_names[0] ?? "",
       familyName: a.family_names[0] ?? "",
@@ -227,6 +234,11 @@ export async function getPartyProfile(slug: string): Promise<{ party: PartyProfi
   const [parties, allMps] = await Promise.all([getAllPartyProfiles(), getAllMpProfiles()]);
   const party = parties.find((p) => p.slug === slug);
   if (!party) return null;
-  const members = allMps.filter((mp) => mp.groupId === party.groupId);
-  return { party, members };
+
+  const currentGroupMembers = allMps.filter((mp) => mp.groupId === party.groupId);
+  const formerGroupMembers = allMps
+    .filter((mp) => mp.groupId !== party.groupId && mp.previousGroupIds.includes(party.groupId))
+    .map((mp) => ({ ...mp, isCurrent: false }));
+
+  return { party, members: [...currentGroupMembers, ...formerGroupMembers] };
 }
