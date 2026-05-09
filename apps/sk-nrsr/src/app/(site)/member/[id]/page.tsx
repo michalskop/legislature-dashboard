@@ -29,6 +29,11 @@ function pct(v: number, decimals = 1) {
   return (v * 100).toFixed(decimals) + "\u00a0%";
 }
 
+function fmtDate(iso: string, lang: string) {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString(lang, { day: "numeric", month: "numeric", year: "numeric" });
+}
+
 export default async function PoslanecPage({ params }: Props) {
   const { id } = await params;
   const [mp, allMps, parties] = await Promise.all([
@@ -92,7 +97,7 @@ export default async function PoslanecPage({ params }: Props) {
               <span className="inline-block bg-surface-2 rounded px-2 py-0.5">
                 {t.member.former}
                 {mp.mandateSince && (
-                  <> · {mp.mandateSince}{mp.mandateUntil ? ` – ${mp.mandateUntil}` : ""}</>
+                  <> · {fmtDate(mp.mandateSince, lang)}{mp.mandateUntil ? ` – ${fmtDate(mp.mandateUntil, lang)}` : ""}</>
                 )}
               </span>
             </p>
