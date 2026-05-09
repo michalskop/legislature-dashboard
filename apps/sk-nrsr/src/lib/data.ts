@@ -86,7 +86,8 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
 
   return attendance.map((a): MpProfile => {
     const orgs = a.organizations ?? [];
-    const groupOrg = orgs.find((o) => o.classification === "group");
+    const groupOrgs = orgs.filter((o) => o.classification === "group");
+    const groupOrg = groupOrgs.find((o) => !o.until) ?? groupOrgs[groupOrgs.length - 1];
     const candidateOrg = orgs.find((o) => o.classification === "candidate_list");
     const constituencyOrg = orgs.find((o) => o.classification === "constituency");
 

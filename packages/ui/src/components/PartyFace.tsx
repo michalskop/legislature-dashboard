@@ -27,7 +27,7 @@ export function PartyFace({ partyId, size = 24, className, title }: PartyFacePro
   const abbr = meta?.faceAbbr ?? partyId.toUpperCase();
   const textColor = meta?.darkText ? "#1a1a1a" : "#ffffff";
   const scale = size / 30;
-  const fontSize = faceFontSize(size);
+  const fontSize = Math.round(faceFontSize(size) * 1000) / 1000;
 
   return (
     <svg
