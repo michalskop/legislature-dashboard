@@ -594,21 +594,23 @@ function WpLayout({
 // Two columns of parties; columns: present (👤) | ✓ | ✗ only.
 // Q in header = quorum (required_count), not neutral.
 
-const PERSON_ICON = (
-  <svg width={12} height={12} viewBox="0 0 24 24" style={{ display: "inline-block", verticalAlign: "middle" }} aria-hidden>
-    <circle cx="12" cy="7" r="4" fill="currentColor" />
-    <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill="currentColor" />
-  </svg>
-);
+function PersonSvg({ color }: { color: string }) {
+  return (
+    <svg width={11} height={11} viewBox="0 0 24 24" style={{ display: "inline-block", verticalAlign: "middle", flexShrink: 0 }} aria-hidden>
+      <circle cx="12" cy="7" r="4" fill={color} />
+      <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" fill={color} />
+    </svg>
+  );
+}
 
 function TabulePartyRow({ g }: { g: VoteEventPartyGroup }) {
   const c = { support: 0, oppose: 0, neutral: 0 };
   for (const v of g.voters) c[v.polarity]++;
-  const present = g.voters.length;
-  const W = "38px";
-  const num = (n: number, color: string, dim: string) => (
-    <span style={{ width: W, textAlign: "right", display: "inline-block", fontWeight: 700, color: n > 0 ? color : dim, fontSize: 15, fontFamily: "monospace" }}>
-      {n}
+  const voted = c.support + c.oppose;
+  const cell = (icon: React.ReactNode, n: number, numColor: string, dimColor: string) => (
+    <span style={{ width: 54, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 3, flexShrink: 0 }}>
+      {icon}
+      <span style={{ fontWeight: 700, color: n > 0 ? numColor : dimColor, fontSize: 15, fontFamily: "monospace" }}>{n}</span>
     </span>
   );
   return (
@@ -617,9 +619,9 @@ function TabulePartyRow({ g }: { g: VoteEventPartyGroup }) {
       <span style={{ flex: 1, fontSize: 14, fontWeight: 600, color: "#e2e8f0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontFamily: "sans-serif" }}>
         {g.label}
       </span>
-      {num(present, "#94a3b8", "#334155")}
-      {num(c.support, "#4ade80", "#1e3a2a")}
-      {num(c.oppose, "#f87171", "#3a1e1e")}
+      {cell(<PersonSvg color={voted > 0 ? "#64748b" : "#1e293b"} />, voted, "#94a3b8", "#334155")}
+      {cell(<span style={{ fontSize: 12, color: c.support > 0 ? "#4ade80" : "#1e3a2a" }}>✓</span>, c.support, "#4ade80", "#1e3a2a")}
+      {cell(<span style={{ fontSize: 12, color: c.oppose > 0 ? "#f87171" : "#3a1e1e" }}>✗</span>, c.oppose, "#f87171", "#3a1e1e")}
     </div>
   );
 }
@@ -658,7 +660,7 @@ function TabuleLayout({
     result === "fail" ? resultLabels.fail :
     resultLabels.other ?? result ?? "";
   const resultColor = result === "pass" ? "#4ade80" : result === "fail" ? "#f87171" : "#94a3b8";
-  const W = "38px";
+  const voted = polarity_counts.support + polarity_counts.oppose;
 
   return (
     <div style={{ background: "#0c1220", borderRadius: 8, padding: "10px 14px", color: "#f9fafb" }}>
@@ -671,13 +673,13 @@ function TabuleLayout({
         {logo && <div style={{ opacity: 0.45, marginLeft: 10, flexShrink: 0 }}>{logo}</div>}
       </div>
 
-      {/* Summary bar: RESULT | A (present) | Q (quorum) | ✓ | ✗ */}
+      {/* Summary bar: RESULT | 👤 voted | Q quorum | ✓ | ✗ */}
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "baseline", gap: "4px 14px", padding: "6px 0", borderTop: "1px solid #1e293b", borderBottom: "1px solid #1e293b", marginBottom: 8 }}>
         <span style={{ fontSize: 18, fontWeight: 900, color: resultColor, fontFamily: "sans-serif", letterSpacing: 1, marginRight: 4 }}>
           {resultLabel}
         </span>
-        <span style={{ fontSize: 13, color: "#64748b", fontFamily: "monospace" }}>
-          {PERSON_ICON} <strong style={{ color: "#94a3b8" }}>{polarity_counts.total}</strong>
+        <span style={{ fontSize: 13, fontFamily: "monospace", display: "inline-flex", alignItems: "center", gap: 3 }}>
+          <PersonSvg color="#64748b" /><strong style={{ color: "#94a3b8" }}>{voted}</strong>
         </span>
         {required_count !== undefined && (
           <span style={{ fontSize: 13, color: "#64748b", fontFamily: "monospace" }}>
@@ -696,11 +698,11 @@ function TabuleLayout({
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 16px" }}>
         {cols.map((col, ci) => (
           <div key={ci}>
-            <div style={{ display: "flex", alignItems: "center", gap: 2, padding: "1px 4px 4px", fontSize: 11, color: "#334155", fontFamily: "sans-serif" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 0, padding: "1px 4px 4px", fontSize: 11, fontFamily: "sans-serif" }}>
               <span style={{ flex: 1 }} />
-              <span style={{ width: W, textAlign: "right", display: "inline-block" }}>{PERSON_ICON}</span>
-              <span style={{ width: W, textAlign: "right", display: "inline-block", color: "#166534" }}>✓</span>
-              <span style={{ width: W, textAlign: "right", display: "inline-block", color: "#991b1b" }}>✗</span>
+              <span style={{ width: 54, textAlign: "center", display: "inline-block", color: "#4b5563" }}><PersonSvg color="#4b5563" /></span>
+              <span style={{ width: 54, textAlign: "center", display: "inline-block", color: "#4ade80" }}>✓</span>
+              <span style={{ width: 54, textAlign: "center", display: "inline-block", color: "#f87171" }}>✗</span>
             </div>
             {col.map((g) => <TabulePartyRow key={g.group_id ?? g.party_id} g={g} />)}
           </div>
