@@ -409,15 +409,10 @@ function SupportColumnWithThreshold({
   const inside = voters.slice(0, required_count);
   const overflow = voters.slice(required_count);
   const placeholderCount = Math.max(0, required_count - inside.length);
-  const gridStyle: React.CSSProperties = {
-    display: "grid",
-    gridTemplateColumns: `repeat(auto-fill, ${dotSize}px)`,
-    gap: 4,
-  };
 
   return (
-    <div ref={containerRef} style={{ position: "relative", overflow: "clip" }}>
-      <div style={gridStyle}>
+    <div ref={containerRef} style={{ position: "relative" }}>
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, ${dotSize}px)`, gap: 4 }}>
         {inside.map((v) => {
           const g = groupByVoter.get(v.voter_id);
           return g ? (
@@ -429,15 +424,11 @@ function SupportColumnWithThreshold({
         {Array.from({ length: placeholderCount }, (_, i) => (
           <div key={`ph-${i}`} data-t="" style={{ width: dotSize, height: dotSize }} />
         ))}
+        {overflow.map((v) => {
+          const g = groupByVoter.get(v.voter_id);
+          return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={dotSize} showAbbr={false} /> : null;
+        })}
       </div>
-      {overflow.length > 0 && (
-        <div style={{ ...gridStyle, marginTop: 4 }}>
-          {overflow.map((v) => {
-            const g = groupByVoter.get(v.voter_id);
-            return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={dotSize} showAbbr={false} /> : null;
-          })}
-        </div>
-      )}
       {outlinePath && (
         <svg className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", overflow: "visible" }}>
           <path d={outlinePath} fill="none" stroke="#6b7280" strokeWidth={2} strokeDasharray="5 3" strokeLinejoin="round" />
@@ -604,7 +595,7 @@ export function VoteEventGrid({
   logo,
 }: VoteEventGridProps) {
   return (
-    <div className="border rounded-xl p-4 shadow-sm space-y-4">
+    <div className="bg-surface-2 rounded-badge-xl border border-border flex flex-col gap-3 p-4 overflow-hidden">
       {/* Card header: logo + metadata */}
       <div className="flex items-start justify-between gap-2">
         <VoteEventHeader

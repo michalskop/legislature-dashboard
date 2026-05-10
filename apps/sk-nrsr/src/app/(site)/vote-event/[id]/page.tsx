@@ -5,6 +5,7 @@ import { VoteEventGrid } from "@legislature/charts";
 import type { VoteEventPartyGroup, VoteEventVoter, VoteEventPolarityCounts } from "@legislature/charts";
 import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import { groupIdToPartyId } from "@/lib/groups";
+import { NrsrLogotype } from "@/components/NrsrLogotype";
 
 interface RawVoteEvent {
   id: string;
@@ -107,11 +108,7 @@ export default async function VoteEventPage({
         result={ve.result}
         requirement={ve.requirement ? (REQUIREMENT_LABELS[ve.requirement] ?? ve.requirement) : undefined}
         requirementCountLabel="potrebné"
-        logo={
-          <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground border rounded px-1.5 py-0.5">
-            NRSR
-          </span>
-        }
+        logo={<NrsrLogotype size="xs" variant="mono" color="var(--color-surface-8)" />}
         required_count={ve.required_count}
         polarity_counts={ve.polarity_counts}
         groups={groups}
