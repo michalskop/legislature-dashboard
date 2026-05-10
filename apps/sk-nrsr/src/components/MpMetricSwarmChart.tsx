@@ -108,7 +108,10 @@ export function MpMetricSwarmChart({
     };
   }).filter((g) => g.items.length > 0);
 
-  const allValues = mps.map((mp) => getValue(mp, metric)).filter((v): v is number => v !== null);
+  const includedMps = excludeGroupIds.length
+    ? mps.filter((mp) => !mp.groupId || !excludeGroupIds.includes(mp.groupId))
+    : mps;
+  const allValues = includedMps.map((mp) => getValue(mp, metric)).filter((v): v is number => v !== null);
   const avg = allValues.length > 0
     ? allValues.reduce((a, b) => a + b, 0) / allValues.length
     : null;
