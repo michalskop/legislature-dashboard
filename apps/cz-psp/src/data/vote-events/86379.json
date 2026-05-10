@@ -4,6 +4,8 @@
   "start_date": "2025-11-14",
   "title": "Hlasování č. 33, schůze č. 2",
   "result": "pass",
+  "requirement": "simple majority",
+  "required_count": 92,
   "definition_name": null,
   "polarity_counts": {
     "support": 160,

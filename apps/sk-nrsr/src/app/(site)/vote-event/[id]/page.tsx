@@ -12,6 +12,8 @@ interface RawVoteEvent {
   start_date: string;
   title?: string;
   result: "pass" | "fail" | null;
+  requirement?: string;
+  required_count?: number;
   definition_name: string | null;
   polarity_counts: VoteEventPolarityCounts;
   votes: VoteEventVoter[];
@@ -38,6 +40,13 @@ const GROUP_ORDER = [
   "nrsr:org:club:2",
   "nrsr:org:nezavisli",
 ];
+
+const REQUIREMENT_LABELS: Record<string, string> = {
+  "simple majority": "jednoduchá väčšina",
+  "absolute majority": "absolútna väčšina",
+  "3/5": "3/5 väčšina",
+  "2/3": "2/3 väčšina",
+};
 
 async function loadVoteEvent(id: string): Promise<RawVoteEvent | null> {
   const filePath = join(process.cwd(), "src/data/vote-events", `${id}.json`);
@@ -96,6 +105,9 @@ export default async function VoteEventPage({
         title={ve.title ?? ve.id}
         date={ve.start_date}
         result={ve.result}
+        requirement={ve.requirement ? (REQUIREMENT_LABELS[ve.requirement] ?? ve.requirement) : undefined}
+        requirementCountLabel="potrebné:"
+        required_count={ve.required_count}
         polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}

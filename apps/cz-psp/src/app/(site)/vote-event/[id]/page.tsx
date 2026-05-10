@@ -12,6 +12,8 @@ interface RawVoteEvent {
   start_date: string;
   title?: string;
   result: "pass" | "fail" | null;
+  requirement?: string;
+  required_count?: number;
   definition_name: string | null;
   polarity_counts: VoteEventPolarityCounts;
   votes: VoteEventVoter[];
@@ -27,6 +29,13 @@ const GROUP_ORDER = [
   "psp:org:1746", // SPD
   "psp:org:1749", // Motoristé
 ];
+
+const REQUIREMENT_LABELS: Record<string, string> = {
+  "simple majority": "prostá většina",
+  "absolute majority": "absolutní většina",
+  "3/5": "3/5 většina",
+  "2/3": "2/3 většina",
+};
 
 async function loadVoteEvent(id: string): Promise<RawVoteEvent | null> {
   const filePath = join(process.cwd(), "src/data/vote-events", `${id}.json`);
@@ -85,6 +94,9 @@ export default async function VoteEventPage({
         title={ve.title ?? ve.id}
         date={ve.start_date}
         result={ve.result}
+        requirement={ve.requirement ? (REQUIREMENT_LABELS[ve.requirement] ?? ve.requirement) : undefined}
+        requirementCountLabel="potřebné:"
+        required_count={ve.required_count}
         polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}

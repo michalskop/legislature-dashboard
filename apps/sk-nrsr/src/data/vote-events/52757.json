@@ -4,6 +4,8 @@
   "start_date": "2023-12-06",
   "title": "Návrh na voľbu poslankyne Národnej rady Slovenskej republiky za členku výboru Národnej rady Slovenskej republiky (tlač 101). Hlasovanie o návrhu uznesenia.",
   "result": "pass",
+  "requirement": "simple majority",
+  "required_count": 63,
   "definition_name": null,
   "polarity_counts": {
     "support": 124,

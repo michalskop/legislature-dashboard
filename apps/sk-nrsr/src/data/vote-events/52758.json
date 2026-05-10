@@ -4,6 +4,8 @@
   "start_date": "2023-12-06",
   "title": "Hlasovanie o procedurálnom návrhu predsedu NR SR - P. Pellegrini.",
   "result": "pass",
+  "requirement": "simple majority",
+  "required_count": 70,
   "definition_name": null,
   "polarity_counts": {
     "support": 78,

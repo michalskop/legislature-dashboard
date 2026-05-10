@@ -4,6 +4,8 @@
   "start_date": "2023-12-06",
   "title": "Hlasovanie o pozmeňujúcich a doplňujúcich návrhoch k programu 6. schôdze Národnej rady Slovenskej republiky. Návrh posl. J. Jakab.",
   "result": "fail",
+  "requirement": "simple majority",
+  "required_count": 67,
   "definition_name": null,
   "polarity_counts": {
     "support": 16,

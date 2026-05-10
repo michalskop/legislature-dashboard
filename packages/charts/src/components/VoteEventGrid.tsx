@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useLayoutEffect, useRef } from "react";
 
 const FACE_PATH =
   "M 11.29 0 Q 0 0 0 11.29 L 0 18.71 Q 0 30 11.29 30 L 18.71 30 Q 30 30 30 18.71 L 30 0 L 11.29 0 Z";
@@ -44,6 +44,8 @@ export interface VoteEventGridProps {
   title: string;
   date: string;
   result: string | null;
+  requirement?: string;
+  required_count?: number;
   polarity_counts: VoteEventPolarityCounts;
   groups: VoteEventPartyGroup[];
   dotSize?: number;
@@ -55,6 +57,7 @@ export interface VoteEventGridProps {
    * "wp"             — three columns For|Against|Not voting, dense party-face grid
    */
   layout?: "party-first" | "polarity-first" | "wp";
+  requirementCountLabel?: string;
 }
 
 // ─── Shared tooltip ───────────────────────────────────────────────────────────
@@ -111,10 +114,12 @@ function PartyFaceDot({
   voter,
   group,
   size,
+  showAbbr = true,
 }: {
   voter: VoteEventVoter;
   group: VoteEventPartyGroup;
   size: number;
+  showAbbr?: boolean;
 }) {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const label = voter.name ? `${voter.name} (${voter.option})` : voter.option;
@@ -128,10 +133,12 @@ function PartyFaceDot({
         aria-label={label}>
         <title>{label}</title>
         <path d={FACE_PATH} fill={group.iconColor} />
-        <text x="15" y="18" fontFamily="'Roboto Slab', serif" fontSize={fontSize} fontWeight="700"
-          fill={group.iconTextColor} textAnchor="middle">
-          {group.iconAbbr}
-        </text>
+        {showAbbr && (
+          <text x="15" y="18" fontFamily="'Roboto Slab', serif" fontSize={fontSize} fontWeight="700"
+            fill={group.iconTextColor} textAnchor="middle">
+            {group.iconAbbr}
+          </text>
+        )}
       </svg>
       <Tooltip pos={pos} label={label} size={size} />
     </div>
@@ -141,8 +148,8 @@ function PartyFaceDot({
 // ─── Shared header ────────────────────────────────────────────────────────────
 
 function VoteEventHeader({
-  title, date, result, polarity_counts, resultLabels, polarityLabels,
-}: Pick<VoteEventGridProps, "title" | "date" | "result" | "polarity_counts" | "resultLabels" | "polarityLabels">) {
+  title, date, result, requirement, required_count, polarity_counts, resultLabels, polarityLabels, requirementCountLabel,
+}: Pick<VoteEventGridProps, "title" | "date" | "result" | "requirement" | "required_count" | "polarity_counts" | "resultLabels" | "polarityLabels" | "requirementCountLabel">) {
   const resultColor = result === "pass" ? "#22c55e" : result === "fail" ? "#ef4444" : "#94a3b8";
   const resultLabel = result === "pass" ? resultLabels?.pass ?? "Pass"
     : result === "fail" ? resultLabels?.fail ?? "Fail"
@@ -174,6 +181,14 @@ function VoteEventHeader({
           })}
         </span>
       </div>
+      {(requirement || required_count !== undefined) && (
+        <div className="text-xs text-muted-foreground">
+          {requirement && <span>{requirement}</span>}
+          {required_count !== undefined && (
+            <span className="ml-1">— {requirementCountLabel ?? "required:"} <span className="font-semibold">{required_count}</span></span>
+          )}
+        </div>
+      )}
       <h1 className="text-lg font-semibold leading-snug">{title}</h1>
     </div>
   );
@@ -312,19 +327,147 @@ function PolarityFirstLayout({
   );
 }
 
+// ─── Support column with shape-following dashed outline at required_count ─────
+
+function SupportColumnWithThreshold({
+  voters,
+  groupByVoter,
+  dotSize,
+  required_count,
+}: {
+  voters: VoteEventVoter[];
+  groupByVoter: Map<string, VoteEventPartyGroup>;
+  dotSize: number;
+  required_count: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [outlinePath, setOutlinePath] = useState("");
+
+  const recompute = useCallback(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const dotEls = Array.from(container.querySelectorAll<HTMLElement>("[data-t]"));
+    if (dotEls.length === 0) return;
+
+    const cRect = container.getBoundingClientRect();
+    const pad = 3;
+
+    type Row = { top: number; bottom: number; left: number; right: number };
+    const rows: Row[] = [];
+    for (const el of dotEls) {
+      const r = el.getBoundingClientRect();
+      const top = r.top - cRect.top;
+      const bottom = r.bottom - cRect.top;
+      const left = r.left - cRect.left;
+      const right = r.right - cRect.left;
+      const last = rows[rows.length - 1];
+      if (last && Math.abs(top - last.top) < 4) {
+        last.right = Math.max(last.right, right);
+        last.bottom = Math.max(last.bottom, bottom);
+      } else {
+        rows.push({ top, bottom, left, right });
+      }
+    }
+
+    if (rows.length === 0) return;
+
+    const R = rows.map(r => ({
+      top: r.top - pad, bottom: r.bottom + pad,
+      left: r.left - pad, right: r.right + pad,
+    }));
+
+    const first = R[0]!;
+    const last = R[R.length - 1]!;
+    const pts: string[] = [`M ${first.left} ${first.top}`, `L ${first.right} ${first.top}`];
+    for (let i = 0; i < R.length - 1; i++) {
+      const cur = R[i]!;
+      const next = R[i + 1]!;
+      pts.push(`L ${cur.right} ${cur.bottom}`, `L ${next.right} ${cur.bottom}`);
+    }
+    pts.push(`L ${last.right} ${last.bottom}`);
+    pts.push(`L ${last.left} ${last.bottom}`);
+    for (let i = R.length - 1; i > 0; i--) {
+      const cur = R[i]!;
+      const prev = R[i - 1]!;
+      pts.push(`L ${cur.left} ${cur.top}`, `L ${prev.left} ${cur.top}`);
+    }
+    pts.push("Z");
+    setOutlinePath(pts.join(" "));
+  }, [required_count]);
+
+  useLayoutEffect(() => { recompute(); }, [recompute, voters.length, dotSize]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver(recompute);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [recompute]);
+
+  const inside = voters.slice(0, required_count);
+  const overflow = voters.slice(required_count);
+  const placeholderCount = Math.max(0, required_count - inside.length);
+
+  return (
+    <div ref={containerRef} className="relative flex flex-wrap gap-1 items-start">
+      {/* Threshold zone: exactly required_count slots */}
+      {inside.map((v) => {
+        const g = groupByVoter.get(v.voter_id);
+        return g ? (
+          <div key={v.voter_id} data-t="">
+            <PartyFaceDot voter={v} group={g} size={dotSize} showAbbr={false} />
+          </div>
+        ) : null;
+      })}
+      {Array.from({ length: placeholderCount }, (_, i) => (
+        <div key={`ph-${i}`} data-t="" style={{ width: dotSize, height: dotSize, display: "inline-block" }} />
+      ))}
+      {/* Extra voters beyond threshold (pass case) */}
+      {overflow.map((v) => {
+        const g = groupByVoter.get(v.voter_id);
+        return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={dotSize} showAbbr={false} /> : null;
+      })}
+      {outlinePath && (
+        <svg className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", overflow: "visible" }}>
+          <path d={outlinePath} fill="none" stroke="#6b7280" strokeWidth={2} strokeDasharray="5 3" strokeLinejoin="round" />
+        </svg>
+      )}
+    </div>
+  );
+}
+
 // ─── WP layout (Washington Post-inspired) ────────────────────────────────────
 // Three columns side-by-side (md+): For | Against | Not voting
-// Dense flat grid of party-face dots — no per-party row labels.
+// Dense flat grid of party-face dots (no abbr text) + legend below.
 // Voters ordered: biggest party first, consistent within section.
+
+function WpLegend({ groups }: { groups: VoteEventPartyGroup[] }) {
+  const present = groups.filter((g) => g.voters.length > 0);
+  return (
+    <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
+      {present.map((g) => (
+        <div key={g.group_id ?? g.party_id} className="flex items-center gap-1">
+          <svg width={12} height={12} viewBox="0 0 30 30" style={{ display: "block", flexShrink: 0 }}>
+            <path d={FACE_PATH} fill={g.iconColor} />
+          </svg>
+          <span className="text-xs text-muted-foreground">{g.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function WpLayout({
   groups,
   dotSize,
   polarityLabels,
+  required_count,
 }: {
   groups: VoteEventPartyGroup[];
   dotSize: number;
   polarityLabels: { support: string; oppose: string; neutral: string };
+  required_count?: number;
 }) {
   const groupByVoter = new Map<string, VoteEventPartyGroup>();
   for (const g of groups) {
@@ -336,7 +479,6 @@ function WpLayout({
   for (const v of all) byPolarity.get(v.polarity)?.push(v);
 
   function sortedVoters(voters: VoteEventVoter[]): VoteEventVoter[] {
-    // Count per group within this polarity
     const counts = new Map<string, number>();
     for (const v of voters) {
       const g = groupByVoter.get(v.voter_id);
@@ -356,37 +498,47 @@ function WpLayout({
   const neutralDotSize = Math.max(10, dotSize - 4);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {POLARITY_ORDER.map((p) => {
-        const voters = byPolarity.get(p) ?? [];
-        const isNeutral = p === "neutral";
-        const sectionColor = POLARITY_COLORS[p];
-        const label = polarityLabels[p];
-        const ds = isNeutral ? neutralDotSize : dotSize;
-        const sorted = sortedVoters(voters);
+    <div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {POLARITY_ORDER.map((p) => {
+          const voters = byPolarity.get(p) ?? [];
+          const isNeutral = p === "neutral";
+          const sectionColor = POLARITY_COLORS[p];
+          const label = polarityLabels[p];
+          const ds = isNeutral ? neutralDotSize : dotSize;
+          const sorted = sortedVoters(voters);
 
-        return (
-          <div key={p} className={isNeutral ? "opacity-60" : ""}>
-            <div className="flex items-center gap-1.5 mb-2">
-              <span
-                className="rounded px-2 py-0.5 text-xs font-semibold text-white"
-                style={{ background: sectionColor }}
-              >
-                {label}
-              </span>
-              <span className="text-xs text-muted-foreground">{voters.length}</span>
+          return (
+            <div key={p} className={isNeutral ? "opacity-60" : ""}>
+              <div className="flex items-center gap-1.5 mb-2">
+                <span
+                  className="rounded px-2 py-0.5 text-xs font-semibold text-white"
+                  style={{ background: sectionColor }}
+                >
+                  {label}
+                </span>
+                <span className="text-xs text-muted-foreground">{voters.length}</span>
+              </div>
+              {p === "support" && required_count !== undefined ? (
+                <SupportColumnWithThreshold
+                  voters={sorted}
+                  groupByVoter={groupByVoter}
+                  dotSize={ds}
+                  required_count={required_count}
+                />
+              ) : (
+                <div className="flex flex-wrap gap-1 items-start">
+                  {sorted.map((v) => {
+                    const g = groupByVoter.get(v.voter_id);
+                    return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={ds} showAbbr={false} /> : null;
+                  })}
+                </div>
+              )}
             </div>
-            <div className="flex flex-wrap gap-0.5">
-              {sorted.map((v) => {
-                const g = groupByVoter.get(v.voter_id);
-                return g
-                  ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={ds} />
-                  : null;
-              })}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      <WpLegend groups={groups} />
     </div>
   );
 }
@@ -397,12 +549,15 @@ export function VoteEventGrid({
   title,
   date,
   result,
+  requirement,
+  required_count,
   polarity_counts,
   groups,
   dotSize = 16,
   resultLabels = { pass: "Passed", fail: "Failed" },
   polarityLabels = { support: "support", oppose: "oppose", neutral: "neutral" },
   layout = "party-first",
+  requirementCountLabel,
 }: VoteEventGridProps) {
   return (
     <div className="space-y-5">
@@ -410,14 +565,17 @@ export function VoteEventGrid({
         title={title}
         date={date}
         result={result}
+        requirement={requirement}
+        required_count={required_count}
         polarity_counts={polarity_counts}
         resultLabels={resultLabels}
         polarityLabels={polarityLabels}
+        requirementCountLabel={requirementCountLabel}
       />
       {layout === "polarity-first" ? (
         <PolarityFirstLayout groups={groups} dotSize={dotSize} polarityLabels={polarityLabels} />
       ) : layout === "wp" ? (
-        <WpLayout groups={groups} dotSize={dotSize} polarityLabels={polarityLabels} />
+        <WpLayout groups={groups} dotSize={dotSize} polarityLabels={polarityLabels} required_count={required_count} />
       ) : (
         <PartyFirstLayout groups={groups} dotSize={dotSize} />
       )}
