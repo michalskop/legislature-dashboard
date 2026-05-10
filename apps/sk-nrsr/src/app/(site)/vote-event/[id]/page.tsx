@@ -106,7 +106,7 @@ export default async function VoteEventPage({
         date={ve.start_date}
         result={ve.result}
         requirement={ve.requirement ? (REQUIREMENT_LABELS[ve.requirement] ?? ve.requirement) : undefined}
-        requirementCountLabel="potrebné:"
+        requirementCountLabel="potrebné"
         required_count={ve.required_count}
         polarity_counts={ve.polarity_counts}
         groups={groups}

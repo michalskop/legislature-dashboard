@@ -185,7 +185,7 @@ function VoteEventHeader({
         <div className="text-xs text-muted-foreground">
           {requirement && <span>{requirement}</span>}
           {required_count !== undefined && (
-            <span className="ml-1">— {requirementCountLabel ?? "required:"} <span className="font-semibold">{required_count}</span></span>
+            <span className="ml-1">— {requirementCountLabel ?? "required"} — <span className="font-semibold">{required_count}</span></span>
           )}
         </div>
       )}
@@ -327,6 +327,13 @@ function PolarityFirstLayout({
   );
 }
 
+function pickDotsPerRow(total: number): number {
+  for (const n of [5, 10, 20, 25, 50]) {
+    if (Math.ceil(total / n) <= 8) return n;
+  }
+  return 50;
+}
+
 // ─── Support column with shape-following dashed outline at required_count ─────
 
 function SupportColumnWithThreshold({
@@ -334,11 +341,13 @@ function SupportColumnWithThreshold({
   groupByVoter,
   dotSize,
   required_count,
+  dotsPerRow,
 }: {
   voters: VoteEventVoter[];
   groupByVoter: Map<string, VoteEventPartyGroup>;
   dotSize: number;
   required_count: number;
+  dotsPerRow: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [outlinePath, setOutlinePath] = useState("");
@@ -395,7 +404,7 @@ function SupportColumnWithThreshold({
     setOutlinePath(pts.join(" "));
   }, [required_count]);
 
-  useLayoutEffect(() => { recompute(); }, [recompute, voters.length, dotSize]);
+  useLayoutEffect(() => { recompute(); }, [recompute, voters.length, dotSize, dotsPerRow]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -408,26 +417,37 @@ function SupportColumnWithThreshold({
   const inside = voters.slice(0, required_count);
   const overflow = voters.slice(required_count);
   const placeholderCount = Math.max(0, required_count - inside.length);
+  const gridStyle: React.CSSProperties = {
+    display: "grid",
+    gridTemplateColumns: `repeat(${dotsPerRow}, ${dotSize}px)`,
+    gap: 4,
+  };
 
   return (
-    <div ref={containerRef} className="relative flex flex-wrap gap-1 items-start">
+    <div ref={containerRef} style={{ position: "relative" }}>
       {/* Threshold zone: exactly required_count slots */}
-      {inside.map((v) => {
-        const g = groupByVoter.get(v.voter_id);
-        return g ? (
-          <div key={v.voter_id} data-t="">
-            <PartyFaceDot voter={v} group={g} size={dotSize} showAbbr={false} />
-          </div>
-        ) : null;
-      })}
-      {Array.from({ length: placeholderCount }, (_, i) => (
-        <div key={`ph-${i}`} data-t="" style={{ width: dotSize, height: dotSize, display: "inline-block" }} />
-      ))}
+      <div style={gridStyle}>
+        {inside.map((v) => {
+          const g = groupByVoter.get(v.voter_id);
+          return g ? (
+            <div key={v.voter_id} data-t="">
+              <PartyFaceDot voter={v} group={g} size={dotSize} showAbbr={false} />
+            </div>
+          ) : null;
+        })}
+        {Array.from({ length: placeholderCount }, (_, i) => (
+          <div key={`ph-${i}`} data-t="" style={{ width: dotSize, height: dotSize }} />
+        ))}
+      </div>
       {/* Extra voters beyond threshold (pass case) */}
-      {overflow.map((v) => {
-        const g = groupByVoter.get(v.voter_id);
-        return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={dotSize} showAbbr={false} /> : null;
-      })}
+      {overflow.length > 0 && (
+        <div style={{ ...gridStyle, marginTop: 4 }}>
+          {overflow.map((v) => {
+            const g = groupByVoter.get(v.voter_id);
+            return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={dotSize} showAbbr={false} /> : null;
+          })}
+        </div>
+      )}
       {outlinePath && (
         <svg className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", overflow: "visible" }}>
           <path d={outlinePath} fill="none" stroke="#6b7280" strokeWidth={2} strokeDasharray="5 3" strokeLinejoin="round" />
@@ -496,6 +516,7 @@ function WpLayout({
   }
 
   const neutralDotSize = Math.max(10, dotSize - 4);
+  const dotsPerRow = pickDotsPerRow(all.length);
 
   return (
     <div>
@@ -507,6 +528,11 @@ function WpLayout({
           const label = polarityLabels[p];
           const ds = isNeutral ? neutralDotSize : dotSize;
           const sorted = sortedVoters(voters);
+          const gridStyle: React.CSSProperties = {
+            display: "grid",
+            gridTemplateColumns: `repeat(${dotsPerRow}, ${ds}px)`,
+            gap: 4,
+          };
 
           return (
             <div key={p} className={isNeutral ? "opacity-60" : ""}>
@@ -525,9 +551,10 @@ function WpLayout({
                   groupByVoter={groupByVoter}
                   dotSize={ds}
                   required_count={required_count}
+                  dotsPerRow={dotsPerRow}
                 />
               ) : (
-                <div className="flex flex-wrap gap-1 items-start">
+                <div style={gridStyle}>
                   {sorted.map((v) => {
                     const g = groupByVoter.get(v.voter_id);
                     return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={ds} showAbbr={false} /> : null;
