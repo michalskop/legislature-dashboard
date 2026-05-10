@@ -78,19 +78,52 @@ function buildGroups(votes: VoteEventVoter[]): VoteEventPartyGroup[] {
   });
 }
 
+const LAYOUTS = [
+  { key: "wp", label: "Hlasování" },
+  { key: "polarity-first", label: "Podle výsledku" },
+  { key: "party-first", label: "Podle klubu" },
+] as const;
+
+type Layout = (typeof LAYOUTS)[number]["key"];
+
+function isLayout(v: string | undefined): v is Layout {
+  return LAYOUTS.some((l) => l.key === v);
+}
+
 export default async function VoteEventPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { id } = await params;
+  const sp = await searchParams;
+  const rawLayout = typeof sp.layout === "string" ? sp.layout : undefined;
+  const layout: Layout = isLayout(rawLayout) ? rawLayout : "wp";
+
   const ve = await loadVoteEvent(id);
   if (!ve) notFound();
 
   const groups = buildGroups(ve.votes);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      <div className="flex gap-1">
+        {LAYOUTS.map((l) => (
+          <a
+            key={l.key}
+            href={`?layout=${l.key}`}
+            className={`rounded px-3 py-1 text-sm font-medium transition-colors ${
+              layout === l.key
+                ? "bg-primary text-primary-foreground"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {l.label}
+          </a>
+        ))}
+      </div>
       <VoteEventGrid
         title={ve.title ?? ve.id}
         date={ve.start_date}
@@ -102,7 +135,7 @@ export default async function VoteEventPage({
         polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}
-        layout="wp"
+        layout={layout}
         resultLabels={{ pass: "Schváleno", fail: "Zamítnuto" }}
         polarityLabels={{ support: "Pro", oppose: "Proti", neutral: "Nehlasoval/Nepřítomen" }}
       />
