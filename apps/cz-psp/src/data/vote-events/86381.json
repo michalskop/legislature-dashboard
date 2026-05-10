@@ -1,1416 +1,1416 @@
 {
   "id": "psp:vote-event:86381",
-  "parliament": "cz-psp",
-  "date": "2025-11-14",
+  "parliament_id": "cz-psp",
+  "start_date": "2025-11-14",
   "title": "Hlasování č. 35, schůze č. 2",
   "result": "fail",
-  "counts": {
-    "yes": 37,
-    "no": 111,
-    "abstain": 40,
-    "not_voting": 0,
-    "absent": 12
+  "definition_name": null,
+  "polarity_counts": {
+    "support": 37,
+    "oppose": 151,
+    "neutral": 12,
+    "total": 200
   },
   "votes": [
     {
       "voter_id": "psp:person:5700",
-      "name": "Ivan Adamec",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Ivan Adamec",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6254",
-      "name": "Věra Adámková",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Věra Adámková",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6986",
-      "name": "Hana Ančincová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Hana Ančincová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6623",
-      "name": "Ondřej Babka",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Ondřej Babka",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6150",
-      "name": "Andrej Babiš",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Andrej Babiš",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6989",
-      "name": "Lucie Bartošová",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Lucie Bartošová",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6178",
-      "name": "Jan Bartošek",
       "option": "absent",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Jan Bartošek",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6988",
-      "name": "Pavel Bartoň",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Pavel Bartoň",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6433",
-      "name": "Ivan Bartoš",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Ivan Bartoš",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6987",
-      "name": "Jiří Barták",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jiří Barták",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:5379",
-      "name": "Jan Bauer",
       "option": "absent",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Jan Bauer",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6435",
-      "name": "Martin Baxa",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Martin Baxa",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6719",
-      "name": "Jana Bačíková",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jana Bačíková",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:346",
-      "name": "Petr Bendl",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Petr Bendl",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:4",
-      "name": "Marek Benda",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Marek Benda",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6990",
-      "name": "Karel Beran",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Karel Beran",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6722",
-      "name": "Jan Berki",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Jan Berki",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6723",
-      "name": "Jana Berkovcová",
       "option": "absent",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "neutral",
+      "name": "Jana Berkovcová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6991",
-      "name": "Drahomír Blažej",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Drahomír Blažej",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6992",
-      "name": "Zdeňka Blišťanová",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Zdeňka Blišťanová",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:6993",
-      "name": "Jiří Bouška",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jiří Bouška",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6994",
-      "name": "Monika Brzesková",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Monika Brzesková",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6185",
-      "name": "Milan Brázdil",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Milan Brázdil",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6995",
-      "name": "František Bureš",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "František Bureš",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:5899",
-      "name": "Jan Bureš",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jan Bureš",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6997",
-      "name": "Adriana Chochelová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Adriana Chochelová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6727",
-      "name": "Eva Decroix",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Eva Decroix",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6999",
-      "name": "Katerina Demetrashvili",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Katerina Demetrashvili",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:7068",
-      "name": "Jana Demjanová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jana Demjanová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7000",
-      "name": "Denis Doksanský",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Denis Doksanský",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7001",
-      "name": "Tomáš Doležal",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Tomáš Doležal",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6431",
-      "name": "Lenka Dražilová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Lenka Dražilová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7002",
-      "name": "Karel Dvořák",
       "option": "absent",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Karel Dvořák",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6190",
-      "name": "Jaroslav Faltýnek",
       "option": "abstain",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jaroslav Faltýnek",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6447",
-      "name": "Kamal Farhan",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Kamal Farhan",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7003",
-      "name": "Irena Ferčíková Konečná",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Irena Ferčíková Konečná",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6457",
-      "name": "Eva Fialová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Eva Fialová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6074",
-      "name": "Petr Fiala",
       "option": "yes",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Petr Fiala",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:5459",
-      "name": "Radim Fiala",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Radim Fiala",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7004",
-      "name": "Jana Filipovičová",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jana Filipovičová",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6750",
-      "name": "Josef Flek",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Josef Flek",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:5911",
-      "name": "Jaroslav Foldyna",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jaroslav Foldyna",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6451",
-      "name": "Stanislav Fridrich",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Stanislav Fridrich",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7005",
-      "name": "Karin Gajdová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Karin Gajdová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7006",
-      "name": "Matěj Gregor",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Matěj Gregor",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6751",
-      "name": "Karel Haas",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Karel Haas",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6753",
-      "name": "Jana Hanzlíková",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jana Hanzlíková",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6755",
-      "name": "Jiří Havránek",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jiří Havránek",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6754",
-      "name": "Matěj Ondřej Havel",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Matěj Ondřej Havel",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:6621",
-      "name": "Karel Havlíček",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Karel Havlíček",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7066",
-      "name": "Vlastimil Hebr",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Vlastimil Hebr",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6756",
-      "name": "Tomáš Helebrant",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Tomáš Helebrant",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6758",
-      "name": "Igor Hendrych",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Igor Hendrych",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6881",
-      "name": "Petr Hladík",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Petr Hladík",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:7011",
-      "name": "Matěj Hlavatý",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Matěj Hlavatý",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6905",
-      "name": "Andrea Hoffmannová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Andrea Hoffmannová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6693",
-      "name": "Libor Hoppe",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Libor Hoppe",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6803",
-      "name": "Jiří Horák",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jiří Horák",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6455",
-      "name": "Jan Hrnčíř",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jan Hrnčíř",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7007",
-      "name": "Monika Hubíková",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Monika Hubíková",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6552",
-      "name": "Zdeněk Hřib",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Zdeněk Hřib",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6687",
-      "name": "Jan Jakob",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jan Jakob",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:6201",
-      "name": "Miloslav Janulík",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Miloslav Janulík",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6459",
-      "name": "Jakub Janda",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jakub Janda",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6463",
-      "name": "Aleš Juchelka",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Aleš Juchelka",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6205",
-      "name": "Marian Jurečka",
       "option": "absent",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Marian Jurečka",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6603",
-      "name": "Pavel Karpíšek",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Pavel Karpíšek",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6209",
-      "name": "David Kasal",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "David Kasal",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7008",
-      "name": "Zdena Kašparová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Zdena Kašparová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7010",
-      "name": "Oto Klempíř",
       "option": "absent",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Oto Klempíř",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:7009",
-      "name": "Jiřina Klčová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jiřina Klčová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6506",
-      "name": "Tomáš Kohoutek",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Tomáš Kohoutek",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7012",
-      "name": "Vladimír Kolek",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Vladimír Kolek",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6211",
-      "name": "Martin Kolovratník",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Martin Kolovratník",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6246",
-      "name": "Josef Kott",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Josef Kott",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6508",
-      "name": "Radek Koten",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Radek Koten",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7013",
-      "name": "Veronika Kovářová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Veronika Kovářová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6214",
-      "name": "Věra Kovářová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Věra Kovářová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7014",
-      "name": "Petr Kowanda",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Petr Kowanda",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7015",
-      "name": "Jakub Krainer",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Jakub Krainer",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7016",
-      "name": "Miroslav Krejčí",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Miroslav Krejčí",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6466",
-      "name": "Jana Krutáková",
       "option": "absent",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Jana Krutáková",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6509",
-      "name": "Robert Králíček",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Robert Králíček",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7018",
-      "name": "Marie Kršková",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Marie Kršková",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:7017",
-      "name": "Vojtěch Krňanský",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Vojtěch Krňanský",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6215",
-      "name": "Roman Kubíček",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Roman Kubíček",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6538",
-      "name": "Martin Kupka",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Martin Kupka",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7021",
-      "name": "Martin Kupec",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Martin Kupec",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6216",
-      "name": "Michal Kučera",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Michal Kučera",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:5943",
-      "name": "Helena Langšádlová",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Helena Langšádlová",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:6738",
-      "name": "Hubert Lang",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Hubert Lang",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6537",
-      "name": "Jan Lipavský",
       "option": "absent",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Jan Lipavský",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7022",
-      "name": "Petr Macinka",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Petr Macinka",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6467",
-      "name": "Zuzana Majerová",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Zuzana Majerová",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6468",
-      "name": "Taťána Malá",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Taťána Malá",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7023",
-      "name": "Lenka Martínková Španihelová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Lenka Martínková Španihelová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6534",
-      "name": "Jiří Mašek",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jiří Mašek",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6544",
-      "name": "Lubomír Metnar",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Lubomír Metnar",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7024",
-      "name": "Michaela Moricová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Michaela Moricová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6486",
-      "name": "Vojtěch Munzar",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Vojtěch Munzar",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7025",
-      "name": "Jana Murová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jana Murová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6732",
-      "name": "Ivana Mádlová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Ivana Mádlová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6487",
-      "name": "Patrik Nacher",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Patrik Nacher",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7026",
-      "name": "Anežka Nedomová",
       "option": "absent",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Anežka Nedomová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7028",
-      "name": "Bohuslav Niemiec",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Bohuslav Niemiec",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6533",
-      "name": "Marek Novák",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Marek Novák",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6804",
-      "name": "Zdenka Němečková Crkvenjaš",
       "option": "absent",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Zdenka Němečková Crkvenjaš",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7027",
-      "name": "Irena Němcová",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Irena Němcová",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6475",
-      "name": "Monika Oborná",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Monika Oborná",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6105",
-      "name": "Tomio Okamura",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Tomio Okamura",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6769",
-      "name": "Hayato Okamura",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Hayato Okamura",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6172",
-      "name": "Ladislav Okleštěk",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Ladislav Okleštěk",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6766",
-      "name": "Eliška Olšáková",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Eliška Olšáková",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6767",
-      "name": "Michaela Opltová",
       "option": "abstain",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Michaela Opltová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6770",
-      "name": "Renata Oulehlová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Renata Oulehlová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7029",
-      "name": "Pavel Outrata",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Pavel Outrata",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6474",
-      "name": "Zuzana Ožanová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Zuzana Ožanová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7030",
-      "name": "Jan Papajanovský",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Jan Papajanovský",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6225",
-      "name": "Jana Pastuchová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jana Pastuchová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7032",
-      "name": "Jana Patková",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Jana Patková",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:7031",
-      "name": "Patrik Pařil",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Patrik Pařil",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7067",
-      "name": "Jiří Penc",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jiří Penc",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6409",
-      "name": "František Petrtýl",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "František Petrtýl",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6780",
-      "name": "Berenika Peštová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Berenika Peštová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6555",
-      "name": "Tom Philipp",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Tom Philipp",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:7034",
-      "name": "Vladimír Pikora",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Vladimír Pikora",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:7035",
-      "name": "Barbora Pipášová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Barbora Pipášová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6762",
-      "name": "Pavla Pivoňka Vaňková",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Pavla Pivoňka Vaňková",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6549",
-      "name": "Robert Plaga",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Robert Plaga",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7036",
-      "name": "Václav Pláteník",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Václav Pláteník",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:5273",
-      "name": "Jiří Pospíšil",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jiří Pospíšil",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:6745",
-      "name": "Marie Pošarová",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Marie Pošarová",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6527",
-      "name": "David Pražák",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "David Pražák",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7037",
-      "name": "Jindřich Rajchl",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jindřich Rajchl",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6524",
-      "name": "Vít Rakušan",
       "option": "absent",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "neutral",
+      "name": "Vít Rakušan",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6523",
-      "name": "Michal Ratiborský",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Michal Ratiborský",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6473",
-      "name": "Olga Richterová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Olga Richterová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6500",
-      "name": "Jan Richter",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jan Richter",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6782",
-      "name": "Drahoslav Ryba",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Drahoslav Ryba",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7038",
-      "name": "Barbora Rázga",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Barbora Rázga",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6520",
-      "name": "Pavel Růžička",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Pavel Růžička",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6518",
-      "name": "Petr Sadovský",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Petr Sadovský",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6688",
-      "name": "Miroslav Samaš",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Miroslav Samaš",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6545",
-      "name": "Alena Schillerová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Alena Schillerová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7040",
-      "name": "Zuzana Mrázová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Zuzana Mrázová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7039",
-      "name": "Vítězslav Schrek",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Vítězslav Schrek",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7041",
-      "name": "Gabriela Sedláčková",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Gabriela Sedláčková",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:7042",
-      "name": "Lucie Sedmihradská",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Lucie Sedmihradská",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6418",
-      "name": "Jan Skopeček",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jan Skopeček",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7043",
-      "name": "Štěpán Slovák",
       "option": "no",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Štěpán Slovák",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7044",
-      "name": "Julie Smejkalová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Julie Smejkalová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7045",
-      "name": "Petr Sokol",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Petr Sokol",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:7048",
-      "name": "Kateřina Stojanová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Kateřina Stojanová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6743",
-      "name": "Robert Stržínek",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Robert Stržínek",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6515",
-      "name": "Jiří Strýček",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jiří Strýček",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7050",
-      "name": "Jan Sviták",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Jan Sviták",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7051",
-      "name": "Vendula Svobodová",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Vendula Svobodová",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:7033",
-      "name": "Jiří Svoboda",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jiří Svoboda",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7049",
-      "name": "Gabriela Svárovská",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Gabriela Svárovská",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6783",
-      "name": "Jan Síla",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jan Síla",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7052",
-      "name": "František Talíř",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "František Talíř",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6786",
-      "name": "Róbert Teleky",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Róbert Teleky",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:7053",
-      "name": "Václav Trojan",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Václav Trojan",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7059",
-      "name": "Filip Turek",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Filip Turek",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6240",
-      "name": "Karel Tureček",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Karel Tureček",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6787",
-      "name": "Libor Turek",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Libor Turek",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6788",
-      "name": "Barbora Urbanová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Barbora Urbanová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7054",
-      "name": "Renata Vesecká",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Renata Vesecká",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:6789",
-      "name": "Lukáš Vlček",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Lukáš Vlček",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:7055",
-      "name": "Jiří Vojáček",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jiří Vojáček",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6491",
-      "name": "Adam Vojtěch",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Adam Vojtěch",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7056",
-      "name": "Jitka Volfová",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Jitka Volfová",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7057",
-      "name": "Samuel Volpe",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Samuel Volpe",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6165",
-      "name": "Radek Vondráček",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Radek Vondráček",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:7058",
-      "name": "Libor Vondráček",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Libor Vondráček",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7060",
-      "name": "Otto Vopěnka",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Otto Vopěnka",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6490",
-      "name": "Petr Vrána",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Petr Vrána",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6482",
-      "name": "Vlastimil Válek",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Vlastimil Válek",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:6946",
-      "name": "Josef Váňa",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Josef Váňa",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6168",
-      "name": "Helena Válková",
       "option": "absent",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "neutral",
+      "name": "Helena Válková",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6513",
-      "name": "Marek Výborný",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Marek Výborný",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:7061",
-      "name": "Ester Weimerová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Ester Weimerová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6730",
-      "name": "Lubomír Wenzl",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Lubomír Wenzl",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6793",
-      "name": "Renáta Zajíčková",
       "option": "yes",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Renáta Zajíčková",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6796",
-      "name": "Michal Zuna",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Michal Zuna",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:7062",
-      "name": "Martin Záhoř",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Martin Záhoř",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6996",
-      "name": "Igor Červený",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Igor Červený",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:5903",
-      "name": "Jana Černochová",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Jana Černochová",
+      "group_id": "psp:org:1751"
     },
     {
       "voter_id": "psp:person:6998",
-      "name": "Benjamin Činčila",
       "option": "abstain",
-      "group_id": "psp:org:1748",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Benjamin Činčila",
+      "group_id": "psp:org:1748"
     },
     {
       "voter_id": "psp:person:6479",
-      "name": "Lucie Šafránková",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Lucie Šafránková",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:6763",
-      "name": "Michaela Šebelová",
       "option": "yes",
-      "group_id": "psp:org:1752",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Michaela Šebelová",
+      "group_id": "psp:org:1752"
     },
     {
       "voter_id": "psp:person:6064",
-      "name": "Miroslav Ševčík",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Miroslav Ševčík",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7047",
-      "name": "Markéta Šichtařová",
       "option": "no",
-      "group_id": "psp:org:1746",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Markéta Šichtařová",
+      "group_id": "psp:org:1746"
     },
     {
       "voter_id": "psp:person:7065",
-      "name": "Martin Šmída",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Martin Šmída",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:7046",
-      "name": "Eva Šrámková",
       "option": "yes",
-      "group_id": "psp:org:1745",
-      "party_id": "other"
+      "polarity": "support",
+      "name": "Eva Šrámková",
+      "group_id": "psp:org:1745"
     },
     {
       "voter_id": "psp:person:6484",
-      "name": "David Štolpa",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "David Štolpa",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:5512",
-      "name": "Boris Šťastný",
       "option": "no",
-      "group_id": "psp:org:1749",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Boris Šťastný",
+      "group_id": "psp:org:1749"
     },
     {
       "voter_id": "psp:person:7064",
-      "name": "Miroslav Žbánek",
       "option": "no",
-      "group_id": "psp:org:1750",
-      "party_id": "ano"
+      "polarity": "oppose",
+      "name": "Miroslav Žbánek",
+      "group_id": "psp:org:1750"
     },
     {
       "voter_id": "psp:person:6154",
-      "name": "Marek Ženíšek",
       "option": "abstain",
-      "group_id": "psp:org:1747",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Marek Ženíšek",
+      "group_id": "psp:org:1747"
     },
     {
       "voter_id": "psp:person:5226",
-      "name": "Pavel Žáček",
       "option": "abstain",
-      "group_id": "psp:org:1751",
-      "party_id": "other"
+      "polarity": "oppose",
+      "name": "Pavel Žáček",
+      "group_id": "psp:org:1751"
     }
   ]
 }

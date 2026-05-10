@@ -2,21 +2,21 @@ import { notFound } from "next/navigation";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { VoteEventGrid } from "@legislature/charts";
-import type { VoteEventPartyGroup, VoteEventVoter, VoteEventCounts } from "@legislature/charts";
+import type { VoteEventPartyGroup, VoteEventVoter, VoteEventPolarityCounts } from "@legislature/charts";
 import { CZ_PSP_PARTY_COLORS, CZ_PSP_PARTY_META } from "@legislature/ui";
 import { groupIdToPartyId } from "@/lib/groups";
 
 interface RawVoteEvent {
   id: string;
-  parliament: string;
-  date: string;
-  title: string;
-  result: string;
-  counts: VoteEventCounts;
+  parliament_id: string;
+  start_date: string;
+  title?: string;
+  result: "pass" | "fail" | null;
+  definition_name: string | null;
+  polarity_counts: VoteEventPolarityCounts;
   votes: VoteEventVoter[];
 }
 
-// Preferred display order (largest/most prominent groups first)
 const GROUP_ORDER = [
   "psp:org:1750", // ANO
   "psp:org:1751", // ODS
@@ -82,20 +82,14 @@ export default async function VoteEventPage({
   return (
     <div className="space-y-6">
       <VoteEventGrid
-        title={ve.title}
-        date={ve.date}
+        title={ve.title ?? ve.id}
+        date={ve.start_date}
         result={ve.result}
-        counts={ve.counts}
+        polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}
-        resultLabels={{ pass: "Schváleno", fail: "Zamítnuto", other: ve.result }}
-        optionLabels={{
-          yes: "pro",
-          no: "proti",
-          abstain: "zdržel se",
-          "not voting": "nehlasoval",
-          absent: "nepřítomen",
-        }}
+        resultLabels={{ pass: "Schváleno", fail: "Zamítnuto" }}
+        polarityLabels={{ support: "pro", oppose: "proti", neutral: "nehlasoval/nepřítomen" }}
       />
     </div>
   );

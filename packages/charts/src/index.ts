@@ -21,5 +21,5 @@ export type {
   VoteEventGridProps,
   VoteEventVoter,
   VoteEventPartyGroup,
-  VoteEventCounts,
+  VoteEventPolarityCounts,
 } from "./components/VoteEventGrid";

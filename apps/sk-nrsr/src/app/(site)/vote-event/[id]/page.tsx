@@ -2,21 +2,21 @@ import { notFound } from "next/navigation";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { VoteEventGrid } from "@legislature/charts";
-import type { VoteEventPartyGroup, VoteEventVoter, VoteEventCounts } from "@legislature/charts";
+import type { VoteEventPartyGroup, VoteEventVoter, VoteEventPolarityCounts } from "@legislature/charts";
 import { SK_NRSR_PARTY_COLORS, SK_NRSR_PARTY_META } from "@legislature/ui";
 import { groupIdToPartyId } from "@/lib/groups";
 
 interface RawVoteEvent {
   id: string;
-  parliament: string;
-  date: string;
-  title: string;
-  result: string;
-  counts: VoteEventCounts;
+  parliament_id: string;
+  start_date: string;
+  title?: string;
+  result: "pass" | "fail" | null;
+  definition_name: string | null;
+  polarity_counts: VoteEventPolarityCounts;
   votes: VoteEventVoter[];
 }
 
-// Group canonical names derived from standardize.py club IDs
 const GROUP_LABELS: Record<string, string> = {
   "nrsr:org:club:1": "HLAS - sociálna demokracia",
   "nrsr:org:club:2": "KDH",
@@ -28,7 +28,6 @@ const GROUP_LABELS: Record<string, string> = {
   "nrsr:org:nezavisli": "Nezávislí",
 };
 
-// Order groups on the page (coalition first, then opposition)
 const GROUP_ORDER = [
   "nrsr:org:club:5",
   "nrsr:org:club:1",
@@ -60,7 +59,6 @@ function buildGroups(votes: VoteEventVoter[]): VoteEventPartyGroup[] {
   }
 
   const ordered = GROUP_ORDER.filter((g) => byGroup.has(g));
-  // Append any unknown groups not in the order list
   for (const g of byGroup.keys()) {
     if (!ordered.includes(g)) ordered.push(g);
   }
@@ -95,20 +93,14 @@ export default async function VoteEventPage({
   return (
     <div className="space-y-6">
       <VoteEventGrid
-        title={ve.title}
-        date={ve.date}
+        title={ve.title ?? ve.id}
+        date={ve.start_date}
         result={ve.result}
-        counts={ve.counts}
+        polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}
-        resultLabels={{ pass: "Schválené", fail: "Zamietnuté", other: ve.result }}
-        optionLabels={{
-          yes: "za",
-          no: "proti",
-          abstain: "zdržal sa",
-          "not voting": "nehlasoval",
-          absent: "neprítomný",
-        }}
+        resultLabels={{ pass: "Schválené", fail: "Zamietnuté" }}
+        polarityLabels={{ support: "za", oppose: "proti", neutral: "nehlasoval/neprítomný" }}
       />
     </div>
   );
