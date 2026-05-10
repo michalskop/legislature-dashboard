@@ -418,11 +418,20 @@ function SupportColumnWithThreshold({
 
   return (
     <div ref={containerRef} style={{ position: "relative" }}>
-      <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, ${dotSize}px)`, gap: 4 }}>
+      {outlinePath && (
+        <svg
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{ width: "100%", height: "100%", overflow: "visible", zIndex: 0 }}
+        >
+          <path d={outlinePath} fill="rgba(0,0,0,0.07)" stroke="none" />
+        </svg>
+      )}
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, ${dotSize}px)`, gap: 4, position: "relative", zIndex: 1 }}>
         {inside.map((v) => {
           const g = groupByVoter.get(v.voter_id);
           return g ? (
-            <div key={v.voter_id} data-t="">
+            <div key={v.voter_id} data-t="" style={{ lineHeight: 0 }}>
               <PartyFaceDot voter={v} group={g} size={dotSize} showAbbr={false} />
             </div>
           ) : null;
@@ -433,17 +442,12 @@ function SupportColumnWithThreshold({
         {overflow.map((v) => {
           const g = groupByVoter.get(v.voter_id);
           return g ? (
-            <div key={v.voter_id}>
+            <div key={v.voter_id} style={{ lineHeight: 0 }}>
               <PartyFaceDot voter={v} group={g} size={dotSize} showAbbr={false} />
             </div>
           ) : null;
         })}
       </div>
-      {outlinePath && (
-        <svg className="absolute inset-0 pointer-events-none" style={{ width: "100%", height: "100%", overflow: "visible" }}>
-          <path d={outlinePath} fill="none" stroke="#6b7280" strokeWidth={2} strokeDasharray="5 3" strokeLinejoin="round" />
-        </svg>
-      )}
     </div>
   );
 }
