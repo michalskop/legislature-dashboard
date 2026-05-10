@@ -88,8 +88,9 @@ export default async function VoteEventPage({
         polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}
+        layout="polarity-first"
         resultLabels={{ pass: "Schváleno", fail: "Zamítnuto" }}
-        polarityLabels={{ support: "pro", oppose: "proti", neutral: "nehlasoval/nepřítomen" }}
+        polarityLabels={{ support: "Pro", oppose: "Proti", neutral: "Nehlasoval/Nepřítomen" }}
       />
     </div>
   );
