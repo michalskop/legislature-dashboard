@@ -15,3 +15,11 @@ export type {
   ScatterDatum,
   ScatterGroup,
 } from "./components/ScatterPlot";
+
+export { VoteEventGrid } from "./components/VoteEventGrid";
+export type {
+  VoteEventGridProps,
+  VoteEventVoter,
+  VoteEventPartyGroup,
+  VoteEventPolarityCounts,
+} from "./components/VoteEventGrid";

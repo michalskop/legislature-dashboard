@@ -1,0 +1,1068 @@
+{
+  "id": "nrsr:vote-event:52758",
+  "parliament_id": "sk-nrsr",
+  "start_date": "2023-12-06",
+  "title": "Hlasovanie o procedurálnom návrhu predsedu NR SR - P. Pellegrini.",
+  "result": "pass",
+  "requirement": "simple majority",
+  "required_count": 70,
+  "definition_name": null,
+  "polarity_counts": {
+    "support": 78,
+    "oppose": 60,
+    "neutral": 12,
+    "total": 150
+  },
+  "votes": [
+    {
+      "voter_id": "nrsr:person:871",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Vladimír Baláž",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:233",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jaroslav Baška",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:885",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ľuboš Blaha",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1160",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marcela Čavojová",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:36",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Vladimír Faič",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:656",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Dušan Galis",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1154",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tibor Gašpar",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:738",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Pavol Goga",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1009",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Jozef Habánik",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:874",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Augustín Hambálek",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1192",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ivan Hazucha",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:61",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Dušan Jarjabek",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:891",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jozef Ježík",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1153",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Erik Kaliňák",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1205",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Kapuš",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1158",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Daniel Karas",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:873",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marián Kéry",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:668",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Stanislav Kubánek",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:671",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ján Kvorka",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1200",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Boleslav Lešo",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:733",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Lukša",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1159",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zuzana Matejičková",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1156",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ján Mažgút",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1204",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jaroslav Mego",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:322",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Dušan Muňko",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:974",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Martin Nemky",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:900",
+      "option": "yes",
+      "polarity": "support",
+      "name": "František Petro",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1194",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zuzana Plevíková",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:685",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ján Podmanický",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:689",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ján Richter",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:762",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marián Saloň",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1163",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Justín Sedlák",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1191",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Andrej Sitkár",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1206",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Sokol",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1058",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Anton Stredák",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1161",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Stuška",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:769",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Šuca",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1193",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Igor Válek",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:705",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jozef Valocký",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:732",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jana Vaľová",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:293",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ľubomír Vážny",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1019",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Viliam Zahorčák",
+      "group_id": "nrsr:org:club:5"
+    },
+    {
+      "voter_id": "nrsr:person:1119",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Irena Bihariová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1140",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Dávid Dej",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1133",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Martin Dubéci",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1123",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Oskar Dvořák",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1126",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Tina Gažovičová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1129",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Jana Hanuliaková",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1142",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Ján Hargaš",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1136",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Tomáš Hellebrandt",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1121",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Zora Jaurová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1128",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Beáta Jurík",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1137",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Viera Kalmárová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1125",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Štefan Kišš",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1139",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Dana Kleinert",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1124",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Ingrid Kosová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1189",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Marek Lackovič",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1134",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Darina Luščíková",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1130",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Zuzana Mesterová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1212",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Natália Nash",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:962",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Simona Petrík",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1116",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Lucia Plaváková",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1131",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Ondrej Prostredník",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1120",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Michal Sabo",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1117",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Jaroslav Spišiak",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1118",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Tamara Stohlová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1114",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Michal Šimečka",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1143",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Veronika Šrobová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1127",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Ivan Štefunko",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1132",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Zuzana Števulová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1115",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Michal Truban",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1075",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Tomáš Valášek",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1135",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Branislav Vančo",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1141",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Veronika Veslárová",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:1207",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Bartek",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1187",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Branislav Becík",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:997",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ján Blcháč",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1195",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jozef Cech",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1203",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Miroslav Čellár",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1172",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Richard Eliáš",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1008",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ján Ferenčák",
+      "group_id": "nrsr:org:nezavisli"
+    },
+    {
+      "voter_id": "nrsr:person:892",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Štefan Gašparovič",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1169",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Karol Janas",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1170",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Kalivoda",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1081",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ľubica Laššáková",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1211",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Zdenka Mačicová",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1173",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Roman Malatinec",
+      "group_id": "nrsr:org:nezavisli"
+    },
+    {
+      "voter_id": "nrsr:person:1201",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Samuel Migaľ",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1174",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Moško",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:899",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Náhlik",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1196",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Alena Nováková",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:682",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Pellegrini",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:879",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Róbert Puci",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1208",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Paula Puškárová",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1197",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Slyško",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1087",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zdenko Svoboda",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1175",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Radomír Šalitroš",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1177",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Igor Šimko",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:930",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Dušan Tittel",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1176",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Erik Vlček",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:691",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Žiga",
+      "group_id": "nrsr:org:club:1"
+    },
+    {
+      "voter_id": "nrsr:person:1144",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Lukáš Bužo",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:785",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Ľubomír Galko",
+      "group_id": "nrsr:org:nezavisli"
+    },
+    {
+      "voter_id": "nrsr:person:910",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Gábor Grendel",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1188",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Július Jakab",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:907",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marek Krajčí",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1190",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Rastislav Krátky",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:808",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Igor Matovič",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1046",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Roman Mikulec",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1088",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Peter Pollák",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1054",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Jozef Pročko",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:905",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Veronika Remišová",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1065",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Michal Šipoš",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1146",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Anežka Škopová",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1145",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Viliam Tankó",
+      "group_id": "nrsr:org:club:3"
+    },
+    {
+      "voter_id": "nrsr:person:861",
+      "option": "abstain",
+      "polarity": "oppose",
+      "name": "Richard Vašečka",
+      "group_id": "nrsr:org:nezavisli"
+    },
+    {
+      "voter_id": "nrsr:person:147",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Anna Záborská",
+      "group_id": "nrsr:org:club:4"
+    },
+    {
+      "voter_id": "nrsr:person:1180",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Martina Holečková",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:1179",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Marián Čaučík",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1181",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Jozef Hajko",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1183",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Ján Horecký",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:961",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Igor Janckulík",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1184",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "František Majerský",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1178",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Milan Majerský",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:92",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "František Mikloško",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1182",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Peter Stachura",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:862",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Branislav Škripek",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1185",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Martin Šmilňák",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:1186",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Andrea Turčanová",
+      "group_id": "nrsr:org:club:2"
+    },
+    {
+      "voter_id": "nrsr:person:976",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Jana Cigániková",
+      "group_id": "nrsr:org:nezavisli"
+    },
+    {
+      "voter_id": "nrsr:person:779",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Ondrej Dostál",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:971",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Branislav Gröhling",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:859",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Alojz Hlina",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:1025",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Mária Kolíková",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:1032",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Juraj Krúpa",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:1037",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Vladimír Ledecký",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:1042",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Vladimíra Marcinková",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:767",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Richard Sulík",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:1147",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Tomáš Szalay",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:991",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Marián Viskupič",
+      "group_id": "nrsr:org:club:6"
+    },
+    {
+      "voter_id": "nrsr:person:929",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Andrej Danko",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:931",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Karol Farkašovský",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1198",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Milan Garaj",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1148",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Rudolf Huliak",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1151",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Peter Kotlár",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1210",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Dagmar Kramplová",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1199",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Adam Lučanský",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1152",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Pavel Ľupták",
+      "group_id": "nrsr:org:nezavisli"
+    },
+    {
+      "voter_id": "nrsr:person:1149",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Roman Michelko",
+      "group_id": "nrsr:org:club:7"
+    },
+    {
+      "voter_id": "nrsr:person:1150",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Ivan Ševčík",
+      "group_id": "nrsr:org:nezavisli"
+    }
+  ]
+}
