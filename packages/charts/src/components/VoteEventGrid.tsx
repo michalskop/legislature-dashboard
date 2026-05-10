@@ -55,8 +55,9 @@ export interface VoteEventGridProps {
    * "party-first"    — group by party, dots colored by polarity (default)
    * "polarity-first" — group by polarity, party-colored dots per row
    * "wp"             — three columns For|Against|Not voting, dense party-face grid
+   * "tabule"         — dark board replicating physical chamber display, per-party row counts
    */
-  layout?: "party-first" | "polarity-first" | "wp";
+  layout?: "party-first" | "polarity-first" | "wp" | "tabule";
   requirementCountLabel?: string;
   logo?: React.ReactNode;
 }
@@ -588,6 +589,115 @@ function WpLayout({
   );
 }
 
+// ─── Tabule layout (physical chamber board) ──────────────────────────────────
+// Dark background, per-party rows with support/oppose/neutral counts.
+
+function TabuleLayout({
+  groups,
+  polarity_counts,
+  polarityLabels,
+  result,
+  resultLabels,
+  title,
+  date,
+  requirement,
+  required_count,
+  requirementCountLabel,
+  logo,
+}: {
+  groups: VoteEventPartyGroup[];
+  polarity_counts: VoteEventPolarityCounts;
+  polarityLabels: { support: string; oppose: string; neutral: string };
+  result: string | null;
+  resultLabels: { pass: string; fail: string; other?: string };
+  title: string;
+  date: string;
+  requirement?: string;
+  required_count?: number;
+  requirementCountLabel?: string;
+  logo?: React.ReactNode;
+}) {
+  const present = groups.filter((g) => g.voters.length > 0);
+
+  const counts = (voters: VoteEventVoter[]) => {
+    const c = { support: 0, oppose: 0, neutral: 0 };
+    for (const v of voters) c[v.polarity]++;
+    return c;
+  };
+
+  const resultLabel =
+    result === "pass" ? resultLabels.pass :
+    result === "fail" ? resultLabels.fail :
+    resultLabels.other ?? result ?? "";
+  const resultColor = result === "pass" ? "#22c55e" : result === "fail" ? "#ef4444" : "#94a3b8";
+
+  const iconFontSize = 9 * Math.pow(18 / 42, 0.25);
+
+  return (
+    <div
+      style={{ background: "#111827", borderRadius: 8, padding: "12px 16px", color: "#f9fafb", fontFamily: "monospace" }}
+    >
+      {/* Board header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
+        <div>
+          <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 2 }}>{date}</div>
+          <div style={{ fontSize: 13, fontWeight: 700, maxWidth: 480, lineHeight: 1.3, fontFamily: "sans-serif" }}>{title}</div>
+          {(requirement || required_count !== undefined) && (
+            <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 3 }}>
+              {requirement}
+              {required_count !== undefined && (
+                <span style={{ marginLeft: 6 }}>{requirementCountLabel ?? "required"}: <strong style={{ color: "#f9fafb" }}>{required_count}</strong></span>
+              )}
+            </div>
+          )}
+        </div>
+        {logo && <div style={{ opacity: 0.6 }}>{logo}</div>}
+      </div>
+
+      {/* Overall result row */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "8px 0", borderTop: "1px solid #374151", borderBottom: "1px solid #374151", marginBottom: 8 }}>
+        <span style={{ fontSize: 15, fontWeight: 800, color: resultColor, minWidth: 80, fontFamily: "sans-serif" }}>
+          {resultLabel}
+        </span>
+        <span style={{ color: "#22c55e", fontSize: 14, fontWeight: 700 }}>✓ {polarity_counts.support}</span>
+        <span style={{ color: "#ef4444", fontSize: 14, fontWeight: 700 }}>✗ {polarity_counts.oppose}</span>
+        <span style={{ color: "#9ca3af", fontSize: 14 }}>◌ {polarity_counts.neutral}</span>
+        <span style={{ color: "#6b7280", fontSize: 12, marginLeft: "auto" }}>{polarity_counts.total}</span>
+      </div>
+
+      {/* Per-party rows */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {/* Column headers */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 48px 48px 48px", gap: 4, padding: "2px 0", fontSize: 11, color: "#6b7280" }}>
+          <span />
+          <span style={{ textAlign: "right", color: "#22c55e" }}>{polarityLabels.support}</span>
+          <span style={{ textAlign: "right", color: "#ef4444" }}>{polarityLabels.oppose}</span>
+          <span style={{ textAlign: "right" }}>{polarityLabels.neutral}</span>
+        </div>
+        {present.map((g) => {
+          const c = counts(g.voters);
+          const key = g.group_id ?? g.party_id;
+          return (
+            <div key={key} style={{ display: "grid", gridTemplateColumns: "1fr 48px 48px 48px", gap: 4, padding: "3px 0", borderBottom: "1px solid #1f2937", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <svg width={18} height={18} viewBox="0 0 30 30" style={{ display: "block", flexShrink: 0 }}>
+                  <path d={FACE_PATH} fill={g.iconColor} />
+                  <text x="15" y="18" fontFamily="'Roboto Slab', serif" fontSize={iconFontSize} fontWeight="700"
+                    fill={g.iconTextColor} textAnchor="middle">{g.iconAbbr}</text>
+                </svg>
+                <span style={{ fontSize: 12, color: "#d1d5db", fontFamily: "sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{g.label}</span>
+              </div>
+              <span style={{ textAlign: "right", fontSize: 14, fontWeight: 700, color: c.support > 0 ? "#22c55e" : "#374151" }}>{c.support > 0 ? c.support : "—"}</span>
+              <span style={{ textAlign: "right", fontSize: 14, fontWeight: 700, color: c.oppose > 0 ? "#ef4444" : "#374151" }}>{c.oppose > 0 ? c.oppose : "—"}</span>
+              <span style={{ textAlign: "right", fontSize: 13, color: c.neutral > 0 ? "#9ca3af" : "#374151" }}>{c.neutral > 0 ? c.neutral : "—"}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function VoteEventGrid({
@@ -605,6 +715,24 @@ export function VoteEventGrid({
   requirementCountLabel,
   logo,
 }: VoteEventGridProps) {
+  if (layout === "tabule") {
+    return (
+      <TabuleLayout
+        groups={groups}
+        polarity_counts={polarity_counts}
+        polarityLabels={polarityLabels}
+        result={result}
+        resultLabels={resultLabels}
+        title={title}
+        date={date}
+        requirement={requirement}
+        required_count={required_count}
+        requirementCountLabel={requirementCountLabel}
+        logo={logo}
+      />
+    );
+  }
+
   return (
     <div className="bg-surface-2 rounded-badge-xl border border-border flex flex-col gap-3 p-4 overflow-hidden">
       {/* Card header: logo + metadata */}

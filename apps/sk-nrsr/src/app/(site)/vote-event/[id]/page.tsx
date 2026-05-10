@@ -91,6 +91,7 @@ function buildGroups(votes: VoteEventVoter[]): VoteEventPartyGroup[] {
 
 const LAYOUTS = [
   { key: "wp", label: "Hlasovanie" },
+  { key: "tabule", label: "Tabuľa" },
   { key: "polarity-first", label: "Podľa výsledku" },
   { key: "party-first", label: "Podľa klubu" },
 ] as const;
