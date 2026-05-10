@@ -1,18 +1,13 @@
 // Map from nrsr group org ID → party badge ID (used in PartyBadge)
+// IDs are sequential based on sorted canonical club names (after alias merging in standardize.py)
 export const GROUP_ID_TO_PARTY_ID: Record<string, string> = {
-  "nrsr:org:club:1": "hlas",      // HLAS - SD
-  "nrsr:org:club:2": "hlas",      // HLAS - sociálna demokracia
-  "nrsr:org:club:3": "kdh",       // KDH
-  "nrsr:org:club:4": "ps",        // PS
-  "nrsr:org:club:5": "ps",        // Progresívne Slovensko
-  "nrsr:org:club:6": "slovensko", // SLOVENSKO
-  "nrsr:org:club:7": "slovensko", // SLOVENSKO - ZA ĽUDÍ
-  "nrsr:org:club:8": "smer",      // SMER - SD
-  "nrsr:org:club:9": "smer",      // SMER - sociálna demokracia
-  "nrsr:org:club:10": "sns",      // SNS
-  "nrsr:org:club:11": "sas",      // SaS
-  "nrsr:org:club:12": "sas",      // Sloboda a Solidarita
-  "nrsr:org:club:13": "sns",      // Slovenská národná strana
+  "nrsr:org:club:1": "hlas",      // Klub HLAS - sociálna demokracia
+  "nrsr:org:club:2": "kdh",       // Klub KDH
+  "nrsr:org:club:3": "ps",        // Klub Progresívne Slovensko
+  "nrsr:org:club:4": "slovensko", // Klub SLOVENSKO - ZA ĽUDÍ
+  "nrsr:org:club:5": "smer",      // Klub SMER - sociálna demokracia
+  "nrsr:org:club:6": "sas",       // Klub Sloboda a Solidarita
+  "nrsr:org:club:7": "sns",       // Klub Slovenská národná strana
   // independent MPs (not members of any club)
   "nrsr:org:nezavisli": "nezavisli",
 };
