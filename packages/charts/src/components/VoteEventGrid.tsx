@@ -255,6 +255,12 @@ function PolarityFirstLayout({
           votersByGroup.get(key)!.push(v);
         }
 
+        seenGroups.sort((a, b) => {
+          const ak = a.group_id ?? a.party_id;
+          const bk = b.group_id ?? b.party_id;
+          return (votersByGroup.get(bk)?.length ?? 0) - (votersByGroup.get(ak)?.length ?? 0);
+        });
+
         const iconFontSize = 9 * Math.pow(14 / 42, 0.25);
         const faceDotSize = isNeutral ? Math.max(10, dotSize - 4) : dotSize;
 
