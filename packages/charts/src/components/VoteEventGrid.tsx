@@ -590,7 +590,36 @@ function WpLayout({
 }
 
 // ─── Tabule layout (physical chamber board) ──────────────────────────────────
-// Dark background, per-party rows with support/oppose/neutral counts.
+// Dark board replicating CZ Sněmovna physical display.
+// Two columns of parties, text abbreviations only, per-party vote counts.
+
+function TabulePartyRow({ g, polarityLabels }: { g: VoteEventPartyGroup; polarityLabels: { support: string; oppose: string; neutral: string } }) {
+  const c = { support: 0, oppose: 0, neutral: 0 };
+  for (const v of g.voters) c[v.polarity]++;
+  const voted = c.support + c.oppose;
+  const COL = "36px";
+  const cell = (n: number, color: string) => (
+    <span style={{ width: COL, textAlign: "right", display: "inline-block", fontWeight: n > 0 ? 700 : 400, color: n > 0 ? color : "#374151", fontSize: 13 }}>
+      {n > 0 ? n : "0"}
+    </span>
+  );
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "2px 6px", borderBottom: "1px solid #1f2937" }}>
+      <span style={{
+        display: "inline-block", width: 6, height: 14, borderRadius: 2, background: g.iconColor, flexShrink: 0,
+      }} />
+      <span style={{ flex: 1, fontSize: 12, color: "#d1d5db", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontFamily: "sans-serif" }}>
+        {g.label}
+      </span>
+      <span style={{ width: COL, textAlign: "right", display: "inline-block", fontSize: 12, color: "#6b7280" }} title={`${polarityLabels.support} + ${polarityLabels.oppose}`}>
+        {voted}
+      </span>
+      {cell(c.support, "#22c55e")}
+      {cell(c.oppose, "#ef4444")}
+      {cell(c.neutral, "#9ca3af")}
+    </div>
+  );
+}
 
 function TabuleLayout({
   groups,
@@ -618,81 +647,72 @@ function TabuleLayout({
   logo?: React.ReactNode;
 }) {
   const present = groups.filter((g) => g.voters.length > 0);
-
-  const counts = (voters: VoteEventVoter[]) => {
-    const c = { support: 0, oppose: 0, neutral: 0 };
-    for (const v of voters) c[v.polarity]++;
-    return c;
-  };
+  const half = Math.ceil(present.length / 2);
+  const leftCol = present.slice(0, half);
+  const rightCol = present.slice(half);
 
   const resultLabel =
     result === "pass" ? resultLabels.pass :
     result === "fail" ? resultLabels.fail :
     resultLabels.other ?? result ?? "";
   const resultColor = result === "pass" ? "#22c55e" : result === "fail" ? "#ef4444" : "#94a3b8";
+  const voted = polarity_counts.support + polarity_counts.oppose;
 
-  const iconFontSize = 9 * Math.pow(18 / 42, 0.25);
+  const COL = "36px";
+  const colHeader = (label: string, color: string) => (
+    <span style={{ width: COL, textAlign: "right", display: "inline-block", fontSize: 10, color, fontFamily: "sans-serif" }}>{label}</span>
+  );
 
   return (
-    <div
-      style={{ background: "#111827", borderRadius: 8, padding: "12px 16px", color: "#f9fafb", fontFamily: "monospace" }}
-    >
-      {/* Board header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 10 }}>
-        <div>
-          <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 2 }}>{date}</div>
-          <div style={{ fontSize: 13, fontWeight: 700, maxWidth: 480, lineHeight: 1.3, fontFamily: "sans-serif" }}>{title}</div>
+    <div style={{ background: "#0f172a", borderRadius: 8, padding: "10px 14px", color: "#f9fafb", fontFamily: "monospace" }}>
+      {/* Board header: date + title + logo */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 8 }}>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 11, color: "#6b7280", marginBottom: 2, fontFamily: "sans-serif" }}>{date}</div>
+          <div style={{ fontSize: 13, fontWeight: 700, lineHeight: 1.3, fontFamily: "sans-serif", color: "#f1f5f9" }}>{title}</div>
           {(requirement || required_count !== undefined) && (
-            <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 3 }}>
+            <div style={{ fontSize: 11, color: "#6b7280", marginTop: 2, fontFamily: "sans-serif" }}>
               {requirement}
               {required_count !== undefined && (
-                <span style={{ marginLeft: 6 }}>{requirementCountLabel ?? "required"}: <strong style={{ color: "#f9fafb" }}>{required_count}</strong></span>
+                <span style={{ marginLeft: 6 }}>{requirementCountLabel ?? "required"}: <strong style={{ color: "#cbd5e1" }}>{required_count}</strong></span>
               )}
             </div>
           )}
         </div>
-        {logo && <div style={{ opacity: 0.6 }}>{logo}</div>}
+        {logo && <div style={{ opacity: 0.5, marginLeft: 12, flexShrink: 0 }}>{logo}</div>}
       </div>
 
       {/* Overall result row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 16, padding: "8px 0", borderTop: "1px solid #374151", borderBottom: "1px solid #374151", marginBottom: 8 }}>
-        <span style={{ fontSize: 15, fontWeight: 800, color: resultColor, minWidth: 80, fontFamily: "sans-serif" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 16px", padding: "6px 0", borderTop: "1px solid #1e293b", borderBottom: "1px solid #1e293b", marginBottom: 8 }}>
+        <span style={{ fontSize: 16, fontWeight: 900, color: resultColor, fontFamily: "sans-serif", letterSpacing: 1 }}>
           {resultLabel}
+        </span>
+        <span style={{ fontSize: 12, color: "#94a3b8", fontFamily: "sans-serif" }}>
+          {voted} <span style={{ color: "#64748b" }}>hlasovalo</span>
         </span>
         <span style={{ color: "#22c55e", fontSize: 14, fontWeight: 700 }}>✓ {polarity_counts.support}</span>
         <span style={{ color: "#ef4444", fontSize: 14, fontWeight: 700 }}>✗ {polarity_counts.oppose}</span>
-        <span style={{ color: "#9ca3af", fontSize: 14 }}>◌ {polarity_counts.neutral}</span>
-        <span style={{ color: "#6b7280", fontSize: 12, marginLeft: "auto" }}>{polarity_counts.total}</span>
+        <span style={{ color: "#6b7280", fontSize: 13 }}>Q {polarity_counts.neutral}</span>
+        <span style={{ color: "#475569", fontSize: 12, marginLeft: "auto", fontFamily: "sans-serif" }}>{polarity_counts.total} celkem</span>
       </div>
 
-      {/* Per-party rows */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-        {/* Column headers */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 48px 48px 48px", gap: 4, padding: "2px 0", fontSize: 11, color: "#6b7280" }}>
-          <span />
-          <span style={{ textAlign: "right", color: "#22c55e" }}>{polarityLabels.support}</span>
-          <span style={{ textAlign: "right", color: "#ef4444" }}>{polarityLabels.oppose}</span>
-          <span style={{ textAlign: "right" }}>{polarityLabels.neutral}</span>
-        </div>
-        {present.map((g) => {
-          const c = counts(g.voters);
-          const key = g.group_id ?? g.party_id;
-          return (
-            <div key={key} style={{ display: "grid", gridTemplateColumns: "1fr 48px 48px 48px", gap: 4, padding: "3px 0", borderBottom: "1px solid #1f2937", alignItems: "center" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <svg width={18} height={18} viewBox="0 0 30 30" style={{ display: "block", flexShrink: 0 }}>
-                  <path d={FACE_PATH} fill={g.iconColor} />
-                  <text x="15" y="18" fontFamily="'Roboto Slab', serif" fontSize={iconFontSize} fontWeight="700"
-                    fill={g.iconTextColor} textAnchor="middle">{g.iconAbbr}</text>
-                </svg>
-                <span style={{ fontSize: 12, color: "#d1d5db", fontFamily: "sans-serif", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{g.label}</span>
-              </div>
-              <span style={{ textAlign: "right", fontSize: 14, fontWeight: 700, color: c.support > 0 ? "#22c55e" : "#374151" }}>{c.support > 0 ? c.support : "—"}</span>
-              <span style={{ textAlign: "right", fontSize: 14, fontWeight: 700, color: c.oppose > 0 ? "#ef4444" : "#374151" }}>{c.oppose > 0 ? c.oppose : "—"}</span>
-              <span style={{ textAlign: "right", fontSize: 13, color: c.neutral > 0 ? "#9ca3af" : "#374151" }}>{c.neutral > 0 ? c.neutral : "—"}</span>
+      {/* Two-column party grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 12px" }}>
+        {[leftCol, rightCol].map((col, ci) => (
+          <div key={ci}>
+            {/* Column headers */}
+            <div style={{ display: "flex", alignItems: "center", gap: 4, padding: "1px 6px 4px", fontSize: 10, color: "#4b5563" }}>
+              <span style={{ flex: 1 }} />
+              <span style={{ width: "36px", textAlign: "right", display: "inline-block", color: "#6b7280" }}>hlasov.</span>
+              {colHeader(polarityLabels.support, "#166534")}
+              {colHeader(polarityLabels.oppose, "#991b1b")}
+              {colHeader(polarityLabels.neutral, "#4b5563")}
             </div>
-          );
-        })}
+            {col.map((g) => (
+              <TabulePartyRow key={g.group_id ?? g.party_id} g={g} polarityLabels={polarityLabels} />
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
