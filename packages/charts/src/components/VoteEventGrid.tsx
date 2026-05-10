@@ -58,6 +58,7 @@ export interface VoteEventGridProps {
    */
   layout?: "party-first" | "polarity-first" | "wp";
   requirementCountLabel?: string;
+  logo?: React.ReactNode;
 }
 
 // ─── Shared tooltip ───────────────────────────────────────────────────────────
@@ -327,13 +328,6 @@ function PolarityFirstLayout({
   );
 }
 
-function pickDotsPerRow(total: number): number {
-  for (const n of [5, 10, 20, 25, 50]) {
-    if (Math.ceil(total / n) <= 8) return n;
-  }
-  return 50;
-}
-
 // ─── Support column with shape-following dashed outline at required_count ─────
 
 function SupportColumnWithThreshold({
@@ -341,13 +335,11 @@ function SupportColumnWithThreshold({
   groupByVoter,
   dotSize,
   required_count,
-  dotsPerRow,
 }: {
   voters: VoteEventVoter[];
   groupByVoter: Map<string, VoteEventPartyGroup>;
   dotSize: number;
   required_count: number;
-  dotsPerRow: number;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [outlinePath, setOutlinePath] = useState("");
@@ -404,7 +396,7 @@ function SupportColumnWithThreshold({
     setOutlinePath(pts.join(" "));
   }, [required_count]);
 
-  useLayoutEffect(() => { recompute(); }, [recompute, voters.length, dotSize, dotsPerRow]);
+  useLayoutEffect(() => { recompute(); }, [recompute, voters.length, dotSize]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -419,13 +411,12 @@ function SupportColumnWithThreshold({
   const placeholderCount = Math.max(0, required_count - inside.length);
   const gridStyle: React.CSSProperties = {
     display: "grid",
-    gridTemplateColumns: `repeat(${dotsPerRow}, ${dotSize}px)`,
+    gridTemplateColumns: `repeat(auto-fill, ${dotSize}px)`,
     gap: 4,
   };
 
   return (
-    <div ref={containerRef} style={{ position: "relative" }}>
-      {/* Threshold zone: exactly required_count slots */}
+    <div ref={containerRef} style={{ position: "relative", overflow: "clip" }}>
       <div style={gridStyle}>
         {inside.map((v) => {
           const g = groupByVoter.get(v.voter_id);
@@ -439,7 +430,6 @@ function SupportColumnWithThreshold({
           <div key={`ph-${i}`} data-t="" style={{ width: dotSize, height: dotSize }} />
         ))}
       </div>
-      {/* Extra voters beyond threshold (pass case) */}
       {overflow.length > 0 && (
         <div style={{ ...gridStyle, marginTop: 4 }}>
           {overflow.map((v) => {
@@ -464,9 +454,42 @@ function SupportColumnWithThreshold({
 
 function WpLegend({ groups }: { groups: VoteEventPartyGroup[] }) {
   const present = groups.filter((g) => g.voters.length > 0);
+
+  // Per-group polarity counts
+  const pol = new Map<string, Record<string, number>>();
+  for (const g of present) {
+    const key = g.group_id ?? g.party_id;
+    const c: Record<string, number> = { support: 0, oppose: 0, neutral: 0 };
+    for (const v of g.voters) c[v.polarity] = (c[v.polarity] ?? 0) + 1;
+    pol.set(key, c);
+  }
+
+  function dominant(g: VoteEventPartyGroup): "support" | "oppose" | "neutral" {
+    const c = pol.get(g.group_id ?? g.party_id) ?? {};
+    const s = c.support ?? 0, o = c.oppose ?? 0, n = c.neutral ?? 0;
+    if (s >= o && s >= n) return "support";
+    if (o >= n) return "oppose";
+    return "neutral";
+  }
+
+  const buckets: Record<"support" | "oppose" | "neutral", VoteEventPartyGroup[]> = { support: [], oppose: [], neutral: [] };
+  for (const g of present) buckets[dominant(g)].push(g);
+
+  const sortBucket = (arr: VoteEventPartyGroup[], p: string) =>
+    arr.slice().sort((a, b) =>
+      (pol.get(b.group_id ?? b.party_id)?.[p] ?? 0) -
+      (pol.get(a.group_id ?? a.party_id)?.[p] ?? 0)
+    );
+
+  const ordered = [
+    ...sortBucket(buckets.support, "support"),
+    ...sortBucket(buckets.oppose, "oppose"),
+    ...sortBucket(buckets.neutral, "neutral"),
+  ];
+
   return (
     <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
-      {present.map((g) => (
+      {ordered.map((g) => (
         <div key={g.group_id ?? g.party_id} className="flex items-center gap-1">
           <svg width={12} height={12} viewBox="0 0 30 30" style={{ display: "block", flexShrink: 0 }}>
             <path d={FACE_PATH} fill={g.iconColor} />
@@ -516,7 +539,6 @@ function WpLayout({
   }
 
   const neutralDotSize = Math.max(10, dotSize - 4);
-  const dotsPerRow = pickDotsPerRow(all.length);
 
   return (
     <div>
@@ -528,14 +550,9 @@ function WpLayout({
           const label = polarityLabels[p];
           const ds = isNeutral ? neutralDotSize : dotSize;
           const sorted = sortedVoters(voters);
-          const gridStyle: React.CSSProperties = {
-            display: "grid",
-            gridTemplateColumns: `repeat(${dotsPerRow}, ${ds}px)`,
-            gap: 4,
-          };
 
           return (
-            <div key={p} className={isNeutral ? "opacity-60" : ""}>
+            <div key={p} className={isNeutral ? "opacity-60" : ""} style={{ overflow: "clip" }}>
               <div className="flex items-center gap-1.5 mb-2">
                 <span
                   className="rounded px-2 py-0.5 text-xs font-semibold text-white"
@@ -551,10 +568,9 @@ function WpLayout({
                   groupByVoter={groupByVoter}
                   dotSize={ds}
                   required_count={required_count}
-                  dotsPerRow={dotsPerRow}
                 />
               ) : (
-                <div style={gridStyle}>
+                <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fill, ${ds}px)`, gap: 4 }}>
                   {sorted.map((v) => {
                     const g = groupByVoter.get(v.voter_id);
                     return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={ds} showAbbr={false} /> : null;
@@ -585,20 +601,25 @@ export function VoteEventGrid({
   polarityLabels = { support: "support", oppose: "oppose", neutral: "neutral" },
   layout = "party-first",
   requirementCountLabel,
+  logo,
 }: VoteEventGridProps) {
   return (
-    <div className="space-y-5">
-      <VoteEventHeader
-        title={title}
-        date={date}
-        result={result}
-        requirement={requirement}
-        required_count={required_count}
-        polarity_counts={polarity_counts}
-        resultLabels={resultLabels}
-        polarityLabels={polarityLabels}
-        requirementCountLabel={requirementCountLabel}
-      />
+    <div className="border rounded-xl p-4 shadow-sm space-y-4">
+      {/* Card header: logo + metadata */}
+      <div className="flex items-start justify-between gap-2">
+        <VoteEventHeader
+          title={title}
+          date={date}
+          result={result}
+          requirement={requirement}
+          required_count={required_count}
+          polarity_counts={polarity_counts}
+          resultLabels={resultLabels}
+          polarityLabels={polarityLabels}
+          requirementCountLabel={requirementCountLabel}
+        />
+        {logo && <div className="shrink-0">{logo}</div>}
+      </div>
       {layout === "polarity-first" ? (
         <PolarityFirstLayout groups={groups} dotSize={dotSize} polarityLabels={polarityLabels} />
       ) : layout === "wp" ? (

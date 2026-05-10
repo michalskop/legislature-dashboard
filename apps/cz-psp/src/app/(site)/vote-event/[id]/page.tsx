@@ -96,6 +96,11 @@ export default async function VoteEventPage({
         result={ve.result}
         requirement={ve.requirement ? (REQUIREMENT_LABELS[ve.requirement] ?? ve.requirement) : undefined}
         requirementCountLabel="potřebné"
+        logo={
+          <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground border rounded px-1.5 py-0.5">
+            PSP
+          </span>
+        }
         required_count={ve.required_count}
         polarity_counts={ve.polarity_counts}
         groups={groups}
