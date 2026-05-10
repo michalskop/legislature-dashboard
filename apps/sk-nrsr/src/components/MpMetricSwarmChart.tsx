@@ -101,7 +101,7 @@ export function MpMetricSwarmChart({
         })
         .filter((x): x is NonNullable<typeof x> => x !== null),
     };
-  });
+  }).filter((g) => g.items.length > 0);
 
   const allValues = mps.map((mp) => getValue(mp, metric)).filter((v): v is number => v !== null);
   const avg = allValues.length > 0
