@@ -153,6 +153,7 @@ export interface SwarmBlockConfig {
   yMode?: "full" | "auto";
   yDecimals?: number;
   referenceLines?: Array<{ value: number; label: string }>;
+  excludeGroupIds?: string[];
 }
 
 export interface ScatterBlockConfig {

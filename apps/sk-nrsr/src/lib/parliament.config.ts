@@ -178,7 +178,7 @@ export const parliamentConfig: ParliamentConfig = {
       },
       {
         id: "rebelity-swarm",
-        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1, excludeGroupIds: ["nrsr:org:nezavisli"] },
         labels: {
           sk: { title: "Rebelita", description: "Ako často poslanec/poslankyňa hlasuje proti svojmu klubu." },
           en: { title: "Rebelliousness", description: "How often the MP votes against their own club." },
@@ -221,7 +221,7 @@ export const parliamentConfig: ParliamentConfig = {
       },
       {
         id: "rebelity-swarm",
-        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1, excludeGroupIds: ["nrsr:org:nezavisli"] },
         labels: {
           sk: { title: "Rebelita", description: "Ako často hlasuje proti svojmu klubu." },
           en: { title: "Rebelliousness", description: "How often they vote against their club." },

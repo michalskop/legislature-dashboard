@@ -63,6 +63,7 @@ export function PageBlockRenderer({ blocks, ctx }: { blocks: PageBlock[]; ctx: B
                   yMode={c.yMode}
                   yDecimals={c.yDecimals}
                   extraReferenceLines={c.referenceLines}
+                  excludeGroupIds={c.excludeGroupIds}
                   highlightId={ctx.highlightId}
                   averageLabel={ctx.chartLabels?.average}
                 />

@@ -22,6 +22,7 @@ interface Props {
   /** Decimal places for y-axis labels (×100 %). Default 0. */
   yDecimals?: number;
   extraReferenceLines?: SwarmReferenceLine[];
+  excludeGroupIds?: string[];
   height?: number;
   /** Highlight a single MP by personId */
   highlightId?: string;
@@ -73,13 +74,17 @@ export function MpMetricSwarmChart({
   yMode = "full",
   yDecimals = 0,
   extraReferenceLines = [],
+  excludeGroupIds = [],
   height = 360,
   highlightId,
   averageLabel = "Priemer",
 }: Props) {
   const formatY = makeFormatY(yDecimals);
   const router = useRouter();
-  const orderedParties = sortedParties(mps, parties);
+  const filteredParties = excludeGroupIds.length
+    ? parties.filter((p) => !excludeGroupIds.includes(p.groupId))
+    : parties;
+  const orderedParties = sortedParties(mps, filteredParties);
 
   const groups: SwarmGroup[] = orderedParties.map((party) => {
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId);
