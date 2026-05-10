@@ -50,10 +50,11 @@ export interface VoteEventGridProps {
   resultLabels?: { pass: string; fail: string; other?: string };
   polarityLabels?: { support: string; oppose: string; neutral: string };
   /**
-   * "party-first"   — group by party, dots colored by polarity (default)
-   * "polarity-first" — group by polarity, party-colored dots, neutral below
+   * "party-first"    — group by party, dots colored by polarity (default)
+   * "polarity-first" — group by polarity, party-colored dots per row
+   * "wp"             — three columns For|Against|Not voting, dense party-face grid
    */
-  layout?: "party-first" | "polarity-first";
+  layout?: "party-first" | "polarity-first" | "wp";
 }
 
 // ─── Shared tooltip ───────────────────────────────────────────────────────────
@@ -311,6 +312,85 @@ function PolarityFirstLayout({
   );
 }
 
+// ─── WP layout (Washington Post-inspired) ────────────────────────────────────
+// Three columns side-by-side (md+): For | Against | Not voting
+// Dense flat grid of party-face dots — no per-party row labels.
+// Voters ordered: biggest party first, consistent within section.
+
+function WpLayout({
+  groups,
+  dotSize,
+  polarityLabels,
+}: {
+  groups: VoteEventPartyGroup[];
+  dotSize: number;
+  polarityLabels: { support: string; oppose: string; neutral: string };
+}) {
+  const groupByVoter = new Map<string, VoteEventPartyGroup>();
+  for (const g of groups) {
+    for (const v of g.voters) groupByVoter.set(v.voter_id, g);
+  }
+
+  const all = groups.flatMap((g) => g.voters);
+  const byPolarity = new Map<string, VoteEventVoter[]>([["support", []], ["oppose", []], ["neutral", []]]);
+  for (const v of all) byPolarity.get(v.polarity)?.push(v);
+
+  function sortedVoters(voters: VoteEventVoter[]): VoteEventVoter[] {
+    // Count per group within this polarity
+    const counts = new Map<string, number>();
+    for (const v of voters) {
+      const g = groupByVoter.get(v.voter_id);
+      const key = g ? (g.group_id ?? g.party_id) : "__unknown__";
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    return voters.slice().sort((a, b) => {
+      const ga = groupByVoter.get(a.voter_id);
+      const gb = groupByVoter.get(b.voter_id);
+      const ka = ga ? (ga.group_id ?? ga.party_id) : "__unknown__";
+      const kb = gb ? (gb.group_id ?? gb.party_id) : "__unknown__";
+      if (ka !== kb) return (counts.get(kb) ?? 0) - (counts.get(ka) ?? 0);
+      return (a.name ?? "").localeCompare(b.name ?? "");
+    });
+  }
+
+  const neutralDotSize = Math.max(10, dotSize - 4);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {POLARITY_ORDER.map((p) => {
+        const voters = byPolarity.get(p) ?? [];
+        const isNeutral = p === "neutral";
+        const sectionColor = POLARITY_COLORS[p];
+        const label = polarityLabels[p];
+        const ds = isNeutral ? neutralDotSize : dotSize;
+        const sorted = sortedVoters(voters);
+
+        return (
+          <div key={p} className={isNeutral ? "opacity-60" : ""}>
+            <div className="flex items-center gap-1.5 mb-2">
+              <span
+                className="rounded px-2 py-0.5 text-xs font-semibold text-white"
+                style={{ background: sectionColor }}
+              >
+                {label}
+              </span>
+              <span className="text-xs text-muted-foreground">{voters.length}</span>
+            </div>
+            <div className="flex flex-wrap gap-0.5">
+              {sorted.map((v) => {
+                const g = groupByVoter.get(v.voter_id);
+                return g
+                  ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={ds} />
+                  : null;
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
 export function VoteEventGrid({
@@ -336,6 +416,8 @@ export function VoteEventGrid({
       />
       {layout === "polarity-first" ? (
         <PolarityFirstLayout groups={groups} dotSize={dotSize} polarityLabels={polarityLabels} />
+      ) : layout === "wp" ? (
+        <WpLayout groups={groups} dotSize={dotSize} polarityLabels={polarityLabels} />
       ) : (
         <PartyFirstLayout groups={groups} dotSize={dotSize} />
       )}

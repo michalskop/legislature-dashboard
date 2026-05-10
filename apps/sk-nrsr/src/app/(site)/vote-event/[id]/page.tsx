@@ -99,7 +99,7 @@ export default async function VoteEventPage({
         polarity_counts={ve.polarity_counts}
         groups={groups}
         dotSize={16}
-        layout="polarity-first"
+        layout="wp"
         resultLabels={{ pass: "Schválené", fail: "Zamietnuté" }}
         polarityLabels={{ support: "Za", oppose: "Proti", neutral: "Nehlasoval/Neprítomný" }}
       />
