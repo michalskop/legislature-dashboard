@@ -187,9 +187,6 @@ function VoteEventHeader({
           {requirement && <span>{requirement}</span>}
           {required_count !== undefined && (
             <>
-              <svg width={20} height={8} style={{ display: "block", flexShrink: 0 }}>
-                <line x1={0} y1={4} x2={20} y2={4} stroke="#6b7280" strokeWidth={2} strokeDasharray="5 3" />
-              </svg>
               <span>{requirementCountLabel ?? "required"}</span>
               <span className="font-semibold">{required_count}</span>
             </>
