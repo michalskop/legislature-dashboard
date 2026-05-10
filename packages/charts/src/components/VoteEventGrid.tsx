@@ -183,10 +183,16 @@ function VoteEventHeader({
         </span>
       </div>
       {(requirement || required_count !== undefined) && (
-        <div className="text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-xs text-muted-foreground">
           {requirement && <span>{requirement}</span>}
           {required_count !== undefined && (
-            <span className="ml-1">— {requirementCountLabel ?? "required"} — <span className="font-semibold">{required_count}</span></span>
+            <>
+              <svg width={20} height={8} style={{ display: "block", flexShrink: 0 }}>
+                <line x1={0} y1={4} x2={20} y2={4} stroke="#6b7280" strokeWidth={2} strokeDasharray="5 3" />
+              </svg>
+              <span>{requirementCountLabel ?? "required"}</span>
+              <span className="font-semibold">{required_count}</span>
+            </>
           )}
         </div>
       )}
@@ -426,7 +432,11 @@ function SupportColumnWithThreshold({
         ))}
         {overflow.map((v) => {
           const g = groupByVoter.get(v.voter_id);
-          return g ? <PartyFaceDot key={v.voter_id} voter={v} group={g} size={dotSize} showAbbr={false} /> : null;
+          return g ? (
+            <div key={v.voter_id}>
+              <PartyFaceDot voter={v} group={g} size={dotSize} showAbbr={false} />
+            </div>
+          ) : null;
         })}
       </div>
       {outlinePath && (
@@ -543,7 +553,7 @@ function WpLayout({
           const sorted = sortedVoters(voters);
 
           return (
-            <div key={p} className={isNeutral ? "opacity-60" : ""} style={{ overflow: "clip" }}>
+            <div key={p} className={isNeutral ? "opacity-60" : ""}>
               <div className="flex items-center gap-1.5 mb-2">
                 <span
                   className="rounded px-2 py-0.5 text-xs font-semibold text-white"
