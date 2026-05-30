@@ -1,0 +1,32 @@
+{
+  "_source": "legislature-dashboard/apps/cz-psp — root-domain discovery file; DO NOT copy to digest (web/public)",
+  "linkset": [
+    {
+      "anchor": "https://snemovna.datatimes.cz/digest",
+      "service-doc": [
+        {
+          "href": "https://snemovna.datatimes.cz/digest/llms.txt",
+          "type": "text/plain",
+          "title": "Sněmovna Digest — LLM-readable site description"
+        }
+      ],
+      "service-desc": [
+        {
+          "href": "https://snemovna.datatimes.cz/digest/summary.schema.json",
+          "type": "application/schema+json",
+          "title": "Event summary JSON schema (v2)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://snemovna.datatimes.cz/digest/api/events.json",
+      "service-doc": [
+        {
+          "href": "https://snemovna.datatimes.cz/digest/SKILL.md",
+          "type": "text/markdown",
+          "title": "Agent skill reference — data format and query patterns"
+        }
+      ]
+    }
+  ]
+}
