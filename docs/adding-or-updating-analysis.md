@@ -1,66 +1,70 @@
-# Adding or Updating an Analysis
+# Adding or Updating an Analysis (dashboard part)
 
-This guide describes the end-to-end process of adding a new type of analysis (e.g., "Loyalty") or updating an existing one (e.g., "Attendance") in the legislature dashboard.
+This repo is **layer 4 of a four-repo pipeline**. The canonical end-to-end guide — pipeline overview,
+naming contract, output-shape contract, and reusability rules — lives in the standard repo:
+**[legislature-data-standard/docs/adding-an-analysis.md](https://github.com/michalskop/legislature-data-standard/blob/main/docs/adding-an-analysis.md)**.
+Read it first. This document covers only the dashboard-side steps.
 
-## 1. Data Standards (External)
-Before any code is written in this repository, the analysis MUST comply with the [legislature-data-standard](https://github.com/michalskop/legislature-data-standard).
+## Prerequisites (layers 1–3, external)
 
-- **Schema Check**: Ensure the proposed JSON structure matches an existing schema or define a new one in the standard repo.
-- **Consistency**: All parliaments must produce the same analysis structure for the shared dashboard components to work.
+Before touching this repo, the upstream layers must be done — see the canonical guide:
 
-## 2. Analysis Production (External)
-The actual computation happens in the [legislature-data-analyses](https://github.com/michalskop/legislature-data-analyses) repository.
+1. **Standard** ([legislature-data-standard](https://github.com/michalskop/legislature-data-standard)):
+   definition + output + table schemas published.
+2. **Analysis script** ([legislature-data-analyses](https://github.com/michalskop/legislature-data-analyses)):
+   parliament-agnostic script with passing tests on ≥2 legislatures.
+3. **Data repo(s)** (e.g. `cz-psp-data-2025-202x`): nightly Action commits
+   `analyses/<slug>/outputs/<slug_snake>.json` — the dashboard fetches exactly
+   `{parliamentConfig.dataBase}/<slug>/outputs/<slug_snake>.json`.
 
-- **Implementation**: Write the script to process raw legislative data into the standardized JSON format.
-- **Output**: The script should output a JSON file (e.g., `loyalty.json`).
+> **Note:** until the app-deduplication refactor lands, steps 2–4 below must be repeated in **every**
+> app (`apps/cz-psp`, `apps/sk-nrsr`, …). Keep the copies identical except for config. If a parliament's
+> data repo does not publish the analysis, exclude it via that app's `parliamentConfig.analyses` — never
+> by hardcoding nulls in shared code.
 
-## 3. Data Repository (External)
-The nightly GitHub Action in the parliament's data repo (e.g., `cz-psp-data-2025-202x`) must be updated to include the new analysis.
+## 1. Core types (`packages/parliament-core`)
 
-- **Path**: The standard path is `{dataBase}/{analysis_slug}/outputs/{analysis_slug}.json`.
-- **Example**: `.../analyses/attendance/outputs/attendance.json`.
+- **Block config**: if the metric appears in charts/tables, add the analysis slug to the relevant
+  `BlockConfig` union member (e.g. `SwarmBlockConfig.analysis`) in `src/types.ts`.
+- **Translations**: add the metric label key to the `ParliamentTranslations` interface.
 
-## 4. Core Types (`packages/parliament-core`)
-If the analysis is a new metric, update the shared types in `packages/parliament-core/src/types.ts`:
+## 2. Application types (`apps/*/src/lib/types.ts`)
 
-- **Block Config**: Add the analysis slug to the relevant `BlockConfig` (e.g., `SwarmBlockConfig` or `MemberTableBlockConfig`).
-- **Translations**: Add the metric label to the `ParliamentTranslations` interface.
+- **Record interface**: define `<Pascal>Record` mirroring the published output schema exactly
+  (`person_id`, the metric fields, the shared metadata block). Do not invent fields the schema doesn't
+  have.
+- **`MpProfile`**: add the processed metric (nullable — a member may be missing from the analysis).
+- **`PartyProfile` / `KrajProfile`**: only if the metric aggregates at group/region level.
 
-## 5. Application Types (`apps/*/src/lib/types.ts`)
-Update the app-specific types to include the new data:
+## 3. Data fetching (`apps/*/src/lib/data.ts`)
 
-- **Record Interface**: Define the raw record interface (e.g., `LoyaltyRecord`) matching the JSON output.
-- **`MpProfile`**: Add the processed metric to the `MpProfile` interface.
-- **`PartyProfile` / `KrajProfile`**: If the metric should be aggregated at the group or region level, add it here.
+1. **Fetch function**: `fetch<Pascal>()` using `fetchJson<T>("<slug>/outputs/<slug_snake>.json")`.
+2. **`getAllMpProfiles()`**: add the fetcher to the `Promise.all`, index the result by `person_id`
+   (`new Map(records.map(r => [r.person_id, r]))`), and map it into the returned `MpProfile`s — `null`
+   when the person is absent from the analysis.
+3. **Aggregations**: extend `getAllPartyProfiles()` / `getAllKrajProfiles()` if the metric is averaged.
 
-## 6. Data Fetching (`apps/*/src/lib/data.ts`)
-Update the data layer to retrieve the new JSON:
+## 4. Parliament configuration (`apps/*/src/lib/parliament.config.ts`)
 
-1.  **Fetch Function**: Create a `fetchXxx()` function using `fetchJson<T>(path)`.
-    - *Note: `fetchJson` automatically handles `NaN` → `null` conversion.*
-2.  **`getAllMpProfiles()`**:
-    - Add the new fetcher to the `Promise.all` block.
-    - Index the data by `person_id`.
-    - Map the data into the returned `MpProfile` objects.
-3.  **Aggregations**: Update `getAllPartyProfiles()` or `getAllKrajProfiles()` if you need to calculate averages for the new metric.
+- **`analyses`**: add `<slug>` — this is the switch that says "this parliament has this analysis".
+- **`translations`**: add `metrics.<key>` (and any `ui.*` strings the metric needs) for **all**
+  supported languages of the app. Missing a language is a review blocker.
+- **`pages`**: add `PageBlock` entries (`swarm-chart`, `scatter-chart`, `metrics-grid` column, …) to
+  `home` / `memberDetail` / `groupDetail` / `regionDetail` as appropriate, with per-language labels.
 
-## 7. Parliament Configuration (`parliament.config.ts`)
-Register the analysis in the app's `parliament.config.ts`:
+## 5. UI components (only if no existing block type fits)
 
-- **`analyses`**: Add the analysis slug to the top-level array.
-- **`translations`**: Add the human-readable labels for all supported languages.
-- **`pages`**: Add new `PageBlock` entries (e.g., `swarm-chart` or `metrics-grid`) to the home page or detail pages.
+- **Charts**: extend `packages/charts` (or add a new block type: new `XxxBlockConfig` in
+  parliament-core → `BlockConfig` union → `PageBlockRenderer` case → config entries).
+- **Table**: add the column to `SortableMpTable` in `packages/ui`.
+- **Rule**: shared components stay parliament-agnostic — data, labels, and colors arrive via props/config,
+  never via imported constants.
 
-## 8. UI Components
-If the existing components (`SwarmPlot`, `SortableMpTable`, etc.) cannot handle the new data:
+## Verification checklist
 
-- **Charts**: Update components in `packages/charts` or create new ones.
-- **Table**: Update `SortableMpTable.tsx` to include the new column.
-- **Styling**: Ensure any new colors or icons follow the design system in `packages/ui`.
-
-## Verification Checklist
-- [ ] JSON output matches `legislature-data-standard`.
-- [ ] `fetchJson` is used to sanitize `NaN` values.
-- [ ] All translations are provided for the new metric.
-- [ ] `pnpm typecheck` passes across the monorepo.
-- [ ] The new metric is visible in the UI (Member detail, tables, or charts).
+- [ ] Record type matches the published JSON Schema (spot-check against
+      `https://michalskop.github.io/legislature-data-standard/dt.analyses/<slug>/latest/`).
+- [ ] Metric renders on member detail, tables, and charts for every app whose data repo publishes it.
+- [ ] Apps without the analysis degrade gracefully (driven by `parliamentConfig.analyses`).
+- [ ] All languages of every touched app have translations.
+- [ ] `pnpm typecheck`, `pnpm lint`, and `pnpm build` pass across the monorepo.

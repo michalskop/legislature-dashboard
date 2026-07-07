@@ -53,7 +53,9 @@ Use Next.js server components with `revalidate` for ISR.
 ## Guides
 
 - [Adding a new parliament or language](./docs/adding-parliament-and-language.md)
-- [Adding or updating an analysis](./docs/adding-or-updating-analysis.md)
+- [Adding or updating an analysis](./docs/adding-or-updating-analysis.md) — dashboard part only; the
+  canonical four-repo pipeline guide is
+  [legislature-data-standard/docs/adding-an-analysis.md](https://github.com/michalskop/legislature-data-standard/blob/main/docs/adding-an-analysis.md)
 
 ## Commands
 
