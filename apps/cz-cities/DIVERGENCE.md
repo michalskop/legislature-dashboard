@@ -21,10 +21,10 @@ diff -rq apps/cz-psp apps/cz-cities -x '.next' -x 'node_modules' -x '*.tsbuildin
   colors/IDs, site URL) inside otherwise-identical structure. Also strong T6 candidates (the
   *shape* is shared, only config/content differs — exactly what a `ParliamentConfig`-driven
   shared component should already handle, and mostly does, except where noted below).
-- **13 files added** (not present in cz-psp) — placeholder fixtures and one renamed/local module.
-- **8 files removed** (present in cz-psp, deliberately not carried over) — PSP-specific
-  infrastructure (the "Sněmovna Digest" video-summary microservice) that has no cz-cities
-  equivalent.
+- **14 files added** (not present in cz-psp) — placeholder fixtures and one renamed/local module.
+- **10 files removed** (present in cz-psp, deliberately not carried over) — PSP-specific
+  infrastructure (the "Sněmovna Digest" video-summary microservice, and real MP names/vote data)
+  that has no cz-cities equivalent.
 
 ---
 
@@ -120,7 +120,7 @@ Same structure/logic as cz-psp; only app identity, translations, IDs, or copy di
 - `public/.well-known/README.md` — rewritten ownership map; documents the `mcp/`/`api-catalog`
   removal (see below)
 
-## 3. Added (13 files, not present in cz-psp)
+## 3. Added (14 files, not present in cz-psp)
 
 - `src/lib/parties.ts` — local `PLACEHOLDER_PARTY_META`/`PLACEHOLDER_PARTY_COLORS`. Added because
   `@legislature/ui`'s `PartyBadge`/`PartyFace`/`SortableMpTable` **hardcode**
@@ -146,24 +146,25 @@ Same structure/logic as cz-psp; only app identity, translations, IDs, or copy di
   `.../city-assembly-datasets/SKILL.md` — generated output, renamed from cz-psp's
   `czech-chamber-dashboard`/`czech-chamber-datasets`
 
-## 4. Removed (8 files/dirs present in cz-psp, deliberately not carried over)
+## 4. Removed (10 files present in cz-psp, deliberately not carried over)
 
 cz-psp additionally describes and links to a separately deployed **"Sněmovna Digest"** video/
 event-summary microservice (reachable at `/digest`, proxied via `next.config.ts`'s
-`DIGEST_ORIGIN` rewrite). No such service exists for cities — copying these files would have
-published discovery metadata (MCP server card, API catalog, auth docs) for a subsystem that
-doesn't exist in this app, which would be actively misleading to crawlers/agents, not just unused
-boilerplate. Removed:
+`DIGEST_ORIGIN` rewrite, itself a modification counted under section 2, not a removed file).
+No such service exists for cities — copying these discovery files would have published metadata
+(MCP server card, API catalog) for a subsystem that doesn't exist in this app, which would be
+actively misleading to crawlers/agents, not just unused boilerplate. Removed:
 
-- `src/data/vote-events/86377.json`–`86381.json` — **also removed because they contain real PSP
-  MP names and real vote records** (200 real voters per file); replaced with generic
-  `placeholder-*.json` fixtures using the same 8 fictional councillors as the analysis fixtures
-- `next.config.ts`'s `/digest/*` rewrite and `DIGEST_ORIGIN` env var
-- `public/.well-known/mcp/server-card.json` — MCP server card for "Sněmovna Digest"
-- `public/.well-known/api-catalog` — RFC 9727 API catalog, references digest endpoints
-- `public/.well-known/agent-skills/czech-chamber-dashboard/`,
-  `czech-chamber-datasets/` — renamed to `city-assembly-*` (see Added), not literally removed,
-  but the old PSP-named dirs don't exist in cz-cities
+- `src/data/vote-events/86377.json`, `86378.json`, `86379.json`, `86380.json`, `86381.json` (5
+  files) — **also removed because they contain real PSP MP names and real vote records** (200
+  real voters per file); replaced with generic `placeholder-1.json`/`placeholder-2.json` fixtures
+  using the same 8 fictional councillors as the analysis fixtures
+- `public/.well-known/mcp/server-card.json` — MCP server card for "Sněmovna Digest" (1 file)
+- `public/.well-known/api-catalog` — RFC 9727 API catalog, references digest endpoints (1 file)
+- `public/.well-known/agent-skills/czech-chamber-dashboard/SKILL.md`,
+  `czech-chamber-datasets/SKILL.md` (2 files) — renamed to `city-assembly-*` (see Added), not
+  literally removed, but the old PSP-named dirs/files don't exist in cz-cities
+- `src/components/SnemovnaLogotype.tsx` (1 file) — renamed to `CityLogotype.tsx` (see Added)
 
 ---
 
