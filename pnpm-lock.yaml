@@ -15,6 +15,58 @@ importers:
         specifier: ^5.7.3
         version: 5.9.3
 
+  apps/cz-cities:
+    dependencies:
+      '@legislature/charts':
+        specifier: workspace:^
+        version: link:../../packages/charts
+      '@legislature/parliament-core':
+        specifier: workspace:*
+        version: link:../../packages/parliament-core
+      '@legislature/ui':
+        specifier: workspace:^
+        version: link:../../packages/ui
+      '@legislature/utils':
+        specifier: workspace:^
+        version: link:../../packages/utils
+      next:
+        specifier: ^15.1.6
+        version: 15.5.12(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.4
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.4(react@19.2.4)
+    devDependencies:
+      '@eslint/eslintrc':
+        specifier: ^3.2.0
+        version: 3.3.5
+      '@tailwindcss/postcss':
+        specifier: ^4.0.0
+        version: 4.2.1
+      '@types/node':
+        specifier: ^22.10.7
+        version: 22.19.15
+      '@types/react':
+        specifier: ^19.0.7
+        version: 19.2.14
+      '@types/react-dom':
+        specifier: ^19.0.3
+        version: 19.2.3(@types/react@19.2.14)
+      eslint:
+        specifier: ^9.20.0
+        version: 9.39.4(jiti@2.6.1)
+      eslint-config-next:
+        specifier: ^15.1.6
+        version: 15.5.12(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.2.1
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+
   apps/cz-psp:
     dependencies:
       '@legislature/charts':

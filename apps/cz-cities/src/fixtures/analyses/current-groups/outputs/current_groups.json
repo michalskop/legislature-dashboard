@@ -1,0 +1,17 @@
+[
+  {
+    "id": "city:org:group-a",
+    "name": "Klub A (Koalice)",
+    "classification": "group"
+  },
+  {
+    "id": "city:org:group-b",
+    "name": "Klub B (Koalice)",
+    "classification": "group"
+  },
+  {
+    "id": "city:org:group-c",
+    "name": "Klub C (Opozice)",
+    "classification": "group"
+  }
+]

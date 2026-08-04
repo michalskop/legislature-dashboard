@@ -1,0 +1,20 @@
+# General rules for all bots
+User-agent: *
+Allow: /
+
+Sitemap: https://mesta.datatimes.cz/sitemap.xml
+
+# AI-specific crawlers are welcome to use public pages as grounding input.
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: ClaudeBot
+User-agent: Google-Extended
+User-agent: PerplexityBot
+User-agent: Applebot-Extended
+Allow: /
+
+# Content Signals
+Content-Signal: search=yes, ai-input=yes, ai-train=no

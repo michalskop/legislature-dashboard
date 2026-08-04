@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import "@legislature/ui/tokens.css";
+
+@source "../../../../packages/charts/src/**/*.{ts,tsx}";
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
+/* =====================================================
+ * PLACEHOLDER party colors (task A1 scaffold) — kept in sync with
+ * src/lib/parties.ts PLACEHOLDER_PARTY_COLORS. Real per-city colors are
+ * task A3.
+ * ===================================================== */
+@theme {
+  --color-party-placeholder-a: #2b6cb0;
+  --color-party-placeholder-b: #b7412f;
+  --color-party-placeholder-c: #d9a441;
+  --color-party-other: #bcbcb0;
+}
+
+/* ---- Prose styles for static content ---- */
+.prose-static {
+  line-height: 1.75;
+  color: var(--color-foreground);
+}
+.prose-static h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.prose-static h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-static p {
+  margin-bottom: 1rem;
+}
+.prose-static a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-static a:hover {
+  opacity: 0.8;
+}

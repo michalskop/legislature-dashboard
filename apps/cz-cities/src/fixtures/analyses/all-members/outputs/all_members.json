@@ -1,0 +1,263 @@
+[
+  {
+    "id": "city:person:001",
+    "name": "Jana Nováková",
+    "given_name": "Jana",
+    "family_name": "Nováková",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-a",
+          "name": "Klub A (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:002",
+    "name": "Petr Svoboda",
+    "given_name": "Petr",
+    "family_name": "Svoboda",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-a",
+          "name": "Klub A (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:003",
+    "name": "Eva Dvořáková",
+    "given_name": "Eva",
+    "family_name": "Dvořáková",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-a",
+          "name": "Klub A (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:004",
+    "name": "Tomáš Procházka",
+    "given_name": "Tomáš",
+    "family_name": "Procházka",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-b",
+          "name": "Klub B (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:005",
+    "name": "Lucie Horáková",
+    "given_name": "Lucie",
+    "family_name": "Horáková",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-b",
+          "name": "Klub B (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:006",
+    "name": "Martin Kučera",
+    "given_name": "Martin",
+    "family_name": "Kučera",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-b",
+          "name": "Klub B (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:007",
+    "name": "Kateřina Veselá",
+    "given_name": "Kateřina",
+    "family_name": "Veselá",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-c",
+          "name": "Klub C (Opozice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:008",
+    "name": "Jan Marek",
+    "given_name": "Jan",
+    "family_name": "Marek",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-c",
+          "name": "Klub C (Opozice)",
+          "start_date": "2022-10-24",
+          "end_date": ""
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  },
+  {
+    "id": "city:person:009",
+    "name": "Alena Pokorná",
+    "given_name": "Alena",
+    "family_name": "Pokorná",
+    "birth_date": null,
+    "gender": null,
+    "image": null,
+    "memberships": {
+      "parliament": [
+        {
+          "id": "city:org:zastupitelstvo",
+          "name": "Zastupitelstvo (placeholder)",
+          "start_date": "2022-10-24",
+          "end_date": "2024-06-01"
+        }
+      ],
+      "groups": [
+        {
+          "id": "city:org:group-a",
+          "name": "Klub A (Koalice)",
+          "start_date": "2022-10-24",
+          "end_date": "2024-06-01"
+        }
+      ],
+      "candidate_list": [],
+      "constituency": []
+    }
+  }
+]

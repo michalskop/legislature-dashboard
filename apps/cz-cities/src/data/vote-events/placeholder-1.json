@@ -1,0 +1,74 @@
+{
+  "id": "city:vote-event:placeholder-1",
+  "parliament_id": "city-placeholder",
+  "start_date": "2024-03-12",
+  "title": "Ukázkové hlasování č. 1 (placeholder — bez skutečných dat)",
+  "result": "pass",
+  "requirement": "simple majority",
+  "required_count": 5,
+  "definition_name": null,
+  "polarity_counts": {
+    "support": 6,
+    "oppose": 2,
+    "neutral": 0,
+    "total": 8
+  },
+  "votes": [
+    {
+      "voter_id": "city:person:001",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jana Nováková",
+      "group_id": "city:org:group-a"
+    },
+    {
+      "voter_id": "city:person:002",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Petr Svoboda",
+      "group_id": "city:org:group-a"
+    },
+    {
+      "voter_id": "city:person:003",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Eva Dvořáková",
+      "group_id": "city:org:group-a"
+    },
+    {
+      "voter_id": "city:person:004",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Procházka",
+      "group_id": "city:org:group-b"
+    },
+    {
+      "voter_id": "city:person:005",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Lucie Horáková",
+      "group_id": "city:org:group-b"
+    },
+    {
+      "voter_id": "city:person:006",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Martin Kučera",
+      "group_id": "city:org:group-b"
+    },
+    {
+      "voter_id": "city:person:007",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Kateřina Veselá",
+      "group_id": "city:org:group-c"
+    },
+    {
+      "voter_id": "city:person:008",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Jan Marek",
+      "group_id": "city:org:group-c"
+    }
+  ]
+}

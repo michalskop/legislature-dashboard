@@ -1,0 +1,192 @@
+[
+  {
+    "person_id": "city:person:001",
+    "name": "Jana Nováková",
+    "given_names": [
+      "Jana"
+    ],
+    "family_names": [
+      "Nováková"
+    ],
+    "govity_total": 28,
+    "govity_possible": 30,
+    "govity": 0.9333,
+    "organizations": [
+      {
+        "id": "city:org:group-a",
+        "name": "Klub A (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:002",
+    "name": "Petr Svoboda",
+    "given_names": [
+      "Petr"
+    ],
+    "family_names": [
+      "Svoboda"
+    ],
+    "govity_total": 26,
+    "govity_possible": 30,
+    "govity": 0.8667,
+    "organizations": [
+      {
+        "id": "city:org:group-a",
+        "name": "Klub A (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:003",
+    "name": "Eva Dvořáková",
+    "given_names": [
+      "Eva"
+    ],
+    "family_names": [
+      "Dvořáková"
+    ],
+    "govity_total": 27,
+    "govity_possible": 30,
+    "govity": 0.9,
+    "organizations": [
+      {
+        "id": "city:org:group-a",
+        "name": "Klub A (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:004",
+    "name": "Tomáš Procházka",
+    "given_names": [
+      "Tomáš"
+    ],
+    "family_names": [
+      "Procházka"
+    ],
+    "govity_total": 24,
+    "govity_possible": 30,
+    "govity": 0.8,
+    "organizations": [
+      {
+        "id": "city:org:group-b",
+        "name": "Klub B (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:005",
+    "name": "Lucie Horáková",
+    "given_names": [
+      "Lucie"
+    ],
+    "family_names": [
+      "Horáková"
+    ],
+    "govity_total": 26,
+    "govity_possible": 30,
+    "govity": 0.8667,
+    "organizations": [
+      {
+        "id": "city:org:group-b",
+        "name": "Klub B (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:006",
+    "name": "Martin Kučera",
+    "given_names": [
+      "Martin"
+    ],
+    "family_names": [
+      "Kučera"
+    ],
+    "govity_total": 23,
+    "govity_possible": 30,
+    "govity": 0.7667,
+    "organizations": [
+      {
+        "id": "city:org:group-b",
+        "name": "Klub B (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:007",
+    "name": "Kateřina Veselá",
+    "given_names": [
+      "Kateřina"
+    ],
+    "family_names": [
+      "Veselá"
+    ],
+    "govity_total": 7,
+    "govity_possible": 30,
+    "govity": 0.2333,
+    "organizations": [
+      {
+        "id": "city:org:group-c",
+        "name": "Klub C (Opozice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:008",
+    "name": "Jan Marek",
+    "given_names": [
+      "Jan"
+    ],
+    "family_names": [
+      "Marek"
+    ],
+    "govity_total": 5,
+    "govity_possible": 30,
+    "govity": 0.1667,
+    "organizations": [
+      {
+        "id": "city:org:group-c",
+        "name": "Klub C (Opozice)",
+        "classification": "group",
+        "since": "2022-10-24"
+      }
+    ]
+  },
+  {
+    "person_id": "city:person:009",
+    "name": "Alena Pokorná",
+    "given_names": [
+      "Alena"
+    ],
+    "family_names": [
+      "Pokorná"
+    ],
+    "govity_total": 22,
+    "govity_possible": 30,
+    "govity": 0.7333,
+    "organizations": [
+      {
+        "id": "city:org:group-a",
+        "name": "Klub A (Koalice)",
+        "classification": "group",
+        "since": "2022-10-24",
+        "until": "2024-06-01"
+      }
+    ]
+  }
+]
