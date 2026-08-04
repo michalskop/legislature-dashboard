@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { CityLogotype } from "@/components/CityLogotype";
-import { parliamentConfig } from "@/lib/parliament.config";
-import { getLang } from "@/lib/lang";
+import type { CityConfig } from "@/lib/city.config";
+import { getCityTranslations } from "@/lib/city.config";
+import { getSiteTranslations } from "@/lib/site";
+import { globalBasePath } from "@/lib/routing";
 
 function FooterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -25,9 +27,14 @@ function FooterLink({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
-export async function SiteFooter() {
-  const lang = await getLang();
-  const t = parliamentConfig.translations[lang] ?? parliamentConfig.translations[parliamentConfig.defaultLang]!;
+interface Props {
+  lang: string;
+  city: CityConfig;
+}
+
+export function SiteFooter({ lang, city }: Props) {
+  const t = getCityTranslations(city, lang);
+  const site = getSiteTranslations(lang);
 
   return (
     <footer className="w-full border-t border-border bg-surface-0 mt-auto">
@@ -43,19 +50,19 @@ export async function SiteFooter() {
           </p>
         </div>
 
-        <FooterSection title={t.footer.aboutSection}>
-          <Link href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            {t.footer.aboutSection}
+        <FooterSection title={site.footer.aboutSection}>
+          <Link href={`${globalBasePath(lang)}/about`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            {site.footer.aboutSection}
           </Link>
         </FooterSection>
 
-        <FooterSection title={t.footer.projectsSection}>
+        <FooterSection title={site.footer.projectsSection}>
           <FooterLink href="https://datatimes.cz">DataTimes.cz</FooterLink>
           <FooterLink href="https://volebnikalkulacka.cz">Volební kalkulačka</FooterLink>
           <FooterLink href="https://mandaty.cz">Mandáty.cz</FooterLink>
         </FooterSection>
 
-        <FooterSection title={t.footer.contactSection}>
+        <FooterSection title={site.footer.contactSection}>
           <FooterLink href="https://kohovolit.eu">KohoVolit.eu</FooterLink>
         </FooterSection>
       </div>

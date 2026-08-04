@@ -1,6 +1,6 @@
 # /.well-known — ownership map
 
-PLACEHOLDER scaffold (task A1) — see the app-level DIVERGENCE.md.
+See the app-level DIVERGENCE.md for the full A1/A2 history.
 
 Files here are served at `<deployment host>/.well-known/` and are
 **root-domain discovery files** — they describe the whole site to AI agents

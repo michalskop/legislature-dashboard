@@ -2,116 +2,230 @@ import type {
   AttendanceRecord,
   RebelityRecord,
   GovityRecord,
-  VoteCorrectionsRecord,
   WpcaRecord,
   CurrentMember,
   CurrentGroup,
   MpProfile,
   PartyProfile,
-  KrajProfile,
+  MembershipInterval,
 } from "./types";
-import { groupIdToPartyId, personSlug, groupSlug, constituencySlug } from "./groups";
+import { groupIdToPartyId, personSlug, groupSlug } from "./groups";
+import { parseCsv } from "./csv";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
 // ─────────────────────────────────────────────────────────────────────────
-// PLACEHOLDER DATA SOURCE — task A1 divergence from cz-psp/sk-nrsr, documented
-// in DIVERGENCE.md.
+// Data source — task A2. Real, committed local fixtures per city (populated
+// from the owner-approved Praha data in cz-municipalities-votes-2022-2026,
+// see DIVERGENCE.md "Real data instead of fictional placeholders"), read the
+// same way A1 read placeholder fixtures: from disk, not the network. Once
+// the city data repo is actually published and stable, swap `fetchAnalysisJson`
+// and `readCityCsv` below to `fetch(cityConfig.dataBase + "/" + path)` /
+// `fetch(rawTablesBase + "/" + table + ".csv")` — every call site is
+// unchanged, only these two functions' bodies need to change.
 //
-// cz-psp/sk-nrsr's fetchJson() does `fetch(GITHUB_RAW_URL)` against a data
-// repo that is nightly-updated and already publishes real committed analysis
-// outputs. For cz-cities, no such repo/branch exists yet: the city data
-// pipeline (cz-municipalities-votes-2022-2026 restructure, tasks C1/C7/C8 in
-// plan.md) is being built in parallel and hasn't published anything under
-// `<city>/analyses/*/outputs/*.json` yet. `parliamentConfig.dataBase` above
-// documents the *future* real URL shape so it's a one-line swap later, but
-// wiring fetchJson() to fetch() that URL today would either 404 at build
-// time (breaking `pnpm build`, `next build` runs data fetches at build time
-// for static/ISR pages) or silently depend on GitHub's availability during
-// every build for data that doesn't exist yet.
-//
-// Chosen approach: read small, clearly-labeled placeholder fixtures
-// committed under src/fixtures/analyses/ (same shape as the real analysis
-// outputs) from local disk instead of the network. This is a pragmatic
-// extension of the pattern cz-psp already uses for src/data/vote-events/*.json
-// (see src/app/(site)/vote-event/[id]/page.tsx) rather than a new technique.
-// It makes `pnpm build` deterministic and independent of GitHub/network
-// availability, at the cost of losing ISR revalidation (irrelevant — the
-// fixture data never changes). Swap back to a `fetch(dataBase + "/" + path)`
-// call once the real data repo publishes a city's analysis outputs (A2/C8).
+// Layout mirrors the future real repo:
+//   src/fixtures/<citySlug>/analyses/<analysis>/outputs/<analysis>.json
+//   src/fixtures/<citySlug>/data/{persons,organizations,memberships}.csv
 // ─────────────────────────────────────────────────────────────────────────
 
-const FIXTURES_DIR = join(process.cwd(), "src/fixtures/analyses");
+const FIXTURES_DIR = join(process.cwd(), "src/fixtures");
 
-async function fetchJson<T>(path: string): Promise<T> {
-  const text = await readFile(join(FIXTURES_DIR, path), "utf-8");
-  // Mirrors upstream's NaN-tolerant parse (some real analysis outputs contain
-  // bare `NaN`, which is invalid JSON) — kept for parity even though the
-  // placeholder fixtures don't need it, so the swap back to fetch() is a
-  // pure find-and-replace of this one function body.
+async function fetchAnalysisJson<T>(citySlug: string, path: string): Promise<T> {
+  const text = await readFile(join(FIXTURES_DIR, citySlug, "analyses", path), "utf-8");
+  // NaN-tolerant parse — some real analysis outputs contain bare `NaN`
+  // (invalid JSON per RFC 8259; audit T4 tracks fixing this upstream).
   return JSON.parse(text.replace(/:\s*NaN/g, ": null")) as T;
 }
 
-// --- Raw fetchers ---
-
-export function fetchAttendance() {
-  return fetchJson<AttendanceRecord[]>("attendance/outputs/attendance.json");
+async function readCityCsv(citySlug: string, table: string): Promise<Record<string, string>[]> {
+  const text = await readFile(join(FIXTURES_DIR, citySlug, "data", `${table}.csv`), "utf-8");
+  return parseCsv(text);
 }
 
-export function fetchRebelity() {
-  return fetchJson<RebelityRecord[]>("rebelity/outputs/rebelity.json");
+/** Safe column access for parsed CSV rows (tsconfig's noUncheckedIndexedAccess
+ * means Record<string,string> indexing is `string | undefined`; every real
+ * column in the standard tables this app reads is always present, so "" is
+ * an unreachable-in-practice fallback, not a silent data-quality decision). */
+function col(row: Record<string, string>, key: string): string {
+  return row[key] ?? "";
 }
 
-export function fetchGovity() {
-  return fetchJson<GovityRecord[]>("govity/outputs/govity.json");
+// --- Raw analysis fetchers ---
+
+export function fetchAttendance(citySlug: string) {
+  return fetchAnalysisJson<AttendanceRecord[]>(citySlug, "attendance/outputs/attendance.json");
 }
 
-export function fetchVoteCorrections() {
-  return fetchJson<VoteCorrectionsRecord[]>("vote-corrections/outputs/vote_corrections.json");
+export function fetchRebelity(citySlug: string) {
+  return fetchAnalysisJson<RebelityRecord[]>(citySlug, "rebelity/outputs/rebelity.json");
 }
 
-export function fetchWpca() {
-  return fetchJson<WpcaRecord[]>("wpca/outputs/wpca.json");
+export function fetchGovity(citySlug: string) {
+  return fetchAnalysisJson<GovityRecord[]>(citySlug, "govity/outputs/govity.json");
 }
 
-export function fetchCurrentMembers() {
-  return fetchJson<CurrentMember[]>("current-members/outputs/current_members.json");
+export function fetchWpca(citySlug: string) {
+  return fetchAnalysisJson<WpcaRecord[]>(citySlug, "wpca/outputs/wpca.json");
 }
 
-export function fetchCurrentGroups() {
-  return fetchJson<CurrentGroup[]>("current-groups/outputs/current_groups.json");
+// vote-corrections deliberately not fetched — cities don't publish
+// corrections (plan.md D6); MpProfile.voteCorrections is always null below.
+
+// ─────────────────────────────────────────────────────────────────────────
+// Roster derivation (current_members / current_groups / all_members) —
+// task A2's documented gap. apps/cz-psp's data pipeline publishes these as
+// dedicated precomputed analyses (`current-members/outputs/current_members.json`
+// etc.) alongside attendance/rebelity/govity/wpca. The city data pipeline
+// (cz-municipalities-votes-2022-2026) does NOT — it only publishes the four
+// analyses plus the raw standard tables (persons/organizations/memberships).
+//
+// Chosen approach here: derive the same shape directly from the raw tables,
+// in the dashboard, at request time. A membership row with no end_date is
+// "current" (matches the tables' own convention — see
+// src/fixtures/praha/data/memberships.csv, `end_date` empty = still active).
+// The "groups" vs "candidate_list" dual-write below mirrors the city
+// pipeline's own `praha/scripts/build_all_members.py`: Praha's live
+// klub/group data isn't scrapable, so group membership is sourced from each
+// councillor's original candidate-list affiliation instead (D7's documented
+// fallback), and treated as `classification: "group"` for display — exactly
+// how the four analysis outputs already model it (see e.g.
+// src/fixtures/praha/analyses/attendance/outputs/attendance.json, which
+// contains one `"group"` and one `"candidate_list"` entry per person for the
+// same org id).
+//
+// OPEN QUESTION FOR THE PROJECT OWNER (flagged, not silently resolved):
+// should the city data pipeline eventually publish current_members/
+// current_groups/all_members as dedicated analyses (mirroring PSP), or
+// should the dashboard always derive them from the raw tables the way this
+// file does? Deriving them here means every dashboard that consumes this
+// data repo re-implements the same "no end_date = current" + "candidate_list
+// doubles as group" logic; publishing them as a pipeline analysis would
+// match PSP's precedent and let non-dashboard consumers rely on it too, at
+// the cost of one more analysis to keep in sync per city. Not resolved in
+// A2 — see DIVERGENCE.md.
+// ─────────────────────────────────────────────────────────────────────────
+
+function toInterval(
+  orgId: string,
+  orgName: string,
+  startDate: string,
+  endDate: string,
+): MembershipInterval {
+  return {
+    id: orgId,
+    name: orgName,
+    start_date: startDate || null,
+    end_date: endDate || null,
+  };
 }
 
-export function fetchAllMembers() {
-  return fetchJson<CurrentMember[]>("all-members/outputs/all_members.json");
+function isCurrent(interval: MembershipInterval): boolean {
+  return interval.end_date === null;
+}
+
+async function deriveAllMembers(citySlug: string): Promise<CurrentMember[]> {
+  const [persons, organizations, memberships] = await Promise.all([
+    readCityCsv(citySlug, "persons"),
+    readCityCsv(citySlug, "organizations"),
+    readCityCsv(citySlug, "memberships"),
+  ]);
+
+  const orgById = new Map(organizations.map((o) => [col(o, "id"), o]));
+  const membershipsByPerson = new Map<string, typeof memberships>();
+  for (const m of memberships) {
+    const personId = col(m, "person_id");
+    const arr = membershipsByPerson.get(personId) ?? [];
+    arr.push(m);
+    membershipsByPerson.set(personId, arr);
+  }
+
+  return persons.map((p): CurrentMember => {
+    const own = membershipsByPerson.get(col(p, "id")) ?? [];
+    const parliament: MembershipInterval[] = [];
+    const groups: MembershipInterval[] = [];
+    const candidateList: MembershipInterval[] = [];
+
+    for (const m of own) {
+      const orgId = col(m, "organization_id");
+      const org = orgById.get(orgId);
+      const interval = toInterval(
+        orgId,
+        org ? col(org, "name") : orgId,
+        col(m, "start_date"),
+        col(m, "end_date"),
+      );
+      const classification = org ? col(org, "classification") : "";
+      if (classification === "assembly" || classification === "parliament") {
+        parliament.push(interval);
+      } else if (classification === "candidate_list") {
+        // Dual-write — see module doc above.
+        groups.push(interval);
+        candidateList.push({ ...interval });
+      }
+      // classification === "constituency" never occurs for cities.
+    }
+
+    return {
+      id: col(p, "id"),
+      name: col(p, "name"),
+      given_name: col(p, "given_name"),
+      family_name: col(p, "family_name"),
+      // Not present in the raw standard tables for cities (persons.csv has
+      // no birth_date/gender/image columns) — see D9 (person enrichment,
+      // deferred). Real per-city portraits are a future enhancement.
+      birth_date: null,
+      gender: null,
+      image: null,
+      memberships: { parliament, groups, candidate_list: candidateList, constituency: [] },
+    };
+  });
+}
+
+export async function fetchAllMembers(citySlug: string): Promise<CurrentMember[]> {
+  return deriveAllMembers(citySlug);
+}
+
+export async function fetchCurrentMembers(citySlug: string): Promise<CurrentMember[]> {
+  const all = await deriveAllMembers(citySlug);
+  return all.filter((m) => m.memberships.parliament.some(isCurrent));
+}
+
+export async function fetchCurrentGroups(citySlug: string): Promise<CurrentGroup[]> {
+  const all = await deriveAllMembers(citySlug);
+  const byId = new Map<string, CurrentGroup>();
+  for (const m of all) {
+    for (const g of m.memberships.groups) {
+      if (isCurrent(g) && !byId.has(g.id)) {
+        byId.set(g.id, { id: g.id, name: g.name, classification: "group" });
+      }
+    }
+  }
+  return Array.from(byId.values());
 }
 
 // --- Combined MP profiles ---
 
-export async function getAllMpProfiles(): Promise<MpProfile[]> {
-  const [attendance, rebelity, govity, wpca, currentMembers, allMembers] =
-    await Promise.all([
-      fetchAttendance(),
-      fetchRebelity(),
-      fetchGovity(),
-      fetchWpca(),
-      fetchCurrentMembers(),
-      fetchAllMembers(),
-    ]);
+export async function getAllMpProfiles(citySlug: string): Promise<MpProfile[]> {
+  const [attendance, rebelity, govity, wpca, currentMembers, allMembers] = await Promise.all([
+    fetchAttendance(citySlug),
+    fetchRebelity(citySlug),
+    fetchGovity(citySlug),
+    fetchWpca(citySlug),
+    fetchCurrentMembers(citySlug),
+    fetchAllMembers(citySlug),
+  ]);
 
   const currentIds = new Set(currentMembers.map((m) => m.id));
-
   const allMemberMap = new Map(allMembers.map((m) => [m.id, m]));
 
-  const mandateMap = new Map(allMembers.map((m) => {
-    const parl = m.memberships.parliament[m.memberships.parliament.length - 1];
-    return [m.id, {
-      mandateSince: parl?.start_date || null,
-      mandateUntil: parl?.end_date || null,
-    }];
-  }));
+  const mandateMap = new Map(
+    allMembers.map((m) => {
+      const parl = m.memberships.parliament[m.memberships.parliament.length - 1];
+      return [m.id, { mandateSince: parl?.start_date ?? null, mandateUntil: parl?.end_date ?? null }];
+    }),
+  );
 
-  // Index secondary analyses by person_id
   const rebelityMap = new Map(rebelity.map((r) => [r.person_id, r]));
   const govityMap = new Map(govity.map((r) => [r.person_id, r]));
   const wpcaMap = new Map(wpca.map((r) => [r.person_id, r]));
@@ -119,7 +233,6 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
   return attendance.map((a): MpProfile => {
     const groupOrg = a.organizations.find((o) => o.classification === "group");
     const candidateOrg = a.organizations.find((o) => o.classification === "candidate_list");
-    const constituencyOrg = a.organizations.find((o) => o.classification === "constituency");
 
     const groupId = groupOrg?.id ?? null;
     const partyId = groupId ? groupIdToPartyId(groupId) : null;
@@ -139,7 +252,7 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
       slug: personSlug(a.person_id),
       isCurrent: currentIds.has(a.person_id),
       mandateSince: mandate?.mandateSince ?? null,
-      mandateUntil: mandate?.mandateUntil || null,
+      mandateUntil: mandate?.mandateUntil ?? null,
       previousGroupIds,
       name: a.name,
       givenName: a.given_names[0] ?? "",
@@ -148,7 +261,7 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
       groupId,
       groupName: groupOrg?.name ?? candidateOrg?.name ?? null,
       partyId,
-      constituency: constituencyOrg?.name ?? null,
+      constituency: null, // cities have no constituency organization
       attendance: {
         present_share: a.present_share,
         present: a.present,
@@ -169,19 +282,18 @@ export async function getAllMpProfiles(): Promise<MpProfile[]> {
   });
 }
 
-export async function getMpProfile(slug: string): Promise<MpProfile | null> {
-  const all = await getAllMpProfiles();
+export async function getMpProfile(citySlug: string, slug: string): Promise<MpProfile | null> {
+  const all = await getAllMpProfiles(citySlug);
   return all.find((mp) => mp.slug === slug) ?? null;
 }
 
 // --- Party profiles ---
 
-export async function getAllPartyProfiles(): Promise<PartyProfile[]> {
-  const [mps, groups] = await Promise.all([getAllMpProfiles(), fetchCurrentGroups()]);
+export async function getAllPartyProfiles(citySlug: string): Promise<PartyProfile[]> {
+  const [mps, groups] = await Promise.all([getAllMpProfiles(citySlug), fetchCurrentGroups(citySlug)]);
 
   const groupMap = new Map(groups.map((g) => [g.id, g]));
 
-  // Aggregate by groupId — all MPs (current and former)
   const byGroup = new Map<string, MpProfile[]>();
   for (const mp of mps) {
     if (!mp.groupId) continue;
@@ -190,8 +302,7 @@ export async function getAllPartyProfiles(): Promise<PartyProfile[]> {
     byGroup.set(mp.groupId, arr);
   }
 
-  const avg = (arr: number[]) =>
-    arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
+  const avg = (arr: number[]) => (arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : null);
 
   const parties: PartyProfile[] = [];
   for (const [gid, members] of byGroup.entries()) {
@@ -224,44 +335,11 @@ export async function getAllPartyProfiles(): Promise<PartyProfile[]> {
   return parties.sort((a, b) => b.memberCount - a.memberCount);
 }
 
-// --- Kraj profiles ---
-
-export async function getAllKrajProfiles(): Promise<KrajProfile[]> {
-  const mps = await getAllMpProfiles();
-
-  const byKraj = new Map<string, MpProfile[]>();
-  for (const mp of mps.filter((m) => m.isCurrent)) {
-    if (!mp.constituency) continue;
-    const arr = byKraj.get(mp.constituency) ?? [];
-    arr.push(mp);
-    byKraj.set(mp.constituency, arr);
-  }
-
-  const avg = (arr: number[]) =>
-    arr.length > 0 ? arr.reduce((a, b) => a + b, 0) / arr.length : null;
-
-  return Array.from(byKraj.entries())
-    .map(([name, members]): KrajProfile => ({
-      slug: constituencySlug(name),
-      name,
-      memberCount: members.length,
-      avgAttendance: avg(members.map((m) => m.attendance?.present_share ?? NaN).filter(Number.isFinite)),
-      avgRebelity: avg(members.map((m) => m.rebelity?.rebelity ?? NaN).filter(Number.isFinite)),
-      avgGovity: avg(members.map((m) => m.govity?.govity ?? NaN).filter(Number.isFinite)),
-    }))
-    .sort((a, b) => b.memberCount - a.memberCount || a.name.localeCompare(b.name, "cs"));
-}
-
-export async function getKrajProfile(slug: string): Promise<{ kraj: KrajProfile; members: MpProfile[] } | null> {
-  const [kraje, allMps] = await Promise.all([getAllKrajProfiles(), getAllMpProfiles()]);
-  const kraj = kraje.find((k) => k.slug === slug);
-  if (!kraj) return null;
-  const members = allMps.filter((mp) => mp.constituency && constituencySlug(mp.constituency) === slug);
-  return { kraj, members };
-}
-
-export async function getPartyProfile(slug: string): Promise<{ party: PartyProfile; members: MpProfile[] } | null> {
-  const [parties, allMps] = await Promise.all([getAllPartyProfiles(), getAllMpProfiles()]);
+export async function getPartyProfile(
+  citySlug: string,
+  slug: string,
+): Promise<{ party: PartyProfile; members: MpProfile[] } | null> {
+  const [parties, allMps] = await Promise.all([getAllPartyProfiles(citySlug), getAllMpProfiles(citySlug)]);
   const party = parties.find((p) => p.slug === slug);
   if (!party) return null;
 

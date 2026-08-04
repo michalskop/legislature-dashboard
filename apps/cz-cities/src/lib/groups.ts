@@ -1,49 +1,29 @@
-// PLACEHOLDER mapping for the generic scaffold (task A1). IDs use a "city:"
-// namespace prefix (not a real city) — a real city (e.g. "praha:org:...")
-// will replace this in task A2 once real data exists. See parties.ts for the
-// matching color/label metadata (kept local to this app, not in
-// @legislature/ui, since those PSP/NRSR dictionaries are hardcoded per-app —
-// see DIVERGENCE.md).
-export const GROUP_ID_TO_PARTY_ID: Record<string, string> = {
-  "city:org:group-a": "placeholder-a",
-  "city:org:group-b": "placeholder-b",
-  "city:org:group-c": "placeholder-c",
-};
-
-export function groupIdToPartyId(groupId: string): string {
-  return GROUP_ID_TO_PARTY_ID[groupId] ?? "other";
-}
+// ID <-> slug helpers. Works for any city's IDs because the data standard's
+// person/organization IDs always end in a unique, URL-safe segment
+// (`<city>:person:<slug>`, `<city>:org:candidate-list:<slug>`, ...) — see
+// legislature-data-standard's `dt.*` ID conventions. No per-city mapping
+// table is needed (task A1's PLACEHOLDER_PARTY_* group->party mapping is
+// gone — see parties.ts for why real IDs don't need one).
 
 export function personSlug(personId: string): string {
-  // "city:person:001" → "001"
+  // "praha:person:katerina-arnotova" -> "katerina-arnotova"
   return personId.split(":").at(-1) ?? personId;
 }
 
 export function groupSlug(groupId: string): string {
-  // "city:org:group-a" → "group-a"
+  // "praha:org:candidate-list:starostove-a-nezavisli" -> "starostove-a-nezavisli"
   return groupId.split(":").at(-1) ?? groupId;
 }
 
-export function slugToPersonId(slug: string): string {
-  return `city:person:${slug}`;
-}
-
-export function slugToGroupId(slug: string): string {
-  return `city:org:${slug}`;
-}
-
-const CZECH_MAP: Record<string, string> = {
-  á: "a", č: "c", ď: "d", é: "e", ě: "e", í: "i",
-  ň: "n", ó: "o", ř: "r", š: "s", ť: "t", ú: "u",
-  ů: "u", ý: "y", ž: "z",
-};
-
-// Kept for template parity with cz-psp/sk-nrsr even though this scaffold's
-// config has no constituency organization (see parliament.config.ts).
-export function constituencySlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[áčďéěíňóřšťúůýž]/g, (c) => CZECH_MAP[c] ?? c)
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+/**
+ * A display/lookup key for party-branding metadata (colors, short names —
+ * see parties.ts). Real organization IDs already end in a slug unique
+ * within their city, so it doubles as the partyId without a separate
+ * mapping table (task A1's GROUP_ID_TO_PARTY_ID placeholder dictionary is
+ * gone: it existed only because the placeholder IDs were generic
+ * "group-a"/"group-b" and needed a name; real candidate-list IDs already
+ * carry one).
+ */
+export function groupIdToPartyId(groupId: string): string {
+  return groupId.split(":").at(-1) ?? groupId;
 }

@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { parliamentConfig } from "@/lib/parliament.config";
+import type { CityConfig } from "@/lib/city.config";
+import { getCityTranslations } from "@/lib/city.config";
+import { getSiteTranslations } from "@/lib/site";
+import { cityBasePath, globalBasePath } from "@/lib/routing";
+import { LangSwitcher } from "@/components/LangSwitcher";
 
 function NavLink({ href, label, active, onClick }: { href: string; label: string; active: boolean; onClick?: () => void }) {
   return (
@@ -23,34 +27,29 @@ function NavLink({ href, label, active, onClick }: { href: string; label: string
 
 interface Props {
   lang: string;
-  langs: string[];
+  city: CityConfig;
 }
 
-export function NavLinks({ lang, langs }: Props) {
+export function NavLinks({ lang, city }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
+  const t = getCityTranslations(city, lang);
+  const site = getSiteTranslations(lang);
+  const groupOrg = city.organizations.find((o) => o.classification === "group");
+  const basePath = cityBasePath(lang, city.citySlug);
+
   function isActive(href: string) {
-    return href === "/" ? pathname === "/" : pathname.startsWith(href);
+    return href === basePath ? pathname === href : pathname.startsWith(href);
   }
-
-  function switchLang(code: string) {
-    document.cookie = `lang=${code}; path=/; max-age=31536000; SameSite=Lax`;
-    router.refresh();
-  }
-
-  const t = parliamentConfig.translations[lang] ?? parliamentConfig.translations[parliamentConfig.defaultLang]!;
-  const groupOrg = parliamentConfig.organizations.find((o) => o.classification === "group");
-  const regionOrg = parliamentConfig.organizations.find((o) => o.classification === "constituency");
 
   const LINKS = [
-    { href: "/",        label: t.nav.overview },
-    { href: "/members", label: t.nav.members },
-    { href: "/groups",  label: groupOrg?.labels[lang]?.plural ?? groupOrg?.labels[parliamentConfig.defaultLang]?.plural ?? "Groups" },
-    { href: "/regions", label: regionOrg?.labels[lang]?.plural ?? regionOrg?.labels[parliamentConfig.defaultLang]?.plural ?? "Regions" },
+    { href: basePath, label: t.nav.overview },
+    { href: `${basePath}/members`, label: t.nav.members },
+    { href: `${basePath}/groups`, label: groupOrg?.labels[lang]?.plural ?? groupOrg?.labels[city.defaultLang]?.plural ?? "Groups" },
+    { href: `${globalBasePath(lang)}/about`, label: site.aboutNavLabel },
   ];
 
   return (
@@ -63,23 +62,15 @@ export function NavLinks({ lang, langs }: Props) {
       </nav>
 
       {/* Desktop lang switcher */}
-      {langs.length >= 2 && (
-        <select
-          value={lang}
-          onChange={(e) => switchLang(e.target.value)}
-          className="hidden sm:block text-xs font-medium bg-transparent text-muted-foreground hover:text-foreground border border-border rounded px-1.5 py-0.5 cursor-pointer transition-colors"
-        >
-          {langs.map((code) => (
-            <option key={code} value={code}>{code.toUpperCase()}</option>
-          ))}
-        </select>
-      )}
+      <div className="hidden sm:block">
+        <LangSwitcher current={lang} />
+      </div>
 
       {/* Mobile hamburger */}
       <div className="sm:hidden relative">
         <button
           onClick={() => setOpen((o) => !o)}
-          aria-label={open ? "Zavřít menu" : "Otevřít menu"}
+          aria-label={open ? "Close menu" : "Open menu"}
           className="p-2 rounded-sm text-muted-foreground hover:text-foreground hover:bg-surface-2 transition-colors"
         >
           {open ? (
@@ -107,19 +98,9 @@ export function NavLinks({ lang, langs }: Props) {
                 onClick={() => setOpen(false)}
               />
             ))}
-            {langs.length >= 2 && (
-              <div className="mt-1 pt-1 border-t border-border px-3 pb-1">
-                <select
-                  value={lang}
-                  onChange={(e) => { switchLang(e.target.value); setOpen(false); }}
-                  className="w-full text-xs font-medium bg-transparent text-muted-foreground border border-border rounded px-1.5 py-1 cursor-pointer"
-                >
-                  {langs.map((code) => (
-                    <option key={code} value={code}>{code.toUpperCase()}</option>
-                  ))}
-                </select>
-              </div>
-            )}
+            <div className="mt-1 pt-1 border-t border-border px-3 pb-1">
+              <LangSwitcher current={lang} />
+            </div>
           </div>
         )}
       </div>

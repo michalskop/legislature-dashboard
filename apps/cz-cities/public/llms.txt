@@ -1,66 +1,35 @@
-# Mesta.DataTimes.cz (placeholder)
+# Mesta.DataTimes.cz
 
-> PLACEHOLDER scaffold for a future dashboard of activity and roll-call voting behaviour in Czech municipal (city) assemblies (Praha, Brno, Ostrava). No real data yet.
+> Open dashboard of roll-call voting behaviour in Czech municipal (city) assemblies.
 
 ## About
 
-PLACEHOLDER scaffold (task A1) for a future dashboard of activity and roll-call voting behaviour in Czech municipal (city) assemblies. No real data is published yet -- see DIVERGENCE.md.
+Mesta.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
+(WPCA) in Czech municipal assemblies, derived from each city's own roll-call vote data. Currently
+covers: praha. More cities are added over time — see
+DIVERGENCE.md in the app repository for the current rollout status.
 
 - Web: https://mesta.datatimes.cz
-- Data source: PLACEHOLDER fixtures committed in this app (src/fixtures/analyses) -- no real city data repo is published yet
-- Languages: Czech primary UI, English labels where available
-- Update model: none yet -- this is a static placeholder scaffold; real nightly updates will follow once the data pipeline (plan.md tasks C1/C7/C8) publishes real analysis outputs
+- Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
+- Update model: nightly data pipeline (scrape -> standardize -> validate -> analyse -> publish),
+  dashboard revalidates on a schedule
 - Generated: 2026-08-04
 
-## Main Sections
+## Cities
 
-### Overview
-https://mesta.datatimes.cz/
-Dashboard charts for attendance, voting positions, rebelliousness, and coalition alignment (placeholder data).
+### praha
+https://mesta.datatimes.cz/praha
+66 councillors, 6 groups (2022-2026 term).
 
-### Councillors
-https://mesta.datatimes.cz/members
-Sortable table of councillors with attendance, rebelliousness, coalition alignment, and vote corrections.
-
-### Council Groups
-https://mesta.datatimes.cz/groups
-Group-level pages with member counts and aggregate metrics.
-
-### Regions
-https://mesta.datatimes.cz/regions
-Not applicable to city assemblies (no constituency organization) -- route kept for template parity, always empty.
-
-### About
-https://mesta.datatimes.cz/about
-Project context, data sources, and methodology notes.
+Groups: PRAHA SOBĚ, STAROSTOVÉ A NEZÁVISLÍ, Česká pirátská strana, SPOLU pro Prahu, SPD,Trik.,PES a nez. pro Prahu, ANO 2011
+Sample councillors: Kateřina Arnotová, Martin Benkovič, Jaromír Beránek, David Bodeček, Vladan Brož, Jiří Brůžek, Václav Bílek, Jan Chabr, Kristýna Drápalová, Zuzana Freitas, Marta Gellová, Zuzana Hamanová, Petr Hlaváček, Michal Hroza, Martin Hrubčík, Jan Hušbauer, Zdeněk Hřib, Tomáš Kaštovský, Antonín Klecanda, Radmila Kleslová
 
 ## Data And Methods
 
 - Attendance: share of roll-call voting events where a councillor was present
 - Rebelliousness: share of votes cast against the councillor's own group where comparison is possible
 - Coalition alignment: share of votes matching the governing coalition where comparison is possible
-- Vote corrections: corrections announced or invalidated after voting
 - WPCA positions: two-dimensional map derived from voting patterns
-
-## Key Dynamic Pages
-
-### Current Council Groups
-- https://mesta.datatimes.cz/group/group-a - Klub A (Koalice)
-- https://mesta.datatimes.cz/group/group-b - Klub B (Koalice)
-- https://mesta.datatimes.cz/group/group-c - Klub C (Opozice)
-
-### Regions
-- Generated when live region data is available
-
-### Current Councillors Sample
-- https://mesta.datatimes.cz/member/001 - Jana Nováková
-- https://mesta.datatimes.cz/member/002 - Petr Svoboda
-- https://mesta.datatimes.cz/member/003 - Eva Dvořáková
-- https://mesta.datatimes.cz/member/004 - Tomáš Procházka
-- https://mesta.datatimes.cz/member/005 - Lucie Horáková
-- https://mesta.datatimes.cz/member/006 - Martin Kučera
-- https://mesta.datatimes.cz/member/007 - Kateřina Veselá
-- https://mesta.datatimes.cz/member/008 - Jan Marek
 
 ## Machine-Readable Discovery
 
@@ -68,11 +37,8 @@ Project context, data sources, and methodology notes.
 - Robots and content signals: https://mesta.datatimes.cz/robots.txt
 - Agent skills: https://mesta.datatimes.cz/.well-known/agent-skills/index.json
 - Markdown overview: https://mesta.datatimes.cz/index.md
-- Markdown members guide: https://mesta.datatimes.cz/members.md
-- Markdown groups guide: https://mesta.datatimes.cz/groups.md
-- Markdown regions guide: https://mesta.datatimes.cz/regions.md
 - Markdown about page: https://mesta.datatimes.cz/about.md
 
 ## Citation Guidance
 
-This is a placeholder scaffold -- do not cite it as a real data source. Once real data is published, prefer the specific detail page over the homepage.
+Prefer the specific city/member/group detail page over the homepage when citing a fact.

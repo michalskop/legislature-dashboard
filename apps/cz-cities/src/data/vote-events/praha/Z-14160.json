@@ -1,0 +1,457 @@
+{
+  "id": "Z-14160",
+  "parliament_id": "praha:org:zastupitelstvo-hmp",
+  "start_date": "2026-06-18T16:55:34",
+  "title": "Usnesení Z-14160 (navrhovatel: zastupitel JUDr. Jiří Pospíšil,zastupitel Ing. Tomáš Slabihoudek,zastupitelka Ing. Mariana Čapková, MBA,zastupitel Jan Wolf,zastupitel Mgr. David Bodeček, MBA)",
+  "result": null,
+  "definition_name": null,
+  "polarity_counts": {
+    "support": 39,
+    "oppose": 4,
+    "neutral": 20,
+    "total": 63
+  },
+  "votes": [
+    {
+      "voter_id": "praha:person:katerina-arnotova",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Kateřina Arnotová",
+      "group_id": "praha:org:candidate-list:starostove-a-nezavisli"
+    },
+    {
+      "voter_id": "praha:person:martin-benkovic",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Martin Benkovič",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:jaromir-beranek",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Jaromír Beránek",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:david-bodecek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "David Bodeček",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:vladan-broz",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Vladan Brož",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:jiri-bruzek",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Jiří Brůžek",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:vaclav-bilek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Václav Bílek",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:jan-chabr",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jan Chabr",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:kristyna-drapalova",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Kristýna Drápalová",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:zuzana-freitas",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Zuzana Freitas",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:marta-gellova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marta Gellová",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:zuzana-hamanova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zuzana Hamanová",
+      "group_id": "praha:org:candidate-list:starostove-a-nezavisli"
+    },
+    {
+      "voter_id": "praha:person:petr-hlavacek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Petr Hlaváček",
+      "group_id": "praha:org:candidate-list:starostove-a-nezavisli"
+    },
+    {
+      "voter_id": "praha:person:michal-hroza",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Hroza",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:jan-husbauer",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jan Hušbauer",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:zdenek-hrib",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Zdeněk Hřib",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:tomas-kastovsky",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Kaštovský",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:antonin-klecanda",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Antonín Klecanda",
+      "group_id": "praha:org:candidate-list:starostove-a-nezavisli"
+    },
+    {
+      "voter_id": "praha:person:radmila-kleslova",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Radmila Kleslová",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:jiri-knitl",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jiří Knitl",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:jan-kolar",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Jan Kolář",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:jana-komrskova",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Jana Komrsková",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:zdenek-kovarik",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zdeněk Kovářík",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:lucie-kubesa",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Lucie Kubesa",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:jakub-leps",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jakub Lepš",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:gabriela-lnenickova",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Gabriela Lněničková",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:viktor-mahrik",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Viktor Mahrik",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:pavel-mares",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Pavel Mareš",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:hana-marvanova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Hana Marvanová",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:kamila-matejkova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Kamila Matějková",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:daniel-mazur",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Daniel Mazur",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:patrik-nacher",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Patrik Nacher",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:stanislav-nekolny",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Stanislav Nekolný",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:radomir-nepil",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Radomír Nepil",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:tomas-pek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Pek",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:marcela-plesnikova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marcela Plesníková",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:tomas-portlik",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Tomáš Portlík",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:jiri-pospisil",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jiří Pospíšil",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:ondrej-prokop",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Ondřej Prokop",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:jiri-ptacek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jiří Ptáček",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:barbora-razga",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Barbora Rázga",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:adam-scheinherr",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Adam Scheinherr",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:martin-sedeke",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Martin Sedeke",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:zdenek-seidl",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zdeněk Seidl",
+      "group_id": "praha:org:candidate-list:spd-trik-pes-a-nez-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:tomas-slabihoudek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Slabihoudek",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:bara-soukup",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Bara Soukup",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:bohuslav-svoboda",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Bohuslav Svoboda",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:eva-tylova",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Eva Tylová",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:hana-trestikova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Hana Třeštíková",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:alexandra-udzenija",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Alexandra Udženija",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:milan-urban",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Milan Urban",
+      "group_id": "praha:org:candidate-list:spd-trik-pes-a-nez-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:magdalena-valdmanova",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Magdalena Valdmanová",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:lenka-vedralova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Lenka Vedralová",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    },
+    {
+      "voter_id": "praha:person:david-vodrazka",
+      "option": "yes",
+      "polarity": "support",
+      "name": "David Vodrážka",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:pavel-vyhnanek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Pavel Vyhnánek",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:jan-wolf",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jan Wolf",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:zdenek-zajicek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Zdeněk Zajíček",
+      "group_id": "praha:org:candidate-list:spolu-pro-prahu"
+    },
+    {
+      "voter_id": "praha:person:pavel-zelenka",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Pavel Zelenka",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:petr-zeman",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Petr Zeman",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:adam-zabransky",
+      "option": "no",
+      "polarity": "oppose",
+      "name": "Adam Zábranský",
+      "group_id": "praha:org:candidate-list:ceska-piratska-strana"
+    },
+    {
+      "voter_id": "praha:person:mariana-capkova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Mariana Čapková",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:jan-cizinsky",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jan Čižinský",
+      "group_id": "praha:org:candidate-list:praha-sobe"
+    },
+    {
+      "voter_id": "praha:person:tomas-kanera",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Tomáš Kaněra",
+      "group_id": "praha:org:candidate-list:ano-2011"
+    }
+  ]
+}

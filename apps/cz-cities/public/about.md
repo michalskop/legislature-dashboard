@@ -1,5 +1,7 @@
-# About Mesta.DataTimes.cz (placeholder)
+# About Mesta.DataTimes.cz
 
-Mesta.DataTimes.cz is a planned public dashboard for analysing activity and roll-call voting behaviour in Czech municipal (city) assemblies. This deployment is a placeholder scaffold -- no real data yet.
+Mesta.DataTimes.cz is an open dashboard for analysing activity and roll-call voting behaviour in
+Czech municipal (city) assemblies.
 
-Machine-readable discovery files are available at https://mesta.datatimes.cz/llms.txt, https://mesta.datatimes.cz/sitemap.xml, and https://mesta.datatimes.cz/.well-known/agent-skills/index.json.
+Machine-readable discovery files are available at https://mesta.datatimes.cz/llms.txt, https://mesta.datatimes.cz/sitemap.xml, and
+https://mesta.datatimes.cz/.well-known/agent-skills/index.json.

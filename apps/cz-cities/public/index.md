@@ -1,20 +1,16 @@
-# Mesta.DataTimes.cz (placeholder)
+# Mesta.DataTimes.cz
 
-Placeholder scaffold for a future dashboard of Czech municipal assembly roll-call votes. No real data yet.
+Open dashboard of Czech municipal assembly roll-call votes.
 
-## Main Views
+## Cities
 
-- [Councillors](https://mesta.datatimes.cz/members): sortable table of individual councillor metrics.
-- [Council groups](https://mesta.datatimes.cz/groups): group-level aggregate metrics.
-- [Regions](https://mesta.datatimes.cz/regions): not applicable to cities, kept for template parity.
-- [About](https://mesta.datatimes.cz/about): project context and placeholder-data notice.
+- [praha](https://mesta.datatimes.cz/praha)
 
 ## Analyses
 
 - Attendance on voting events.
 - Rebelliousness against the councillor's own group.
 - Alignment with the governing coalition.
-- Vote corrections.
 - WPCA voting-position map.
 
 Generated: 2026-08-04

@@ -6,24 +6,32 @@ import { createHash } from "node:crypto";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(__dirname, "..");
 const publicDir = path.join(appRoot, "public");
-const skillsDir = path.join(publicDir, ".well-known", "agent-skills");
 
-// PLACEHOLDER — task A1 scaffold, see DIVERGENCE.md and src/lib/data.ts.
-// No real deployment exists yet (task A4); mesta.datatimes.cz/<city> is the
-// eventual URL shape per plan.md D1.
+// PLACEHOLDER site URL — no real deployment yet (task A4); mesta.datatimes.cz/<city>
+// is the eventual shape per plan.md D1.
 const baseUrl = "https://mesta.datatimes.cz";
-// Local fixtures dir, matching src/lib/data.ts's placeholder read (no real
-// city data repo published yet — see comment there for why).
-const fixturesDir = path.join(appRoot, "src", "fixtures", "analyses");
-const generatedAt = new Date().toISOString().slice(0, 10);
 
-const staticRoutes = [
-  { path: "/", priority: "1.0", changefreq: "hourly" },
-  { path: "/members", priority: "0.9", changefreq: "hourly" },
-  { path: "/groups", priority: "0.8", changefreq: "hourly" },
-  { path: "/regions", priority: "0.8", changefreq: "hourly" },
-  { path: "/about", priority: "0.6", changefreq: "monthly" },
-];
+// Real Praha data (task A2) lives under src/fixtures/<citySlug>/... — mirrors
+// src/lib/data.ts's fixture layout. Only "praha" is configured for now (see
+// src/lib/city.config.ts); this script has no independent city list — it
+// derives one from src/fixtures/ so it stays honest if a fixture ever exists
+// without an entry in city.config.ts, or vice versa (a warning, not a crash).
+const fixturesRoot = path.join(appRoot, "src", "fixtures");
+const CITY_SLUGS = ["praha"];
+
+// Languages this script builds sitemap/llms.txt URLs for — mirrors
+// src/lib/i18n.ts's LANG_CODES. Duplicated as a plain array here because this
+// script runs standalone via Node (not through the Next.js/TS build), so it
+// can't import src/lib/i18n.ts directly without a TS loader; keeping it a
+// one-line array keeps the duplication obvious and cheap to keep in sync.
+const LANG_CODES = ["cs", "en"];
+const DEFAULT_LANG = "cs";
+
+function cityBasePath(lang, citySlug) {
+  return lang === DEFAULT_LANG ? `/${citySlug}` : `/${lang}/${citySlug}`;
+}
+
+const generatedAt = new Date().toISOString().slice(0, 10);
 
 function personSlug(id) {
   return id.split(":").at(-1);
@@ -33,39 +41,89 @@ function groupSlug(id) {
   return id.split(":").at(-1);
 }
 
-function constituencySlug(name) {
-  return name
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
-async function fetchJson(pathname) {
-  const text = await readFile(path.join(fixturesDir, pathname), "utf-8");
+async function fetchAnalysisJson(citySlug, pathname) {
+  const text = await readFile(path.join(fixturesRoot, citySlug, "analyses", pathname), "utf-8");
   return JSON.parse(text.replace(/:\s*NaN/g, ": null"));
 }
 
-async function getDashboardData() {
+// Minimal RFC 4180 CSV parser — deliberately duplicated from src/lib/csv.ts's
+// parseCsv() rather than imported, because this script runs as plain Node
+// ESM (prebuild hook, see package.json) without a TS loader. Needed for
+// correctness, not just style: organization names legally contain commas
+// (e.g. "SPD,Trik.,PES a nez. pro Prahu" in src/fixtures/praha/data/
+// organizations.csv) — a naive `line.split(",")` misaligns every column
+// after the first comma in such a row.
+function parseCsv(text) {
+  const rows = [];
+  let field = "";
+  let row = [];
+  let inQuotes = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; } else { inQuotes = false; }
+      } else {
+        field += c;
+      }
+      continue;
+    }
+    if (c === '"') {
+      inQuotes = true;
+    } else if (c === ",") {
+      row.push(field);
+      field = "";
+    } else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field);
+      field = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+    } else {
+      field += c;
+    }
+  }
+  if (field !== "" || row.length > 0) {
+    row.push(field);
+    if (row.length > 1 || row[0] !== "") rows.push(row);
+  }
+
+  if (rows.length === 0) return [];
+  const header = rows[0];
+  return rows.slice(1).map((cols) => Object.fromEntries(header.map((h, i) => [h, cols[i] ?? ""])));
+}
+
+async function readCityCsv(citySlug, table) {
+  const text = await readFile(path.join(fixturesRoot, citySlug, "data", `${table}.csv`), "utf-8");
+  return parseCsv(text);
+}
+
+async function getCityDashboardData(citySlug) {
   try {
-    const [members, groups] = await Promise.all([
-      fetchJson("current-members/outputs/current_members.json"),
-      fetchJson("current-groups/outputs/current_groups.json"),
+    const [organizations, memberships, attendance] = await Promise.all([
+      readCityCsv(citySlug, "organizations"),
+      readCityCsv(citySlug, "memberships"),
+      fetchAnalysisJson(citySlug, "attendance/outputs/attendance.json"),
     ]);
 
-    const regionNames = Array.from(
-      new Set(
-        members
-          .map((member) => member.memberships?.constituency?.[0]?.name)
-          .filter(Boolean),
-      ),
-    ).sort((a, b) => a.localeCompare(b, "cs"));
+    const candidateListIds = new Set(
+      organizations.filter((o) => o.classification === "candidate_list").map((o) => o.id),
+    );
+    const currentGroupIds = new Set(
+      memberships
+        .filter((m) => !m.end_date && candidateListIds.has(m.organization_id))
+        .map((m) => m.organization_id),
+    );
+    const orgById = new Map(organizations.map((o) => [o.id, o]));
+    const groups = Array.from(currentGroupIds).map((id) => ({ id, name: orgById.get(id)?.name ?? id }));
 
-    return { members, groups, regionNames };
+    const members = attendance.map((a) => ({ id: a.person_id, name: a.name }));
+
+    return { members, groups };
   } catch (error) {
-    console.warn(`[ai-readability] Could not read placeholder fixtures: ${error.message}`);
-    return { members: [], groups: [], regionNames: [] };
+    console.warn(`[ai-readability] Could not read fixtures for ${citySlug}: ${error.message}`);
+    return { members: [], groups: [] };
   }
 }
 
@@ -109,25 +167,26 @@ Content-Signal: search=yes, ai-input=yes, ai-train=no
 `;
 }
 
-function buildSitemap({ members, groups, regionNames }) {
-  const routes = [
-    ...staticRoutes,
-    ...members.map((member) => ({
-      path: `/member/${personSlug(member.id)}`,
-      priority: "0.7",
-      changefreq: "hourly",
-    })),
-    ...groups.map((group) => ({
-      path: `/group/${groupSlug(group.id)}`,
-      priority: "0.7",
-      changefreq: "hourly",
-    })),
-    ...regionNames.map((name) => ({
-      path: `/region/${constituencySlug(name)}`,
-      priority: "0.6",
-      changefreq: "hourly",
-    })),
-  ];
+function buildSitemap(perCity) {
+  const routes = [];
+
+  for (const lang of LANG_CODES) {
+    routes.push({ path: lang === DEFAULT_LANG ? "/" : `/${lang}`, priority: "1.0", changefreq: "daily" });
+    routes.push({ path: `${lang === DEFAULT_LANG ? "" : `/${lang}`}/about`, priority: "0.5", changefreq: "monthly" });
+
+    for (const [citySlug, data] of Object.entries(perCity)) {
+      const base = cityBasePath(lang, citySlug);
+      routes.push({ path: base, priority: "1.0", changefreq: "hourly" });
+      routes.push({ path: `${base}/members`, priority: "0.9", changefreq: "hourly" });
+      routes.push({ path: `${base}/groups`, priority: "0.8", changefreq: "hourly" });
+      for (const member of data.members) {
+        routes.push({ path: `${base}/member/${personSlug(member.id)}`, priority: "0.7", changefreq: "hourly" });
+      }
+      for (const group of data.groups) {
+        routes.push({ path: `${base}/group/${groupSlug(group.id)}`, priority: "0.7", changefreq: "hourly" });
+      }
+    }
+  }
 
   const urls = routes
     .map(
@@ -147,64 +206,48 @@ ${urls}
 `;
 }
 
-function buildLlmsTxt({ members, groups, regionNames }) {
-  const listedMembers = members.slice(0, 30);
-  const listedGroups = groups.slice(0, 20);
+function buildLlmsTxt(perCity) {
+  const cityLines = Object.entries(perCity)
+    .map(([citySlug, data]) => {
+      const base = cityBasePath(DEFAULT_LANG, citySlug);
+      const listedMembers = data.members.slice(0, 20);
+      const listedGroups = data.groups.slice(0, 10);
+      return `### ${citySlug}
+${baseUrl}${base}
+${data.members.length} councillors, ${data.groups.length} groups (2022-2026 term).
 
-  return `# Mesta.DataTimes.cz (placeholder)
+Groups: ${listedGroups.map((g) => g.name).join(", ") || "none yet"}
+Sample councillors: ${listedMembers.map((m) => m.name).join(", ") || "none yet"}`;
+    })
+    .join("\n\n");
 
-> PLACEHOLDER scaffold for a future dashboard of activity and roll-call voting behaviour in Czech municipal (city) assemblies (Praha, Brno, Ostrava). No real data yet.
+  return `# Mesta.DataTimes.cz
+
+> Open dashboard of roll-call voting behaviour in Czech municipal (city) assemblies.
 
 ## About
 
-PLACEHOLDER scaffold (task A1) for a future dashboard of activity and roll-call voting behaviour in Czech municipal (city) assemblies. No real data is published yet -- see DIVERGENCE.md.
+Mesta.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
+(WPCA) in Czech municipal assemblies, derived from each city's own roll-call vote data. Currently
+covers: ${Object.keys(perCity).join(", ") || "none yet"}. More cities are added over time — see
+DIVERGENCE.md in the app repository for the current rollout status.
 
 - Web: ${baseUrl}
-- Data source: PLACEHOLDER fixtures committed in this app (src/fixtures/analyses) -- no real city data repo is published yet
-- Languages: Czech primary UI, English labels where available
-- Update model: none yet -- this is a static placeholder scaffold; real nightly updates will follow once the data pipeline (plan.md tasks C1/C7/C8) publishes real analysis outputs
+- Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
+- Update model: nightly data pipeline (scrape -> standardize -> validate -> analyse -> publish),
+  dashboard revalidates on a schedule
 - Generated: ${generatedAt}
 
-## Main Sections
+## Cities
 
-### Overview
-${baseUrl}/
-Dashboard charts for attendance, voting positions, rebelliousness, and coalition alignment (placeholder data).
-
-### Councillors
-${baseUrl}/members
-Sortable table of councillors with attendance, rebelliousness, coalition alignment, and vote corrections.
-
-### Council Groups
-${baseUrl}/groups
-Group-level pages with member counts and aggregate metrics.
-
-### Regions
-${baseUrl}/regions
-Not applicable to city assemblies (no constituency organization) -- route kept for template parity, always empty.
-
-### About
-${baseUrl}/about
-Project context, data sources, and methodology notes.
+${cityLines || "No city is published yet."}
 
 ## Data And Methods
 
 - Attendance: share of roll-call voting events where a councillor was present
 - Rebelliousness: share of votes cast against the councillor's own group where comparison is possible
 - Coalition alignment: share of votes matching the governing coalition where comparison is possible
-- Vote corrections: corrections announced or invalidated after voting
 - WPCA positions: two-dimensional map derived from voting patterns
-
-## Key Dynamic Pages
-
-### Current Council Groups
-${listedGroups.map((group) => `- ${baseUrl}/group/${groupSlug(group.id)} - ${group.name}`).join("\n") || "- Generated when live group data is available"}
-
-### Regions
-${regionNames.map((name) => `- ${baseUrl}/region/${constituencySlug(name)} - ${name}`).join("\n") || "- Generated when live region data is available"}
-
-### Current Councillors Sample
-${listedMembers.map((member) => `- ${baseUrl}/member/${personSlug(member.id)} - ${member.name}`).join("\n") || "- Generated when live MP data is available"}
 
 ## Machine-Readable Discovery
 
@@ -212,96 +255,76 @@ ${listedMembers.map((member) => `- ${baseUrl}/member/${personSlug(member.id)} - 
 - Robots and content signals: ${baseUrl}/robots.txt
 - Agent skills: ${baseUrl}/.well-known/agent-skills/index.json
 - Markdown overview: ${baseUrl}/index.md
-- Markdown members guide: ${baseUrl}/members.md
-- Markdown groups guide: ${baseUrl}/groups.md
-- Markdown regions guide: ${baseUrl}/regions.md
 - Markdown about page: ${baseUrl}/about.md
 
 ## Citation Guidance
 
-This is a placeholder scaffold -- do not cite it as a real data source. Once real data is published, prefer the specific detail page over the homepage.
+Prefer the specific city/member/group detail page over the homepage when citing a fact.
 `;
 }
 
-function buildMarkdownFiles() {
+function buildMarkdownFiles(perCity) {
+  const cityList = Object.keys(perCity)
+    .map((citySlug) => `- [${citySlug}](${baseUrl}${cityBasePath(DEFAULT_LANG, citySlug)})`)
+    .join("\n") || "- No city is published yet.";
+
   return {
-    "index.md": `# Mesta.DataTimes.cz (placeholder)
+    "index.md": `# Mesta.DataTimes.cz
 
-Placeholder scaffold for a future dashboard of Czech municipal assembly roll-call votes. No real data yet.
+Open dashboard of Czech municipal assembly roll-call votes.
 
-## Main Views
+## Cities
 
-- [Councillors](${baseUrl}/members): sortable table of individual councillor metrics.
-- [Council groups](${baseUrl}/groups): group-level aggregate metrics.
-- [Regions](${baseUrl}/regions): not applicable to cities, kept for template parity.
-- [About](${baseUrl}/about): project context and placeholder-data notice.
+${cityList}
 
 ## Analyses
 
 - Attendance on voting events.
 - Rebelliousness against the councillor's own group.
 - Alignment with the governing coalition.
-- Vote corrections.
 - WPCA voting-position map.
 
 Generated: ${generatedAt}
 `,
-    "members.md": `# Councillors
+    "about.md": `# About Mesta.DataTimes.cz
 
-Placeholder councillors in the cz-cities scaffold dashboard (no real data yet).
+Mesta.DataTimes.cz is an open dashboard for analysing activity and roll-call voting behaviour in
+Czech municipal (city) assemblies.
 
-The table at ${baseUrl}/members includes attendance, rebelliousness, coalition alignment, vote corrections, group, and current/former status.
-
-Use individual pages at ${baseUrl}/member/{id} for detail pages.
-`,
-    "groups.md": `# Council Groups
-
-Placeholder council-group overview for the cz-cities scaffold dashboard (no real data yet).
-
-The list at ${baseUrl}/groups includes member counts and aggregate metrics for attendance, rebelliousness, and coalition alignment. Use ${baseUrl}/group/{id} for detail pages.
-`,
-    "regions.md": `# Regions
-
-Not applicable to city assemblies -- there is no constituency/region organization for a city council. This route and file exist only for template parity with the parliament apps -- see DIVERGENCE.md.
-`,
-    "about.md": `# About Mesta.DataTimes.cz (placeholder)
-
-Mesta.DataTimes.cz is a planned public dashboard for analysing activity and roll-call voting behaviour in Czech municipal (city) assemblies. This deployment is a placeholder scaffold -- no real data yet.
-
-Machine-readable discovery files are available at ${baseUrl}/llms.txt, ${baseUrl}/sitemap.xml, and ${baseUrl}/.well-known/agent-skills/index.json.
+Machine-readable discovery files are available at ${baseUrl}/llms.txt, ${baseUrl}/sitemap.xml, and
+${baseUrl}/.well-known/agent-skills/index.json.
 `,
   };
 }
 
-function buildSkillFiles() {
+function buildSkillFiles(perCity) {
+  const cities = Object.keys(perCity).join(", ") || "none yet";
+
   const dashboardSkill = `---
 name: city-assembly-dashboard
-description: Discover public dashboard pages and metrics for the cz-cities placeholder scaffold (Czech municipal assembly roll-call votes).
+description: Discover public dashboard pages and metrics for Czech municipal assembly roll-call votes on Mesta.DataTimes.cz.
 ---
 
-# City Assembly Dashboard (placeholder)
+# City Assembly Dashboard
 
 ## Overview
 
-Use this skill to discover public pages, dashboard sections, and machine-readable summaries for the Mesta.DataTimes.cz placeholder scaffold. No real data is published yet.
+Use this skill to discover public pages, dashboard sections, and machine-readable summaries for
+Mesta.DataTimes.cz. Currently covers: ${cities}.
 
 ## Content Categories
 
 ### Overview
 - URL: ${baseUrl}/
-- Description: Dashboard charts for councillor attendance, voting positions, rebelliousness, and coalition alignment (placeholder data).
+- Description: List of covered cities, each linking to its own dashboard.
 
-### Councillors
-- URL: ${baseUrl}/members
+### Councillors (per city)
+- URL pattern: ${baseUrl}/<city>/members
 - Description: Councillor-level metrics and links to detail pages.
 
-### Council Groups
-- URL: ${baseUrl}/groups
+### Council Groups (per city)
+- URL pattern: ${baseUrl}/<city>/groups
 - Description: Group-level aggregate metrics and member lists.
-
-### Regions
-- URL: ${baseUrl}/regions
-- Description: Not applicable to city assemblies -- kept for template parity.
 
 ## Key Topics
 
@@ -311,51 +334,40 @@ Use this skill to discover public pages, dashboard sections, and machine-readabl
 - attendance
 - voting behaviour
 - coalition alignment
-- vote corrections
 - WPCA voting-position analysis
 
 ## Discovery
 
 - Full content index: ${baseUrl}/llms.txt
 - Sitemap: ${baseUrl}/sitemap.xml
-
-## Usage
-
-This is a placeholder scaffold -- do not cite it as a real data source.
 `;
 
   const datasetSkill = `---
 name: city-assembly-datasets
-description: Discover placeholder source data categories and derived analysis outputs used by the cz-cities scaffold.
+description: Discover source data categories and derived analysis outputs used by Mesta.DataTimes.cz.
 ---
 
-# City Assembly Datasets (placeholder)
+# City Assembly Datasets
 
 ## Overview
 
-Use this skill to understand the main derived data categories used by the Mesta.DataTimes.cz placeholder scaffold. All values are placeholder fixtures, not real votes.
+Use this skill to understand the main derived data categories used by Mesta.DataTimes.cz. Each
+city's dashboard is derived from that city's own published roll-call vote data (see each city's
+"About" section for its specific data source).
 
 ## Data Categories
 
 ### Attendance
-- URL: ${baseUrl}/members
 - Description: Councillor attendance shares across roll-call voting events.
 
 ### Rebelliousness
-- URL: ${baseUrl}/members
 - Description: Votes against the councillor's own group where comparable.
 
 ### Coalition Alignment
-- URL: ${baseUrl}/groups
 - Description: Agreement with the governing coalition.
 
-### Vote Corrections
-- URL: ${baseUrl}/members
-- Description: Announced and invalidated vote corrections.
-
-### Voting Positions
-- URL: ${baseUrl}/
-- Description: WPCA voting-position analysis.
+### Voting Positions (WPCA)
+- Description: Two-dimensional voting-position map derived from roll-call votes.
 
 ## Discovery
 
@@ -367,16 +379,14 @@ Use this skill to understand the main derived data categories used by the Mesta.
     {
       name: "city-assembly-dashboard",
       type: "skill-md",
-      description:
-        "Discover public dashboard pages and metrics for the cz-cities placeholder scaffold.",
+      description: "Discover public dashboard pages and metrics for Mesta.DataTimes.cz.",
       url: "/.well-known/agent-skills/city-assembly-dashboard/SKILL.md",
       content: dashboardSkill,
     },
     {
       name: "city-assembly-datasets",
       type: "skill-md",
-      description:
-        "Discover placeholder source data categories and derived analysis outputs used by the cz-cities scaffold.",
+      description: "Discover source data categories and derived analysis outputs used by Mesta.DataTimes.cz.",
       url: "/.well-known/agent-skills/city-assembly-datasets/SKILL.md",
       content: datasetSkill,
     },
@@ -403,16 +413,20 @@ async function writeGeneratedFile(relativePath, content) {
 }
 
 async function main() {
-  const data = await getDashboardData();
-  const markdownFiles = buildMarkdownFiles();
-  const { skills, index } = buildSkillFiles();
+  const perCity = {};
+  for (const citySlug of CITY_SLUGS) {
+    perCity[citySlug] = await getCityDashboardData(citySlug);
+  }
+
+  const markdownFiles = buildMarkdownFiles(perCity);
+  const { skills, index } = buildSkillFiles(perCity);
 
   await mkdir(publicDir, { recursive: true });
 
   await Promise.all([
     writeGeneratedFile("robots.txt", buildRobotsTxt()),
-    writeGeneratedFile("sitemap.xml", buildSitemap(data)),
-    writeGeneratedFile("llms.txt", buildLlmsTxt(data)),
+    writeGeneratedFile("sitemap.xml", buildSitemap(perCity)),
+    writeGeneratedFile("llms.txt", buildLlmsTxt(perCity)),
     ...Object.entries(markdownFiles).map(([filename, content]) =>
       writeGeneratedFile(filename, content),
     ),
@@ -422,8 +436,10 @@ async function main() {
     ),
   ]);
 
+  const totalMembers = Object.values(perCity).reduce((n, d) => n + d.members.length, 0);
+  const totalGroups = Object.values(perCity).reduce((n, d) => n + d.groups.length, 0);
   console.log(
-    `[ai-readability] Generated files for ${data.members.length} MPs, ${data.groups.length} groups, ${data.regionNames.length} regions in ${path.relative(process.cwd(), publicDir)}`,
+    `[ai-readability] Generated files for ${Object.keys(perCity).length} cities (${totalMembers} members, ${totalGroups} groups) in ${path.relative(process.cwd(), publicDir)}`,
   );
 }
 

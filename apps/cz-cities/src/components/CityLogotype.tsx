@@ -1,5 +1,5 @@
 /**
- * CityLogotype — placeholder logotype for the cz-cities scaffold (task A1).
+ * CityLogotype — generic network wordmark for Mesta.DataTimes.cz (task A1).
  *
  * Renders as: Mesta.DataTimes.cz (per plan.md D1: mesta.datatimes.cz/<city>).
  * This is a generic wordmark, not any specific city's branding — real

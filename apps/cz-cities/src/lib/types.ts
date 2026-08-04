@@ -10,9 +10,21 @@ export interface OrgMembership {
   until?: string;
 }
 
-// Current member (from current_members.json)
+// A membership interval as it appears in current_members.json/all_members.json.
+export interface MembershipInterval {
+  id: string;
+  name: string;
+  start_date: string | null;
+  end_date: string | null;
+}
+
+// Current/all member roster record — the shape apps/cz-psp's data pipeline
+// publishes as a dedicated "current_members"/"all_members" analysis. The
+// city data pipeline does NOT (yet) produce this — see the derivation in
+// lib/data.ts (deriveMembers()) and DIVERGENCE.md for the open question this
+// raises for the project owner.
 export interface CurrentMember {
-  id: string; // "city:person:001" (placeholder namespace — see groups.ts)
+  id: string; // "praha:person:katerina-arnotova"
   name: string;
   given_name: string;
   family_name: string;
@@ -20,16 +32,16 @@ export interface CurrentMember {
   gender: string | null;
   image: string | null;
   memberships: {
-    parliament: Array<{ id: string; name: string; start_date: string; end_date: string }>;
-    groups: Array<{ id: string; name: string; start_date: string; end_date: string }>;
-    candidate_list: Array<{ id: string; name: string; start_date: string; end_date: string }>;
-    constituency: Array<{ id: string; name: string; start_date: string; end_date: string }>;
+    parliament: MembershipInterval[];
+    groups: MembershipInterval[];
+    candidate_list: MembershipInterval[];
+    constituency: MembershipInterval[];
   };
 }
 
-// Current group (from current_groups.json)
+// Current group — same "derived, not published" caveat as CurrentMember.
 export interface CurrentGroup {
-  id: string; // "city:org:group-a" (placeholder namespace — see groups.ts)
+  id: string; // "praha:org:candidate-list:starostove-a-nezavisli"
   name: string;
   classification: string;
 }
@@ -100,13 +112,8 @@ export interface WpcaRecord {
   organizations: OrgMembership[];
 }
 
-// Constituency (kraj) summary
-export interface KrajProfile {
-  slug: string;        // URL-safe slug, e.g. "jihomoravsky-kraj"
-  name: string;        // Original name, e.g. "Jihomoravský kraj"
-  memberCount: number;
-  avgAttendance: number | null;
-  avgRebelity: number | null;
-  avgGovity: number | null;
-}
+// NOTE: no KrajProfile/constituency type here — cities have no constituency
+// organization, and the /region, /regions routes were removed entirely in
+// task A2 (they were structurally dead for every city config, not just
+// Praha — see DIVERGENCE.md).
 

@@ -2,7 +2,7 @@
 
 import { SwarmPlot } from "@legislature/charts";
 import type { SwarmGroup, SwarmReferenceLine } from "@legislature/charts";
-import { PLACEHOLDER_PARTY_COLORS, PLACEHOLDER_PARTY_META } from "@/lib/parties";
+import { PARTY_COLORS, PARTY_META } from "@/lib/parties";
 import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
@@ -27,6 +27,8 @@ interface Props {
   highlightId?: string;
   /** Label for the party-average reference line. Defaults to "Průměr". */
   averageLabel?: string;
+  /** City base path, e.g. "/praha" or "/en/praha" — used to build member links. */
+  basePath: string;
 }
 
 function getValue(mp: MpProfile, metric: MpMetric): number | null {
@@ -76,6 +78,7 @@ export function MpMetricSwarmChart({
   height = 360,
   highlightId,
   averageLabel = "Průměr",
+  basePath,
 }: Props) {
   const formatY = makeFormatY(yDecimals);
   const router = useRouter();
@@ -84,8 +87,8 @@ export function MpMetricSwarmChart({
   const groups: SwarmGroup[] = orderedParties.map((party) => {
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId);
     const pid = party.partyId ?? "other";
-    const meta = PLACEHOLDER_PARTY_META[pid];
-    const color = PLACEHOLDER_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const meta = PARTY_META[pid];
+    const color = PARTY_COLORS[pid] ?? "#bcbcb0";
     const dotColor = ensureChartContrast(color);
     return {
       id: party.groupId,
@@ -126,7 +129,7 @@ export function MpMetricSwarmChart({
       dotSize={10}
       height={height}
       highlightId={highlightId}
-      onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
+      onDotClick={(item) => router.push(`${basePath}/member/${item.id.split(":").at(-1)}`)}
       watermark={
         <CityLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
       }

@@ -1,31 +1,28 @@
 ---
 name: city-assembly-dashboard
-description: Discover public dashboard pages and metrics for the cz-cities placeholder scaffold (Czech municipal assembly roll-call votes).
+description: Discover public dashboard pages and metrics for Czech municipal assembly roll-call votes on Mesta.DataTimes.cz.
 ---
 
-# City Assembly Dashboard (placeholder)
+# City Assembly Dashboard
 
 ## Overview
 
-Use this skill to discover public pages, dashboard sections, and machine-readable summaries for the Mesta.DataTimes.cz placeholder scaffold. No real data is published yet.
+Use this skill to discover public pages, dashboard sections, and machine-readable summaries for
+Mesta.DataTimes.cz. Currently covers: praha.
 
 ## Content Categories
 
 ### Overview
 - URL: https://mesta.datatimes.cz/
-- Description: Dashboard charts for councillor attendance, voting positions, rebelliousness, and coalition alignment (placeholder data).
+- Description: List of covered cities, each linking to its own dashboard.
 
-### Councillors
-- URL: https://mesta.datatimes.cz/members
+### Councillors (per city)
+- URL pattern: https://mesta.datatimes.cz/<city>/members
 - Description: Councillor-level metrics and links to detail pages.
 
-### Council Groups
-- URL: https://mesta.datatimes.cz/groups
+### Council Groups (per city)
+- URL pattern: https://mesta.datatimes.cz/<city>/groups
 - Description: Group-level aggregate metrics and member lists.
-
-### Regions
-- URL: https://mesta.datatimes.cz/regions
-- Description: Not applicable to city assemblies -- kept for template parity.
 
 ## Key Topics
 
@@ -35,14 +32,9 @@ Use this skill to discover public pages, dashboard sections, and machine-readabl
 - attendance
 - voting behaviour
 - coalition alignment
-- vote corrections
 - WPCA voting-position analysis
 
 ## Discovery
 
 - Full content index: https://mesta.datatimes.cz/llms.txt
 - Sitemap: https://mesta.datatimes.cz/sitemap.xml
-
-## Usage
-
-This is a placeholder scaffold -- do not cite it as a real data source.

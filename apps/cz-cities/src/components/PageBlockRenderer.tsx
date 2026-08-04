@@ -8,6 +8,8 @@ import type { MpProfile, PartyProfile } from "@/lib/types";
 // Context passed to every block
 export interface BlockRenderContext {
   lang: string;
+  /** City base path, e.g. "/praha" or "/en/praha" — used to build member/group links. */
+  basePath: string;
   mps: MpProfile[];             // chart MPs (already filtered to current + highlight)
   parties: PartyProfile[];
   tableMembers?: MpProfile[];   // members shown in table (may differ from chart mps)
@@ -65,6 +67,7 @@ export function PageBlockRenderer({ blocks, ctx }: { blocks: PageBlock[]; ctx: B
                   extraReferenceLines={c.referenceLines}
                   highlightId={ctx.highlightId}
                   averageLabel={ctx.chartLabels?.average}
+                  basePath={ctx.basePath}
                 />
               </BlockSection>
             );
@@ -80,6 +83,7 @@ export function PageBlockRenderer({ blocks, ctx }: { blocks: PageBlock[]; ctx: B
                   xLabel={ctx.chartLabels?.wpcaXLabel}
                   yLabel={ctx.chartLabels?.wpcaYLabel}
                   highlightIds={ctx.highlightIds}
+                  basePath={ctx.basePath}
                 />
               </BlockSection>
             );
@@ -97,6 +101,7 @@ export function PageBlockRenderer({ blocks, ctx }: { blocks: PageBlock[]; ctx: B
                   showPartyFilter={tc.showPartyFilter ?? ctx.showPartyFilter ?? true}
                   formerLabel={ctx.formerLabel}
                   columns={tc.columns}
+                  basePath={ctx.basePath}
                 />
               </BlockSection>
             );

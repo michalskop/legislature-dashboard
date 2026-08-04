@@ -2,7 +2,7 @@
 
 import { ScatterPlot } from "@legislature/charts";
 import type { ScatterGroup } from "@legislature/charts";
-import { PLACEHOLDER_PARTY_COLORS, PLACEHOLDER_PARTY_META } from "@/lib/parties";
+import { PARTY_COLORS, PARTY_META } from "@/lib/parties";
 import { ensureChartContrast } from "@legislature/utils";
 import type { MpProfile, PartyProfile } from "@/lib/types";
 import { useRouter } from "next/navigation";
@@ -16,9 +16,11 @@ interface Props {
   highlightIds?: string[];
   xLabel?: string;
   yLabel?: string;
+  /** City base path, e.g. "/praha" or "/en/praha" — used to build member links. */
+  basePath: string;
 }
 
-export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Vládní koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Rozdíly v rámci koalice nebo opozice" }: Props) {
+export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Vládní koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Rozdíly v rámci koalice nebo opozice", basePath }: Props) {
   const router = useRouter();
 
   // Sort parties by avg WPCA x (left→right) for a consistent legend order
@@ -32,8 +34,8 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
 
   const groups: ScatterGroup[] = orderedParties.map((party) => {
     const pid = party.partyId ?? "other";
-    const meta = PLACEHOLDER_PARTY_META[pid];
-    const color = PLACEHOLDER_PARTY_COLORS[pid] ?? "#bcbcb0";
+    const meta = PARTY_META[pid];
+    const color = PARTY_COLORS[pid] ?? "#bcbcb0";
     const dotColor = ensureChartContrast(color);
     const partyMps = mps.filter((mp) => mp.groupId === party.groupId && mp.wpca?.included);
     return {
@@ -63,7 +65,7 @@ export function WpcaScatterChart({ mps, parties, height = 400, highlightId, high
       formatY={(v) => v.toFixed(2)}
       highlightId={highlightId}
       highlightIds={highlightIds}
-      onDotClick={(item) => router.push(`/member/${item.id.split(":").at(-1)}`)}
+      onDotClick={(item) => router.push(`${basePath}/member/${item.id.split(":").at(-1)}`)}
       watermark={
         <CityLogotype size="xs" variant="mono" color="var(--color-surface-8)" />
       }

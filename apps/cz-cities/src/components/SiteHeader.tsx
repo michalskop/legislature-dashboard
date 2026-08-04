@@ -1,20 +1,23 @@
 import Link from "next/link";
 import { CityLogotype } from "@/components/CityLogotype";
 import { NavLinks } from "@/components/NavLinks";
-import { getLang } from "@/lib/lang";
-import { parliamentConfig } from "@/lib/parliament.config";
+import type { CityConfig } from "@/lib/city.config";
+import { cityBasePath } from "@/lib/routing";
 
-export async function SiteHeader() {
-  const lang = await getLang();
-  const langs = Object.keys(parliamentConfig.translations);
+interface Props {
+  lang: string;
+  city: CityConfig;
+}
+
+export function SiteHeader({ lang, city }: Props) {
   return (
     <header className="w-full border-b border-border bg-surface-0">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
-        <Link href="/" className="hover:opacity-80 transition-opacity flex-shrink-0">
+        <Link href={cityBasePath(lang, city.citySlug)} className="hover:opacity-80 transition-opacity flex-shrink-0">
           <CityLogotype size="md" />
         </Link>
         <div className="flex items-center gap-2">
-          <NavLinks lang={lang} langs={langs} />
+          <NavLinks lang={lang} city={city} />
         </div>
       </div>
     </header>

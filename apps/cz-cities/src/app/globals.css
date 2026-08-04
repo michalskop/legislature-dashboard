@@ -5,14 +5,17 @@
 @source "../../../../packages/ui/src/**/*.{ts,tsx}";
 
 /* =====================================================
- * PLACEHOLDER party colors (task A1 scaffold) — kept in sync with
- * src/lib/parties.ts PLACEHOLDER_PARTY_COLORS. Real per-city colors are
- * task A3.
+ * Party colors — kept in sync with src/lib/parties.ts PARTY_COLORS.
+ * A functional, distinct palette (real Praha candidate-list slugs), NOT
+ * official party branding — that's task A3 ("City branding + translations").
  * ===================================================== */
 @theme {
-  --color-party-placeholder-a: #2b6cb0;
-  --color-party-placeholder-b: #b7412f;
-  --color-party-placeholder-c: #d9a441;
+  --color-party-spolu-pro-prahu: #0047ab;
+  --color-party-ceska-piratska-strana: #000000;
+  --color-party-starostove-a-nezavisli: #f39200;
+  --color-party-ano-2011: #f4c400;
+  --color-party-praha-sobe: #7a1fa2;
+  --color-party-spd-trik-pes-a-nez-pro-prahu: #8b3a3a;
   --color-party-other: #bcbcb0;
 }
 
