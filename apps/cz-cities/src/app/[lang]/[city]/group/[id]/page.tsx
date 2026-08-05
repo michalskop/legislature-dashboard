@@ -1,4 +1,4 @@
-import { getAllMpProfiles, getAllPartyProfiles, getPartyProfile } from "@/lib/data";
+import { getAllMpProfiles, getAllPartyProfiles, getPartyProfile, isGovernmentAxisOnX } from "@/lib/data";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations, CITIES } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
@@ -39,16 +39,24 @@ export default async function GroupPage({ params }: Props) {
   const city = getCityConfig(citySlug);
   if (!city) notFound();
 
-  const [data, allMps, allParties] = await Promise.all([
+  const [data, allMps, allParties, govAxisOnX] = await Promise.all([
     getPartyProfile(citySlug, id),
     getAllMpProfiles(citySlug),
     getAllPartyProfiles(citySlug),
+    isGovernmentAxisOnX(citySlug),
   ]);
   if (!data) notFound();
 
   const { party, members } = data;
-  const currentAllMps = allMps.filter((m) => m.isCurrent);
-  const memberIds = members.filter((m) => m.isCurrent).map((m) => m.personId);
+  // Owner review fix (2026-08-05, DIVERGENCE.md §8 (d)): charts must include
+  // every member who held a seat during the term, not just currently-sitting
+  // members — same root cause/fix as §6 item 8's front-page undercounting
+  // bug, never propagated here until now. Do NOT confuse this with
+  // groups/page.tsx's currentParties/formerParties headcount split, which is
+  // intentionally current-only (a different, legitimate question — "how many
+  // members does this group have right now" — left untouched).
+  const chartMps = allMps;
+  const memberIds = members.map((m) => m.personId);
 
   const t = getCityTranslations(city, lang);
   const basePath = cityBasePath(lang, citySlug);
@@ -74,13 +82,19 @@ export default async function GroupPage({ params }: Props) {
         ctx={{
           lang,
           basePath,
-          mps: currentAllMps,
+          mps: chartMps,
           parties: allParties,
           tableMembers: members,
           highlightIds: memberIds,
           metricValues,
           formerLabel: t.member.former,
-          chartLabels: { average: t.charts.average, wpcaXLabel: t.charts.wpca.xLabel, wpcaYLabel: t.charts.wpca.yLabel },
+          // See page.tsx's identical construction / lib/data.ts's
+          // isGovernmentAxisOnX doc comment.
+          chartLabels: {
+            average: t.charts.average,
+            wpcaXLabel: govAxisOnX ? t.charts.wpca.xLabel : t.charts.wpca.yLabel,
+            wpcaYLabel: govAxisOnX ? t.charts.wpca.yLabel : t.charts.wpca.xLabel,
+          },
           tableLabels: t.table,
         }}
       />

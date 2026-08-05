@@ -570,6 +570,176 @@ confirmed below: coalition parties (STAN/SPOLU/Piráti) visibly cluster nearer t
 
 ---
 
+## 8. Owner feedback round two (2026-08-05) — partial reversal of §7's axis remapping + 3 more fixes
+
+Four more owner findings, fixed in this session. Item (a) below is a deliberate **partial reversal**
+of §7's design: §7 made the WPCA scatter's raw `x`/`y` mapping dynamic (swap dims so the
+government-separating dimension is always horizontal). The owner asked to stop doing that — `x`/`y`
+are fixed again (`x=dims[0]`, `y=dims[1]`), but the *axis label* placement §7 also introduced (read
+`government_axis.json`'s `effective_dim_index` to know which axis is the government axis) is kept,
+just repointed from data-mapping to label-placement.
+
+### 8 (a) WPCA scatter — fixed x=dims[0]/y=dims[1], correct label placement
+
+`src/lib/data.ts`: removed `pickWpcaAxes()` (the §7 function that read `effective_dim_index` to
+decide which `wpca.json` dims[] index fed `x` vs `y`). `getAllMpProfiles()`'s `wpca` field is now
+always `{ x: w.dims[0] ?? 0, y: w.dims[1] ?? 0, ... }` — no dimension swapping, ever. Added
+`isGovernmentAxisOnX(citySlug)`, a small exported helper (`fetchGovernmentAxis(citySlug).then(a =>
+a.effective_dim_index === 0)`) — this is the **only** remaining consumer of `effective_dim_index`,
+and it's read purely for chart *label* placement, never for data remapping.
+
+Praha's `government_axis.json` has `effective_dim_index: 1` (point-biserial r=0.945 on dims[1] vs
+~0.01/0.002 on dims[0]/dims[2] — already established in §7, re-used here, not re-derived), so for
+this term `isGovernmentAxisOnX("praha")` resolves `false`: the government/opposition axis is `y`,
+not `x`.
+
+`src/lib/dictionaries/praha.{cs,en}.ts`'s `charts.wpca.xLabel`/`yLabel` text strings are unchanged
+("Koalice | Opozice" / "Jiná dimenze hlasování" and EN equivalents) — they're now read as "the
+government-axis label text" and "the other-axis label text" respectively, not "the label that
+literally goes on x" / "...on y". The three page components that build `chartLabels` for
+`PageBlockRenderer` (`src/app/[lang]/[city]/page.tsx`, `member/[id]/page.tsx`, `group/[id]/page.tsx`)
+now each fetch `isGovernmentAxisOnX(citySlug)` alongside their other data and swap which dictionary
+string becomes `wpcaXLabel` vs `wpcaYLabel` accordingly:
+
+```ts
+chartLabels: {
+  average: t.charts.average,
+  wpcaXLabel: govAxisOnX ? t.charts.wpca.xLabel : t.charts.wpca.yLabel,
+  wpcaYLabel: govAxisOnX ? t.charts.wpca.yLabel : t.charts.wpca.xLabel,
+},
+```
+
+For Praha this term, that means "Koalice | Opozice" renders on **y**, "Jiná dimenze hlasování" on
+**x** — the reverse of §7's placement (which had put it on x because x itself was the remapped
+government dimension back then). `src/components/WpcaScatterChart.tsx` needed no logic change, only
+a doc-comment update (it already just renders whatever `xLabel`/`yLabel` props it's given on
+whichever axis); `src/lib/data.ts`'s doc comments and `WpcaRecord.dims`' comment in `src/lib/types.ts`
+were updated to stop describing the now-removed dynamic mapping.
+
+**Verified against real data, post-fix:** screenshots (`pnpm exec next start`, confirmed-free port,
+server's own `Ready` log checked first — Chromium headless via `--virtual-time-budget` since no
+Playwright install in this repo) of the front page (`cs` and `en`) show the vertical "▲▲▲ Koalice |
+Opozice ▼▼▼" / "Coalition | Opposition" label on the **y** axis, "Jiná dimenze hlasování" / "Other
+voting dimension" on **x** — and government parties (Piráti, STAN, SPOLU) cleanly separate into
+positive-y from opposition (ANO, SPD a další, Praha sobě) in negative-y, no cross-cluster overlap,
+matching §7's previously-established separation just on the other axis now.
+
+### 8 (b) Swarm chart party ordering — ascending by dim1 (mp.wpca.x, now fixed)
+
+`src/components/MpMetricSwarmChart.tsx`'s `sortedParties()` comparator changed from `bW - aW`
+(descending) back to `aW - bW` (ascending) — lowest mean `mp.wpca.x` first/leftmost, highest
+last/rightmost. Since (a) above fixed `mp.wpca.x` to always be mean dims[0] (no more per-term
+dynamic remapping), this ordering is now stable/predictable across terms in a way §7's version
+(ordering by whatever the *current* government axis happened to be) wasn't.
+
+**Verified against real data:** ascending by dims[0] gives Praha sobě (−0.978) → Piráti (−0.814) →
+STAROSTOVÉ A NEZÁVISLÍ (+0.019) → SPD,Trik.,PES a nez. pro Prahu (+0.144) → SPOLU pro Prahu (+0.571)
+→ ANO 2011 (+0.682) — screenshot-confirmed on the front page's attendance/rebelity/govity swarm
+charts and a member-detail page's swarm chart (column order PS, PIR, STAN, SPD, SPOLU, ANO
+left-to-right in all cases): SPOLU lands 5th of 6 (right half), matching its position on the WPCA
+scatter's right side (x≈+0.57), exactly as expected.
+
+### 8 (c) Removed the "Opravy hlasování" (vote corrections) column from the members table
+
+`src/components/SortableMpTable.tsx` (the local, full fork of `@legislature/ui`'s
+`SortableMpTable` — forked for the party-dictionary reasons documented in §6 items 6/7, not
+re-explained here): `SortKey`/`MetricColumn` no longer include `"corrections"`, `ALL_METRIC_COLUMNS`
+dropped it, `getNumericValue()`'s `"corrections"` case removed, the header `<Th>` and the `<td>` cell
+both removed. The now-last `govity` column's `<td>` lost its trailing `pr-4` to match the table's
+existing "no right padding on the last column" convention (previously `corrections` held that spot).
+
+The `columns` prop is still typed against the **wider** shared shape
+(`Array<"attendance"|"rebelity"|"govity"|"corrections">`, matching
+`@legislature/parliament-core`'s read-only `MemberTableBlockConfig["columns"]`) for prop-shape
+compatibility with `PageBlockRenderer`'s `columns={tc.columns}` pass-through, but any `"corrections"`
+value is filtered out before use — this app's local `MetricColumn` type (and therefore anything
+actually rendered) never includes it.
+
+`src/lib/data.ts`'s `voteCorrections: null` (already hardcoded, see §5.4's "vote-corrections
+deliberately not fetched" note) was **not** removed — checked, and it's not "completely unused":
+`src/app/[lang]/[city]/member/[id]/page.tsx` still reads `mp.voteCorrections` to build a
+`metricValues.corrections` object for a `metrics-grid` block. That object is always `undefined` in
+practice (since `voteCorrections` is always `null`), so the corrections `MetricCard` never actually
+renders on the member page either — it was already silently inert before this fix, just via a
+different code path (a `metrics-grid` block, not the table) than the one the owner flagged. Left
+as-is since it's out of scope for "the members table" specifically and not user-visible; flagged
+below as still open. `MpProfile.voteCorrections`'s type itself (from `@legislature/parliament-core`,
+read-only) is a required, non-optional field — can't be removed even if it became fully unused.
+
+**Verified:** screenshot of `/praha/members` — header row is Zastupitel/ka, Klub, Účast, Rebelování,
+Shoda s koalicí (5 columns, no corrections). `/en/praha/members` likewise has no "Vote corrections"
+column.
+
+### 8 (d) Member/group detail pages undercounted party rosters — same bug as §6 item 8, not yet propagated
+
+§6 item 8 fixed the front page's charts to use every member who ever held a seat during the term
+(`allMps`, unfiltered), not just currently-sitting members (`isCurrent`-filtered), because
+`isCurrent` silently drops mid-term departures even though the analysis outputs already correctly
+include them. That fix was never applied to the member-detail or group-detail pages, which had the
+identical bug:
+
+- `src/app/[lang]/[city]/member/[id]/page.tsx`: `const chartMps = allMps.filter((m) => m.isCurrent ||
+  m.personId === mp.personId);` → `const chartMps = allMps;` (the `|| personId ===` fallback is
+  unnecessary once the list is unfiltered — it already contains everyone, current or former).
+- `src/app/[lang]/[city]/group/[id]/page.tsx`: `const currentAllMps = allMps.filter((m) =>
+  m.isCurrent);` and `const memberIds = members.filter((m) => m.isCurrent).map((m) => m.personId);`
+  → `const chartMps = allMps;` and `const memberIds = members.map((m) => m.personId);` (renamed
+  `currentAllMps` → `chartMps` since it's no longer current-only, matching the member page's naming).
+
+**Explicitly not touched**, per the task brief (owner-confirmed correct in an earlier round):
+`src/app/[lang]/[city]/groups/page.tsx`'s `currentParties`/`formerParties` split (the groups
+*overview* page's headcount — "how many members does this group have right now", a legitimately
+different, current-only question) and the member-detail page's own `!mp.isCurrent` "former member"
+badge (about whether *that page's subject* is current/former, not a list-filtering question).
+
+**The real case that exposed this:** SPD,Trik.,PES a nez. pro Prahu has 3 members total across the
+term — Milan Urban, Zdeněk Seidl (both current), and **Josef Nerušil** (`praha:person:josef-nerusil`,
+membership `2022-11-03` – `2026-03-26`, per `src/fixtures/praha/data/memberships.csv`) — but only 2
+are current. Before this fix, Josef Nerušil's own member-detail page rendered its SPD swarm/scatter
+charts using only the 2 current SPD members (missing himself, even on his own page, since the old
+`isCurrent || personId === mp.personId` fallback only patched around this on his own page, not on
+`/praha/group/spd-trik-pes-a-nez-pro-prahu`, which had no such fallback and simply dropped him from
+every chart entirely). After the fix, his own page's SPD swarm column and the group page's WPCA
+scatter both include him (verified: all three of his, Urban's, and Seidl's WPCA `dims` — index 0
+values 0.134/0.155/0.144, index 1 values −0.524/−0.650/−0.540 — are near-identical, so their three
+scatter dots visually overlap almost completely, which is why only ~2 distinct squares are visible
+by eye; confirmed programmatically instead, by checking `josef-nerusil` appears in the rendered
+page's data payload for both pages, not just visually).
+
+**Verified, `/praha/groups` unaffected (as intended):** the groups overview still shows "SPD,Trik.,
+PES a nez. pro Prahu — 2 zastupitelů" (current-only headcount, untouched) and "STAROSTOVÉ A
+NEZÁVISLÍ — 4 zastupitelů" (also current-only) even though the front page's own charts (§6 item 8,
+unaffected by this session) correctly plot 5 STAN members including the departed David Procházka —
+same "two legitimate, different current-vs-all-time questions coexisting" pattern as before, now
+consistently applied across the front page, member-detail page, and group-detail page's charts (all
+all-time) vs. the groups-overview page's headcount card (current-only).
+
+### 8.1 Verification
+
+- `pnpm typecheck`, `pnpm lint`, `pnpm build --filter=@legislature/cz-cities` all pass (only
+  pre-existing warning: `MatomoScript.tsx`'s unused `url`/`siteId` params, unrelated to this
+  session's changes).
+- Screenshots taken against a freshly built + `next start` server, port confirmed free via `ss -tlnp`
+  first, server's own log confirmed `Ready` before navigating (system Chromium headless, since no
+  Playwright package is installed in this repo — `--virtual-time-budget`/
+  `--run-all-compositor-stages-before-draw` used to let the client charts hydrate/render before the
+  screenshot, since a plain `--screenshot` without those flags captured the page before D3/React
+  hydration painted the SVGs).
+- Front page (`cs` + `en`): swarm charts confirmed ascending PS→PIR→STAN→SPD→SPOLU→ANO,
+  SPOLU in the right half; WPCA scatter's "Koalice | Opozice"/"Coalition | Opposition" label
+  confirmed on the y axis, government parties (SPOLU/Piráti/STAN) cleanly separated from opposition
+  in positive-y.
+- `/praha/members`, `/en/praha/members`: confirmed no vote-corrections column.
+- `/praha/member/josef-nerusil`: confirmed "Bývalí zastupitelé" (former member) badge with the
+  correct 3.11.2022–26.3.2026 mandate dates, and his own SPD swarm chart column now includes 3
+  members (himself + Urban + Seidl) instead of 2.
+- `/praha/group/spd-trik-pes-a-nez-pro-prahu`: confirmed header still says "2 zastupitelů" (current
+  headcount, untouched) while the "Členové klubu" table and WPCA scatter both include Josef Nerušil
+  under a "Bývalí zastupitelé" sub-section.
+- `/praha/groups`: confirmed unaffected — same current-only headcounts as before this session.
+
+---
+
 ## Notes for T6 (future de-duplication refactor) — updated for A2
 
 - `@legislature/ui`'s `PartyBadge`/`PartyFace`/`SortableMpTable` still hardcode `CZ_PSP_PARTY_*` and

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getAllMpProfiles, getAllPartyProfiles } from "@/lib/data";
+import { getAllMpProfiles, getAllPartyProfiles, isGovernmentAxisOnX } from "@/lib/data";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations } from "@/lib/city.config";
 import { buildCityMetadata, SITE_URL } from "@/lib/metadata";
@@ -84,7 +84,11 @@ export default async function CityHomePage({ params }: Props) {
   const city = getCityConfig(citySlug);
   if (!city) notFound();
 
-  const [allMps, parties] = await Promise.all([getAllMpProfiles(citySlug), getAllPartyProfiles(citySlug)]);
+  const [allMps, parties, govAxisOnX] = await Promise.all([
+    getAllMpProfiles(citySlug),
+    getAllPartyProfiles(citySlug),
+    isGovernmentAxisOnX(citySlug),
+  ]);
   // Owner review fix (2026-08-05, DIVERGENCE.md §8): the front-page charts
   // must plot everyone present in the analysis outputs (attendance/rebelity/
   // govity/wpca already correctly include members who left mid-term, e.g.
@@ -118,7 +122,16 @@ export default async function CityHomePage({ params }: Props) {
           lang,
           mps: allMps,
           parties,
-          chartLabels: { average: t.charts.average, wpcaXLabel: t.charts.wpca.xLabel, wpcaYLabel: t.charts.wpca.yLabel },
+          // WPCA scatter axes are fixed (x=dims[0], y=dims[1] — lib/data.ts),
+          // but WHICH axis is actually the government/opposition axis is
+          // detected per government_axis.json (owner reversal, 2026-08-05,
+          // DIVERGENCE.md §8 (a)) — so the "Koalice | Opozice" label text
+          // goes wherever that axis renders, not always on x.
+          chartLabels: {
+            average: t.charts.average,
+            wpcaXLabel: govAxisOnX ? t.charts.wpca.xLabel : t.charts.wpca.yLabel,
+            wpcaYLabel: govAxisOnX ? t.charts.wpca.yLabel : t.charts.wpca.xLabel,
+          },
           tableLabels: t.table,
           basePath,
         }}

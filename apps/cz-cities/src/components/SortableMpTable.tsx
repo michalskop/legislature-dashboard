@@ -28,11 +28,19 @@ import type { MpProfile, ParliamentTranslations } from "@legislature/parliament-
 import { PartyFace } from "./PartyFace";
 import { PARTY_META } from "@/lib/parties";
 
-type SortKey = "name" | "party" | "attendance" | "rebelity" | "govity" | "corrections";
+// "corrections" (vote corrections) removed (2026-08-05, DIVERGENCE.md §8
+// (c)): cities don't record vote corrections — it's a Sněmovna-only
+// statistic that leaked in from copying apps/cz-psp's table component (see
+// data.ts's `voteCorrections` field, hardcoded to `null` for every city MP
+// profile). This local fork's `SortKey`/`MetricColumn` union types
+// deliberately no longer include "corrections" at all — narrower than
+// upstream `@legislature/ui`'s SortableMpTable (packages/*, read-only),
+// which still has it for cz-psp/sk-nrsr.
+type SortKey = "name" | "party" | "attendance" | "rebelity" | "govity";
 type SortDir = "asc" | "desc";
-type MetricColumn = "attendance" | "rebelity" | "govity" | "corrections";
+type MetricColumn = "attendance" | "rebelity" | "govity";
 
-const ALL_METRIC_COLUMNS: MetricColumn[] = ["attendance", "rebelity", "govity", "corrections"];
+const ALL_METRIC_COLUMNS: MetricColumn[] = ["attendance", "rebelity", "govity"];
 
 function pct(v: number, decimals = 1) {
   return `${(v * 100).toFixed(decimals)} %`;
@@ -43,7 +51,6 @@ function getNumericValue(mp: MpProfile, key: SortKey): number {
     case "attendance":  return mp.attendance?.present_share ?? -1;
     case "rebelity":    return mp.rebelity?.rebelity ?? -1;
     case "govity":      return mp.govity?.govity ?? -1;
-    case "corrections": return mp.voteCorrections?.corrections_total ?? -1;
     default:            return 0;
   }
 }
@@ -148,7 +155,15 @@ export interface SortableMpTableProps {
   defaultDir?: SortDir;
   showPartyFilter?: boolean;
   formerLabel?: string;
-  columns?: MetricColumn[];
+  /**
+   * Which metric columns to show. Typed against the wider, shared
+   * `MemberTableBlockConfig["columns"]` (packages/parliament-core,
+   * read-only — still includes "corrections" for cz-psp/sk-nrsr) for prop
+   * compatibility with `PageBlockRenderer`'s `tc.columns` pass-through, but
+   * "corrections" is always filtered out below — this app never renders a
+   * vote-corrections column (2026-08-05, DIVERGENCE.md §8 (c)).
+   */
+  columns?: Array<"attendance" | "rebelity" | "govity" | "corrections">;
   /** City base path, e.g. "/praha" or "/en/praha". */
   basePath: string;
 }
@@ -169,7 +184,9 @@ export function SortableMpTable({
   const [partyFilter, setPartyFilter] = useState<string | null>(null);
 
   const getMpHref = (slug: string) => `${basePath}/member/${slug}`;
-  const visibleCols = columns ?? ALL_METRIC_COLUMNS;
+  const visibleCols: MetricColumn[] = columns
+    ? columns.filter((c): c is MetricColumn => c !== "corrections")
+    : ALL_METRIC_COLUMNS;
 
   const parties = useMemo(() => {
     const seen = new Map<string, string>();
@@ -222,13 +239,8 @@ export function SortableMpTable({
           </td>
         )}
         {visibleCols.includes("govity") && (
-          <td className="py-2 pr-4 text-right tabular-nums">
-            {mp.govity != null ? pct(mp.govity.govity) : "—"}
-          </td>
-        )}
-        {visibleCols.includes("corrections") && (
           <td className="py-2 text-right tabular-nums">
-            {mp.voteCorrections?.corrections_total ?? "—"}
+            {mp.govity != null ? pct(mp.govity.govity) : "—"}
           </td>
         )}
       </tr>
@@ -249,7 +261,6 @@ export function SortableMpTable({
               {visibleCols.includes("attendance")  && <Th label={labels.attendance}  sortKey="attendance"  {...thProps} className="text-right" />}
               {visibleCols.includes("rebelity")    && <Th label={labels.rebelity}    sortKey="rebelity"    {...thProps} className="text-right" />}
               {visibleCols.includes("govity")      && <Th label={labels.govity}      sortKey="govity"      {...thProps} className="text-right" />}
-              {visibleCols.includes("corrections") && <Th label={labels.corrections} sortKey="corrections" {...thProps} className="text-right" />}
             </tr>
           </thead>
           <tbody>

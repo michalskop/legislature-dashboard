@@ -1,4 +1,4 @@
-import { getAllMpProfiles, getAllPartyProfiles, getMpProfile } from "@/lib/data";
+import { getAllMpProfiles, getAllPartyProfiles, getMpProfile, isGovernmentAxisOnX } from "@/lib/data";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations, CITIES } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
@@ -45,15 +45,21 @@ export default async function MemberPage({ params }: Props) {
   const city = getCityConfig(citySlug);
   if (!city) notFound();
 
-  const [mp, allMps, parties] = await Promise.all([
+  const [mp, allMps, parties, govAxisOnX] = await Promise.all([
     getMpProfile(citySlug, id),
     getAllMpProfiles(citySlug),
     getAllPartyProfiles(citySlug),
+    isGovernmentAxisOnX(citySlug),
   ]);
   if (!mp) notFound();
 
-  // Charts show current MPs; always include this MP even if former
-  const chartMps = allMps.filter((m) => m.isCurrent || m.personId === mp.personId);
+  // Owner review fix (2026-08-05, DIVERGENCE.md §8 (d)): charts must include
+  // every member who held a seat during the term, not just currently-sitting
+  // members — same root cause/fix as §6 item 8's front-page undercounting
+  // bug (page.tsx), never propagated here until now. `allMps` already
+  // includes this MP whether current or former, so no `|| personId ===`
+  // fallback is needed once the `isCurrent` filter is dropped.
+  const chartMps = allMps;
 
   const t = getCityTranslations(city, lang);
   const basePath = cityBasePath(lang, citySlug);
@@ -133,7 +139,15 @@ export default async function MemberPage({ params }: Props) {
           parties,
           highlightId: mp.personId,
           metricValues,
-          chartLabels: { average: t.charts.average, wpcaXLabel: t.charts.wpca.xLabel, wpcaYLabel: t.charts.wpca.yLabel },
+          // See lib/data.ts's isGovernmentAxisOnX doc comment and page.tsx's
+          // identical construction — x/y are fixed (dims[0]/dims[1]), but the
+          // "Koalice | Opozice" label goes on whichever axis is actually the
+          // government axis for this term.
+          chartLabels: {
+            average: t.charts.average,
+            wpcaXLabel: govAxisOnX ? t.charts.wpca.xLabel : t.charts.wpca.yLabel,
+            wpcaYLabel: govAxisOnX ? t.charts.wpca.yLabel : t.charts.wpca.xLabel,
+          },
           tableLabels: t.table,
         }}
       />

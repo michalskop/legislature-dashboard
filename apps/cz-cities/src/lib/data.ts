@@ -72,11 +72,27 @@ export function fetchWpca(citySlug: string) {
 
 // Sidecar from cz-municipalities-votes-2022-2026's detect_government_axis.py
 // (praha/analyses/wpca/outputs/government_axis.json) — which WpcaRecord
-// dims[] index correlates with real government/opposition membership. See
-// getAllMpProfiles below for how this drives wpca.x/wpca.y; nothing in this
-// app hardcodes a dimension index.
+// dims[] index correlates with real government/opposition membership.
+//
+// Owner reversal (2026-08-05, DIVERGENCE.md §8 (a)): this used to also drive
+// *which raw dimension* fed wpca.x/wpca.y (see git history's `pickWpcaAxes`).
+// That's reverted — `getAllMpProfiles` below now always maps x=dims[0],
+// y=dims[1], full stop. `effective_dim_index` is read only for *label*
+// placement (which axis gets the "Koalice | Opozice" text) — see
+// `isGovernmentAxisOnX` below and its call sites in the page components.
 export function fetchGovernmentAxis(citySlug: string) {
   return fetchAnalysisJson<GovernmentAxisRecord>(citySlug, "wpca/outputs/government_axis.json");
+}
+
+// Whether the detected government/opposition axis (government_axis.json's
+// effective_dim_index) is dims[0] — i.e. whether it renders on the scatter
+// chart's fixed x axis (x=dims[0]) or its y axis (y=dims[1]). Used only to
+// decide chart *label* placement (see the three [lang]/[city] page
+// components' chartLabels construction) — never to remap which raw
+// dimension feeds x/y, which is fixed (see getAllMpProfiles below).
+export async function isGovernmentAxisOnX(citySlug: string): Promise<boolean> {
+  const axis = await fetchGovernmentAxis(citySlug);
+  return axis.effective_dim_index === 0;
 }
 
 // vote-corrections deliberately not fetched — cities don't publish
@@ -216,34 +232,15 @@ export async function fetchCurrentGroups(citySlug: string): Promise<CurrentGroup
 
 // --- Combined MP profiles ---
 
-// Picks which wpca.json dims[] index renders on the scatter chart's x axis
-// (the detected government/opposition axis, per government_axis.json — see
-// fetchGovernmentAxis) vs y (the next-most-informative remaining dimension,
-// by |correlation|; wpca.dims[] can have more entries than the 2D scatter
-// plots, e.g. n_dims=3, so "the other one" picks the most informative of
-// what's left rather than assuming a fixed second index). Nothing here
-// hardcodes a specific dims[] index — everything is read off the sidecar.
-function pickWpcaAxes(axis: GovernmentAxisRecord): { xIndex: number; yIndex: number } {
-  const xIndex = axis.effective_dim_index;
-  const remaining = axis.correlations.filter((c) => c.dim_index !== xIndex);
-  const yIndex = remaining.length > 0
-    ? remaining.reduce((best, c) => (Math.abs(c.correlation) > Math.abs(best.correlation) ? c : best)).dim_index
-    : xIndex;
-  return { xIndex, yIndex };
-}
-
 export async function getAllMpProfiles(citySlug: string): Promise<MpProfile[]> {
-  const [attendance, rebelity, govity, wpca, governmentAxis, currentMembers, allMembers] = await Promise.all([
+  const [attendance, rebelity, govity, wpca, currentMembers, allMembers] = await Promise.all([
     fetchAttendance(citySlug),
     fetchRebelity(citySlug),
     fetchGovity(citySlug),
     fetchWpca(citySlug),
-    fetchGovernmentAxis(citySlug),
     fetchCurrentMembers(citySlug),
     fetchAllMembers(citySlug),
   ]);
-
-  const { xIndex: wpcaXIndex, yIndex: wpcaYIndex } = pickWpcaAxes(governmentAxis);
 
   const currentIds = new Set(currentMembers.map((m) => m.id));
   const allMemberMap = new Map(allMembers.map((m) => [m.id, m]));
@@ -304,12 +301,16 @@ export async function getAllMpProfiles(citySlug: string): Promise<MpProfile[]> {
         ? { govity: gov.govity, govity_total: gov.govity_total, govity_possible: gov.govity_possible }
         : null,
       voteCorrections: null,
-      // x = detected government/opposition axis (see pickWpcaAxes above),
-      // NOT always dims[0] — was hardcoded before the 2026-08-05 fix (see
-      // DIVERGENCE.md §7), which put dim1 on x for Praha even though dim2
-      // (index 1) is the one that actually separates government/opposition.
+      // x=dims[0], y=dims[1], always — fixed (owner reversal, 2026-08-05,
+      // DIVERGENCE.md §8 (a)). §7 (2026-08-05) had made this dynamic,
+      // remapping whichever dims[] index the government_axis.json sidecar
+      // flagged as government-separating onto x. That's reverted: the raw
+      // dimensions no longer get swapped based on which one happens to
+      // separate government/opposition. `effective_dim_index` is still read
+      // (see isGovernmentAxisOnX above), but only for *label* placement in
+      // the page components — never to pick which dims[] value feeds x/y.
       wpca: w && w.included
-        ? { x: w.dims[wpcaXIndex] ?? 0, y: w.dims[wpcaYIndex] ?? 0, weight: w.weight, included: w.included }
+        ? { x: w.dims[0] ?? 0, y: w.dims[1] ?? 0, weight: w.weight, included: w.included }
         : null,
     };
   });

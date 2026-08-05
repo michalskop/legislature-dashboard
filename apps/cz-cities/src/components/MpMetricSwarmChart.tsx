@@ -38,16 +38,18 @@ function getValue(mp: MpProfile, metric: MpMetric): number | null {
   return null;
 }
 
-// Owner review fix (2026-08-05, DIVERGENCE.md §3), corrected (2026-08-05,
-// DIVERGENCE.md §7): party/group columns are ordered by each party's mean
-// `mp.wpca.x`, DESCENDING. `mp.wpca.x` is NOT a hardcoded dims[0] — since the
-// §7 fix, lib/data.ts's getAllMpProfiles reads which wpca.json dims[] index
-// actually correlates with real government/opposition membership from the
-// government_axis.json sidecar (point-biserial correlation, computed by
-// cz-municipalities-votes-2022-2026's detect_government_axis.py) and maps
-// that dimension onto `x`. This component never reads dims[] directly or
-// assumes an index, so a future term/coalition change or a different city
-// re-orients correctly with no code change here. Parties with no
+// Owner review fix (2026-08-05, DIVERGENCE.md §3), reverted to ASCENDING
+// (2026-08-05, DIVERGENCE.md §8 (b)): party/group columns are ordered by
+// each party's mean `mp.wpca.x` (= mean dims[0], WPCA "dim1" — fixed,
+// non-dynamic, since the §8 (a) reversal of §7's axis-remapping), lowest
+// first/leftmost, highest last/rightmost. On the real Praha data this reads
+// left→right as Praha sobě (−0.98) → Piráti (−0.81) → STAN (+0.02) → SPD a
+// další (+0.14) → SPOLU (+0.57) → ANO (+0.68) — matching the WPCA scatter's
+// own x axis (also fixed to dims[0], see WpcaScatterChart.tsx/lib/data.ts),
+// so a party's horizontal position reads consistently across every chart on
+// the page even though dim1 is not, on its own, a clean coalition/opposition
+// axis (see DIVERGENCE.md §6 item 3's nuance — dim2 is the one that
+// separates government from opposition here, per §7/§8 (a)). Parties with no
 // WPCA-included members sort after those that do; among those, fall back to
 // avgGovity (higher coalition-alignment first) so the order is still
 // deterministic.
@@ -63,7 +65,7 @@ function sortedParties(mps: MpProfile[], parties: PartyProfile[]): PartyProfile[
   return [...parties].sort((a, b) => {
     const aW = wpcaByGroup[a.groupId];
     const bW = wpcaByGroup[b.groupId];
-    if (aW !== undefined && bW !== undefined) return bW - aW;
+    if (aW !== undefined && bW !== undefined) return aW - bW;
     if (aW !== undefined) return -1;
     if (bW !== undefined) return 1;
     return (b.avgGovity ?? 0) - (a.avgGovity ?? 0);

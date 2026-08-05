@@ -20,11 +20,16 @@ interface Props {
   basePath: string;
 }
 
-// x = the detected government/opposition axis (mp.wpca.x — see lib/data.ts's
-// getAllMpProfiles/pickWpcaAxes, which reads government_axis.json to decide
-// which wpca.json dims[] index this is; not hardcoded here). y = whatever
-// dimension is left over, which has no established political meaning, so its
-// default label stays neutral rather than claiming one — see DIVERGENCE.md §7.
+// x = raw wpca.json dims[0], y = raw dims[1], always fixed (lib/data.ts's
+// getAllMpProfiles) — reverted from §7's dynamic remapping (DIVERGENCE.md
+// §8 (a)). Which axis is the government/opposition axis is a property of
+// the *data*, not this component: `xLabel`/`yLabel` are passed in from the
+// page components, already placed on the correct axis by reading
+// government_axis.json's effective_dim_index (lib/data.ts's
+// isGovernmentAxisOnX) — this component just renders whatever label text it
+// is given on whichever axis it is given for. The default prop values below
+// assume the government axis is x (effective_dim_index === 0) purely as a
+// fallback if no caller passes labels; real callers always pass both.
 export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Jiná dimenze hlasování", basePath }: Props) {
   const router = useRouter();
 
