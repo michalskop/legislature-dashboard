@@ -20,7 +20,12 @@ interface Props {
   basePath: string;
 }
 
-export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Vládní koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Rozdíly v rámci koalice nebo opozice", basePath }: Props) {
+// x = the detected government/opposition axis (mp.wpca.x — see lib/data.ts's
+// getAllMpProfiles/pickWpcaAxes, which reads government_axis.json to decide
+// which wpca.json dims[] index this is; not hardcoded here). y = whatever
+// dimension is left over, which has no established political meaning, so its
+// default label stays neutral rather than claiming one — see DIVERGENCE.md §7.
+export function WpcaScatterChart({ mps, parties, height = 400, highlightId, highlightIds, xLabel = "◄ ◄ ◄ Koalice\u2009|\u2009Opozice ► ► ►", yLabel = "Jiná dimenze hlasování", basePath }: Props) {
   const router = useRouter();
 
   // Sort parties by avg WPCA x (left→right) for a consistent legend order

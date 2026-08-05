@@ -74,7 +74,10 @@ export const prahaEn: ParliamentTranslations = {
     average: "Average",
     wpca: {
       xLabel: "◄ ◄ ◄ Coalition | Opposition ► ► ►",
-      yLabel: "Differences within coalition or opposition",
+      // Owner fix (2026-08-05, DIVERGENCE.md §7): see praha.cs.ts's comment —
+      // neutral label, since this leftover dimension's political meaning
+      // isn't established.
+      yLabel: "Other voting dimension",
     },
   },
 };

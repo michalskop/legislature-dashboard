@@ -38,14 +38,19 @@ function getValue(mp: MpProfile, metric: MpMetric): number | null {
   return null;
 }
 
-// Owner review fix (2026-08-05, DIVERGENCE.md §3): party/group columns are
-// ordered by each party's mean WPCA dim1 value (`mp.wpca.x`, which is
-// `dims[0]` from praha/analyses/wpca/outputs/wpca.json — see lib/data.ts's
-// getAllMpProfiles), DESCENDING — higher mean dim1 (coalition side, per the
-// wpca_definition.json rotation anchored on the mayor, see DIVERGENCE.md's
-// item-4 writeup) sorts first/leftmost. Parties with no WPCA-included
-// members sort after those that do; among those, fall back to avgGovity
-// (higher coalition-alignment first) so the order is still deterministic.
+// Owner review fix (2026-08-05, DIVERGENCE.md §3), corrected (2026-08-05,
+// DIVERGENCE.md §7): party/group columns are ordered by each party's mean
+// `mp.wpca.x`, DESCENDING. `mp.wpca.x` is NOT a hardcoded dims[0] — since the
+// §7 fix, lib/data.ts's getAllMpProfiles reads which wpca.json dims[] index
+// actually correlates with real government/opposition membership from the
+// government_axis.json sidecar (point-biserial correlation, computed by
+// cz-municipalities-votes-2022-2026's detect_government_axis.py) and maps
+// that dimension onto `x`. This component never reads dims[] directly or
+// assumes an index, so a future term/coalition change or a different city
+// re-orients correctly with no code change here. Parties with no
+// WPCA-included members sort after those that do; among those, fall back to
+// avgGovity (higher coalition-alignment first) so the order is still
+// deterministic.
 function sortedParties(mps: MpProfile[], parties: PartyProfile[]): PartyProfile[] {
   const wpcaByGroup: Record<string, number> = {};
   for (const party of parties) {
@@ -74,6 +79,20 @@ function niceUpperBound(max: number): number {
   const steps = [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0];
   const step = steps.find((s) => padded <= s * 10) ?? 1.0;
   return Math.ceil(padded / step) * step;
+}
+
+// Owner fix (2026-08-05, DIVERGENCE.md §7): govity (coalition-alignment
+// share) clusters near 100% for every party — real, not a bug (Prague's
+// assembly votes near-unanimously on most routine business), but the old
+// "auto" 0-floor y-domain (see niceUpperBound above) squeezed that whole real
+// spread into the top ~15% of the chart, making every party look identical.
+// This floors a little below the real minimum instead of at 0, on a fixed
+// 100% ceiling (govity is a vote-agreement share, so it can't exceed 1) —
+// data-driven rather than a hardcoded fixed floor, so it stays robust if a
+// future term's/city's govity spread is wider or narrower than Praha's.
+function niceLowerBoundToCeiling(min: number): number {
+  const paddedPercent = Math.floor(min * 100) - 2; // 2 percentage points below the real min
+  return Math.max(0, paddedPercent) / 100;
 }
 
 export function MpMetricSwarmChart({
@@ -119,9 +138,15 @@ export function MpMetricSwarmChart({
     ? allValues.reduce((a, b) => a + b, 0) / allValues.length
     : null;
 
-  const yDomain: [number, number] = yMode === "auto" && allValues.length > 0
-    ? [0, niceUpperBound(Math.max(...allValues))]
-    : [0, 1];
+  // govity gets a tight, data-driven y-domain regardless of yMode (see
+  // niceLowerBoundToCeiling above) — attendance/rebelity's own yMode-driven
+  // scaling (below) is untouched.
+  const yDomain: [number, number] =
+    metric === "govity" && allValues.length > 0
+      ? [niceLowerBoundToCeiling(Math.min(...allValues)), 1]
+      : yMode === "auto" && allValues.length > 0
+        ? [0, niceUpperBound(Math.max(...allValues))]
+        : [0, 1];
 
   const referenceLines: SwarmReferenceLine[] = [
     ...(avg !== null ? [{ value: avg, label: `${averageLabel} ${formatY(avg)}` }] : []),

@@ -67,7 +67,13 @@ export const prahaCs: ParliamentTranslations = {
     average: "Průměr",
     wpca: {
       xLabel: "◄ ◄ ◄ Koalice | Opozice ► ► ►",
-      yLabel: "Rozdíly v rámci koalice nebo opozice",
+      // Owner fix (2026-08-05, DIVERGENCE.md §7): this is whichever WPCA
+      // dimension is left over once the government/opposition axis is
+      // detected (see lib/data.ts's pickWpcaAxes) — its political meaning
+      // isn't established, so the label stays neutral rather than claiming
+      // it represents "differences within coalition or opposition" (the old
+      // text, written when this axis was wrongly assumed to be dims[0]).
+      yLabel: "Jiná dimenze hlasování",
     },
   },
 };

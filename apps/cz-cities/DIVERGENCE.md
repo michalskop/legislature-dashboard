@@ -434,6 +434,142 @@ call-out boxes below; both are also cross-referenced from the relevant source fi
 
 ---
 
+## 7. WPCA government-axis detection + govity y-axis fix (2026-08-05)
+
+Two more real issues found by the project owner reviewing rendered charts, investigated and
+quantified in a prior session (root causes confirmed independently — see the two verification
+sub-sections below), fixed in this session.
+
+### 7.1 Issue: §6 item 3's "dim1 = coalition axis" assumption was wrong
+
+`wpca.json`'s three unsupervised WPCA dimensions don't have a fixed political meaning — which one
+correlates with real government/opposition membership emerges from the vote data itself, and can
+differ by term or shift mid-term if the coalition changes. §6 item 3 (above) hardcoded `dims[0]`
+(`mp.wpca.x`) as "the coalition axis" and even flagged its own nuance: *"the task's framing
+('higher dim1 = coalition side') doesn't hold cleanly on the real numbers — ANO (opposition) has
+the highest mean dim1, ahead of coalition parties."* That nuance was the tell: `dims[0]` was never
+the right axis for this term. `dims[1]` is.
+
+**Detection, not assumption.** `cz-municipalities-votes-2022-2026` (the separate local data repo
+this app reads fixtures from) gained
+`praha/scripts/detect_government_axis.py`: for each `wpca.json` dims[] index, it computes the
+point-biserial correlation (Pearson correlation with a 0/1 government-membership label — a
+standard, bounded [-1,1] statistic) against real government membership, expanded from
+`govity_definition.json`'s `government_groups` via `memberships.csv`. It writes a sidecar,
+`praha/analyses/wpca/outputs/government_axis.json` — **not** a change to `wpca.json` itself, which
+is schema-validated (gate G1) and would risk breaking on an undeclared field.
+
+**Independently re-verified in this session** (re-run from the committed `wpca.json`/
+`govity_definition.json`/`memberships.csv`, not taken on faith):
+
+| dims[] index | point-biserial r |
+|---|---|
+| 0 | 0.0088 |
+| **1** | **0.9452** |
+| 2 | 0.0016 |
+
+`dims[1]` wins by a wide margin — confirms the prior session's finding almost exactly (it had
+quoted per-party means consistent with these numbers, e.g. Piráti +0.49/STAN +0.26/SPOLU +0.24 on
+the government side — this session's exact re-computation: Piráti +0.491, STAN +0.255, SPOLU
++0.241, same trio of values, order-of-listing differed slightly in the prior note but the
+underlying numbers match to 3 decimal places). `wpca_definition.json`'s existing rotation anchor
+(`praha:person:bohuslav-svoboda`, a government-coalition member) already happens to put government
+positive on `dims[1]` (government_mean=+0.33, opposition_mean=-0.47) — **no rotation change was
+needed**, confirmed and now documented in `wpca_definition.json`'s `extras`, not silently assumed.
+A manual-override escape hatch (`extras.government_axis_override`, `null` by default) was added to
+`wpca_definition.json` for a future case where auto-detection picks the wrong dimension.
+
+**This app now consumes that sidecar generically — no hardcoded dimension index anywhere in
+`apps/cz-cities`:**
+
+- `src/fixtures/praha/analyses/wpca/outputs/government_axis.json` — new fixture, copied verbatim
+  from the source repo (same fixture strategy as every other analysis output — see §5.4).
+- `src/lib/types.ts` — new `GovernmentAxisRecord` type; `WpcaRecord.dims`'s doc comment no longer
+  claims `dims[0]=x, dims[1]=y`.
+- `src/lib/data.ts` — new `fetchGovernmentAxis()`; `getAllMpProfiles()`'s new `pickWpcaAxes()`
+  reads `government_axis.json`'s `effective_dim_index` for `x` and picks whichever *remaining*
+  dimension has the next-highest `|correlation|` for `y` (handles `n_dims > 2` generically — the
+  2D scatter can only show two axes, so "the other one" means the most-informative of what's left,
+  not a fixed second index). This is the **one place** the dimension mapping happens; every
+  component downstream just reads `mp.wpca.x`/`mp.wpca.y` as before.
+- `src/components/WpcaScatterChart.tsx` — x renders as the horizontal axis (unchanged prop
+  wiring — `x`/`y` were already mapped to the scatter's horizontal/vertical, only *which raw
+  dimension* feeds `x` changed, in `data.ts`), labeled "◄ ◄ ◄ Koalice | Opozice ► ► ►" (same text
+  as before — it's now actually correct, since `x` is now actually the government axis). The `y`
+  axis's default label and both `src/lib/dictionaries/praha.{cs,en}.ts`'s `charts.wpca.yLabel`
+  changed from "Rozdíly v rámci koalice nebo opozice" / "Differences within coalition or
+  opposition" (a directional claim that no longer holds — `y` is just whatever's left, weakly
+  correlated with government at best) to neutral text: "Jiná dimenze hlasování" / "Other voting
+  dimension". No sign flip was applied to either axis (deliberately — the task explicitly did not
+  ask for one, and §6 item 4 already established "don't add a flip you don't need"): `x`/`y` are
+  the raw `dims[]` values at their detected/next-best indices, nothing more.
+- `src/components/MpMetricSwarmChart.tsx`'s `sortedParties()` needed **no logic change** — it
+  already sorted by `mp.wpca.x` descending (§6 item 3's fix), and `x` is now correct by
+  construction via `data.ts`. Only its doc comment changed, to stop claiming a hardcoded `dims[0]`/
+  "dim1" and describe the sidecar-driven mapping instead.
+
+**Verified against real data, post-fix:** descending by (now-correct) `mp.wpca.x` gives Piráti
+(+0.49) → STAN (+0.26) → SPOLU (+0.24) → ANO (−0.36) → SPD a další (−0.57) → Praha sobě (−0.60) —
+government parties first/leftmost, opposition last/rightmost, cleanly separated with no overlap
+(unlike the old `dims[0]` ordering, where ANO/SPOLU/SPD were interleaved with STAN and Piráti was
+the single most negative party despite being in government). Screenshot-confirmed on the front page
+and a group detail page (see below): the WPCA scatter's horizontal axis now cleanly separates
+SPOLU/Piráti/STAN from ANO/Praha sobě/SPD, left↔right, with no cross-cluster overlap.
+
+**Scope note, carried over from the source repo:** axis-detection is implemented in
+`cz-municipalities-votes-2022-2026` only (`praha/scripts/detect_government_axis.py`), not in the
+shared `legislature-data-analyses` repo. Generalizing it there (so `wpca.py` itself could emit this
+sidecar for every city/parliament, not just something each downstream data repo re-implements) is a
+bigger change worth its own review — flagged again here, still not attempted.
+
+### 7.2 Issue: govity swarm chart's y-axis hid real spread behind a 0–120% domain
+
+`govity` (share of votes cast in line with the government) genuinely clusters near 100% for almost
+every party — real, not a calculation artifact: Prague's assembly votes near-unanimously on most
+routine business (grants, appointments, procedural items), and real political contestation is
+concentrated in a minority of votes. (A prior session found one small real formula quirk — the
+shared `govity.py` counts abstaining as government agreement, already tracked as the source repo's
+own audit task T17a — but quantified it at only ~2.2 percentage points of the effect, not the
+dominant cause; **explicitly not touched here**, per the owner's decision to fix only the chart's
+scaling, not the shared analysis script.)
+
+The bug was purely presentational: `MpMetricSwarmChart`'s `yMode="auto"` always floors the y-domain
+at 0 and only pads the *top* (`niceUpperBound`, ~+15% then rounded to a nice step) — for govity's
+real range (individual members ~97.9–100%, party means ~98.7–100%), that produces a 0–120% domain,
+squeezing the entire real spread into the top ~15% of the chart and making every party look
+identically pinned at 100%.
+
+**Fix — `src/components/MpMetricSwarmChart.tsx`:** a new `niceLowerBoundToCeiling()` floors the
+y-domain a little (2 percentage points) below the real per-person minimum, on a fixed 100% ceiling
+(govity is a vote-agreement share — it structurally cannot exceed 1, so no top padding is needed
+the way `niceUpperBound` pads for rebelity's unbounded-ish range). This is applied via a
+`metric === "govity"` special case in the component, not a new `yMode` value — the shared
+`SwarmChartConfig.yMode` type (`packages/parliament-core`, read-only for this task) only allows
+`"full" | "auto"`, so a third mode literal wasn't available without touching `packages/*`.
+Data-driven (computed from the real min at render time) rather than a hardcoded fixed floor like
+"85%", so it stays robust if a future term's or city's govity spread turns out wider or narrower
+than Praha's current one. `attendance`/`rebelity`'s own `yMode`-driven scaling is completely
+untouched — the branch is metric-specific. `src/lib/city.config.ts`'s two `govity-swarm` blocks
+still say `yMode: "auto"` (harmless — now overridden by the metric check) with a comment explaining
+why, rather than silently leaving a misleading config value unexplained.
+
+**Verified against real data:** Praha's committed `govity.json` — individual members range
+97.88%–100%, party means range 98.68% (SPD a další) to 99.98% (STAN). The new domain floors at 96%
+(2pp below the 97.88% individual min, per `niceLowerBoundToCeiling`), giving `[0.96, 1.0]` — the
+real spread now occupies about half the chart's height instead of the top ~15%. Screenshot-
+confirmed below: coalition parties (STAN/SPOLU/Piráti) visibly cluster nearer the top, opposition
+(ANO/Praha sobě/SPD a další) visibly lower, no longer a flat line.
+
+### 7.3 Verification
+
+- Screenshots taken with Playwright (system Chromium) against a freshly built + started
+  `next start` server on a confirmed-free port (verified via `ss -tlnp` before start, and the
+  server's own log confirmed `Ready` before navigating) — front page and a group detail page, `cs`.
+- `pnpm typecheck`, `pnpm lint`, `pnpm build --filter=@legislature/cz-cities` all pass (see repo
+  history for this session's commit for the exact output).
+
+---
+
 ## Notes for T6 (future de-duplication refactor) — updated for A2
 
 - `@legislature/ui`'s `PartyBadge`/`PartyFace`/`SortableMpTable` still hardcode `CZ_PSP_PARTY_*` and

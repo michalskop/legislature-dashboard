@@ -112,6 +112,16 @@ const PRAHA: CityConfig = {
       },
       {
         id: "govity-swarm",
+        // yMode here is otherwise-unused for this metric: MpMetricSwarmChart
+        // special-cases metric === "govity" to a tight, data-driven y-domain
+        // (floor a little below the real min, ceiling fixed at 100%) instead
+        // of "auto"'s 0-floor scaling — the shared PageBlockConfig type
+        // (packages/parliament-core, read-only) only allows "full" | "auto",
+        // so this can't be a third yMode literal; see MpMetricSwarmChart.tsx.
+        // Owner fix (2026-08-05, DIVERGENCE.md §7): "auto" (0–~120% domain)
+        // made every party look identically clustered at ~100%, hiding the
+        // real ~98.7–100% party-mean spread (individual members range
+        // ~97.9–100%).
         config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
@@ -155,6 +165,16 @@ const PRAHA: CityConfig = {
       },
       {
         id: "govity-swarm",
+        // yMode here is otherwise-unused for this metric: MpMetricSwarmChart
+        // special-cases metric === "govity" to a tight, data-driven y-domain
+        // (floor a little below the real min, ceiling fixed at 100%) instead
+        // of "auto"'s 0-floor scaling — the shared PageBlockConfig type
+        // (packages/parliament-core, read-only) only allows "full" | "auto",
+        // so this can't be a third yMode literal; see MpMetricSwarmChart.tsx.
+        // Owner fix (2026-08-05, DIVERGENCE.md §7): "auto" (0–~120% domain)
+        // made every party look identically clustered at ~100%, hiding the
+        // real ~98.7–100% party-mean spread (individual members range
+        // ~97.9–100%).
         config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často hlasuje shodně s koalicí." },

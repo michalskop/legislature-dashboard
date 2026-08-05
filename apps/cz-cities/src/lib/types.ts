@@ -106,10 +106,32 @@ export interface WpcaRecord {
   name: string;
   given_names: string[];
   family_names: string[];
-  dims: number[]; // dims[0]=x, dims[1]=y for scatterplot
+  // Unsupervised dimensions — which index (if any) correlates with real
+  // government/opposition membership is NOT fixed by the analysis; it's
+  // detected per-city/term (see GovernmentAxisRecord below), not assumed to
+  // be dims[0]. Do not hardcode "dims[0]=x, dims[1]=y" against this array.
+  dims: number[];
   weight: number;
   included: boolean;
   organizations: OrgMembership[];
+}
+
+// Sidecar written by cz-municipalities-votes-2022-2026's
+// praha/scripts/detect_government_axis.py (NOT part of wpca.json itself,
+// which is schema-validated — see that repo's praha/analyses/wpca/README-ish
+// docstring). Records which WpcaRecord.dims[] index correlates with real
+// government/opposition membership, via point-biserial correlation, so the
+// dashboard never hardcodes a dimension index either.
+export interface GovernmentAxisRecord {
+  n_dims: number;
+  correlations: { dim_index: number; correlation: number }[];
+  detected_dim_index: number;
+  override_dim_index: number | null;
+  overridden: boolean;
+  effective_dim_index: number;
+  government_mean: number;
+  opposition_mean: number;
+  government_sign: number;
 }
 
 // NOTE: no KrajProfile/constituency type here — cities have no constituency
