@@ -1,4 +1,4 @@
-# Authentication — Mesta.DataTimes.cz
+# Authentication — Města.DataTimes.cz
 
 ## No authentication required
 

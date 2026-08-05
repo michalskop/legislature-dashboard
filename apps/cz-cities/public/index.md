@@ -1,4 +1,4 @@
-# Mesta.DataTimes.cz
+# Města.DataTimes.cz
 
 Open dashboard of Czech municipal assembly roll-call votes.
 
@@ -9,8 +9,8 @@ Open dashboard of Czech municipal assembly roll-call votes.
 ## Analyses
 
 - Attendance on voting events.
-- Rebelliousness against the councillor's own group.
+- Rebelliousness against the assembly member's own group.
 - Alignment with the governing coalition.
 - WPCA voting-position map.
 
-Generated: 2026-08-04
+Generated: 2026-08-05

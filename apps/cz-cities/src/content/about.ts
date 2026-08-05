@@ -15,11 +15,11 @@ export interface AboutContent {
   backLabel: string;
 }
 
-// Site-wide "About" content — describes Mesta.DataTimes.cz as a whole
+// Site-wide "About" content — describes Města.DataTimes.cz as a whole
 // (currently: Praha), not any one city's own page.
 const cs: AboutContent = {
   pageTitle: "O projektu",
-  intro: "Mesta.DataTimes.cz je otevřený přehled jmenovitých hlasování zastupitelstev českých měst. V této verzi je k dispozici hlavní město Praha; další města přibudou postupně.",
+  intro: "Města.DataTimes.cz je otevřený přehled jmenovitých hlasování zastupitelstev českých měst. V této verzi je k dispozici hlavní město Praha; další města přibudou postupně.",
   backLabel: "← Zpět na přehled",
   sections: [
     {
@@ -73,29 +73,29 @@ const cs: AboutContent = {
 
 const en: AboutContent = {
   pageTitle: "About the project",
-  intro: "Mesta.DataTimes.cz is an open dashboard of roll-call votes in Czech municipal assemblies. This version covers the City of Prague; more cities will follow.",
+  intro: "Města.DataTimes.cz is an open dashboard of roll-call votes in Czech municipal assemblies. This version covers the City of Prague; more cities will follow.",
   backLabel: "← Back to overview",
   sections: [
     {
       title: "What we show",
       paragraphs: [
-        { type: "text", text: "For each councillor, we show metrics derived from the assembly's roll-call votes:" },
+        { type: "text", text: "For each assembly member, we show metrics derived from the assembly's roll-call votes:" },
         {
           type: "list",
           items: [
-            { label: "Attendance", description: "share of voting events where the councillor was present." },
+            { label: "Attendance", description: "share of voting events where the assembly member was present." },
             { label: "Rebelliousness", description: "how often they vote against their own group's position." },
             { label: "Coalition alignment", description: "how often they vote in line with the city's governing coalition." },
           ],
         },
-        { type: "text", text: "We also show councillors' voting positions computed with WPCA (weighted principal component analysis), which reveals who votes similarly." },
+        { type: "text", text: "We also show assembly members' voting positions computed with WPCA (weighted principal component analysis), which reveals who votes similarly." },
       ],
     },
     {
       title: "Data",
       paragraphs: [
         { type: "text", text: "Prague's data comes from the City of Prague's open data (Golemio portal, CC BY 4.0 license) for the 2022–2026 term, processed by the same data pipeline as the Chamber of Deputies dashboard at snemovna.datatimes.cz." },
-        { type: "text", text: "Councillors' group affiliation is sourced from the 2022 municipal election results (volby.cz) — live group/klub data isn't machine-readable for Prague. The governing coalition (SPOLU pro Prahu, Česká pirátská strana, STAROSTOVÉ A NEZÁVISLÍ, since 2023-02-15) follows the publicly available coalition agreement." },
+        { type: "text", text: "Assembly members' group affiliation is sourced from the 2022 municipal election results (volby.cz) — live group/klub data isn't machine-readable for Prague. The governing coalition (SPOLU pro Prahu, Česká pirátská strana, STAROSTOVÉ A NEZÁVISLÍ, since 2023-02-15) follows the publicly available coalition agreement." },
       ],
     },
     {

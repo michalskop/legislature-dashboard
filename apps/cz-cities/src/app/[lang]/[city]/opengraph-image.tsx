@@ -61,7 +61,7 @@ export default async function OgImage({ params }: { params: Promise<{ lang: stri
         </div>
 
         <div style={{ color: palette.brand6, fontSize: 52, fontWeight: 700, letterSpacing: "-0.5px" }}>
-          {city?.name ?? "Mesta.DataTimes.cz"}
+          {city?.name ?? "Města.DataTimes.cz"}
         </div>
 
         {t && (

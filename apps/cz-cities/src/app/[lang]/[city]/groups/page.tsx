@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getAllPartyProfiles } from "@/lib/data";
-import { PartyFace } from "@legislature/ui";
+import { PartyFace } from "@/components/PartyFace";
 import { getCityConfig, getCityTranslations } from "@/lib/city.config";
 import type { ParliamentTranslations } from "@legislature/parliament-core";
 import { buildCityMetadata } from "@/lib/metadata";

@@ -60,7 +60,7 @@ const PRAHA: CityConfig = {
   // Cities have no constituency/region organization (same as sk-nrsr).
   // "group" here models Prague's real D7 fallback: praha's live klub data is
   // unscrapable (JS SPA, no API) so group membership is sourced from each
-  // councillor's original 2022 candidate-list affiliation instead (a
+  // assembly member's original 2022 candidate-list affiliation instead (a
   // `classification: "candidate_list"` organization per D7's standing rule,
   // modeled by the shared analysis pipeline as `classification: "group"` in
   // its outputs — see the "current_members/current_groups" note in
@@ -91,7 +91,7 @@ const PRAHA: CityConfig = {
         },
         labels: {
           cs: { title: "Účast na hlasováních", description: "Jeden bod = jeden zastupitel/ka. Kliknutím přejdete na jejich profil." },
-          en: { title: "Attendance", description: "Each dot = one councillor. Click to open their profile." },
+          en: { title: "Attendance", description: "Each dot = one assembly member. Click to open their profile." },
         },
       },
       {
@@ -99,7 +99,7 @@ const PRAHA: CityConfig = {
         config: { type: "scatter-chart", analysis: "wpca" },
         labels: {
           cs: { title: "Pozice na základě hlasování", description: "2D mapa zastupitelů podle způsobu hlasování (WPCA). Kliknutím přejdete na jejich profil." },
-          en: { title: "Positions based on voting behaviour", description: "2D map of councillors by voting patterns (WPCA). Click to open their profile." },
+          en: { title: "Positions based on voting behaviour", description: "2D map of assembly members by voting patterns (WPCA). Click to open their profile." },
         },
       },
       {
@@ -107,7 +107,7 @@ const PRAHA: CityConfig = {
         config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
         labels: {
           cs: { title: "Rebelování", description: "Jak často zastupitel/ka hlasuje proti svému klubu." },
-          en: { title: "Rebelliousness", description: "How often the councillor votes against their own group." },
+          en: { title: "Rebelliousness", description: "How often the assembly member votes against their own group." },
         },
       },
       {
@@ -115,7 +115,7 @@ const PRAHA: CityConfig = {
         config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
-          en: { title: "Coalition alignment", description: "How often the councillor votes in line with the coalition." },
+          en: { title: "Coalition alignment", description: "How often the assembly member votes in line with the coalition." },
         },
       },
     ],

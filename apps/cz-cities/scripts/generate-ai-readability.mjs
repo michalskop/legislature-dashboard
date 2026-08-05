@@ -214,20 +214,20 @@ function buildLlmsTxt(perCity) {
       const listedGroups = data.groups.slice(0, 10);
       return `### ${citySlug}
 ${baseUrl}${base}
-${data.members.length} councillors, ${data.groups.length} groups (2022-2026 term).
+${data.members.length} assembly members, ${data.groups.length} groups (2022-2026 term).
 
 Groups: ${listedGroups.map((g) => g.name).join(", ") || "none yet"}
-Sample councillors: ${listedMembers.map((m) => m.name).join(", ") || "none yet"}`;
+Sample assembly members: ${listedMembers.map((m) => m.name).join(", ") || "none yet"}`;
     })
     .join("\n\n");
 
-  return `# Mesta.DataTimes.cz
+  return `# Města.DataTimes.cz
 
 > Open dashboard of roll-call voting behaviour in Czech municipal (city) assemblies.
 
 ## About
 
-Mesta.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
+Města.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
 (WPCA) in Czech municipal assemblies, derived from each city's own roll-call vote data. Currently
 covers: ${Object.keys(perCity).join(", ") || "none yet"}. More cities are added over time — see
 DIVERGENCE.md in the app repository for the current rollout status.
@@ -244,8 +244,8 @@ ${cityLines || "No city is published yet."}
 
 ## Data And Methods
 
-- Attendance: share of roll-call voting events where a councillor was present
-- Rebelliousness: share of votes cast against the councillor's own group where comparison is possible
+- Attendance: share of roll-call voting events where an assembly member was present
+- Rebelliousness: share of votes cast against the assembly member's own group where comparison is possible
 - Coalition alignment: share of votes matching the governing coalition where comparison is possible
 - WPCA positions: two-dimensional map derived from voting patterns
 
@@ -269,7 +269,7 @@ function buildMarkdownFiles(perCity) {
     .join("\n") || "- No city is published yet.";
 
   return {
-    "index.md": `# Mesta.DataTimes.cz
+    "index.md": `# Města.DataTimes.cz
 
 Open dashboard of Czech municipal assembly roll-call votes.
 
@@ -280,15 +280,15 @@ ${cityList}
 ## Analyses
 
 - Attendance on voting events.
-- Rebelliousness against the councillor's own group.
+- Rebelliousness against the assembly member's own group.
 - Alignment with the governing coalition.
 - WPCA voting-position map.
 
 Generated: ${generatedAt}
 `,
-    "about.md": `# About Mesta.DataTimes.cz
+    "about.md": `# About Města.DataTimes.cz
 
-Mesta.DataTimes.cz is an open dashboard for analysing activity and roll-call voting behaviour in
+Města.DataTimes.cz is an open dashboard for analysing activity and roll-call voting behaviour in
 Czech municipal (city) assemblies.
 
 Machine-readable discovery files are available at ${baseUrl}/llms.txt, ${baseUrl}/sitemap.xml, and
@@ -302,7 +302,7 @@ function buildSkillFiles(perCity) {
 
   const dashboardSkill = `---
 name: city-assembly-dashboard
-description: Discover public dashboard pages and metrics for Czech municipal assembly roll-call votes on Mesta.DataTimes.cz.
+description: Discover public dashboard pages and metrics for Czech municipal assembly roll-call votes on Města.DataTimes.cz.
 ---
 
 # City Assembly Dashboard
@@ -310,7 +310,7 @@ description: Discover public dashboard pages and metrics for Czech municipal ass
 ## Overview
 
 Use this skill to discover public pages, dashboard sections, and machine-readable summaries for
-Mesta.DataTimes.cz. Currently covers: ${cities}.
+Města.DataTimes.cz. Currently covers: ${cities}.
 
 ## Content Categories
 
@@ -318,9 +318,9 @@ Mesta.DataTimes.cz. Currently covers: ${cities}.
 - URL: ${baseUrl}/
 - Description: List of covered cities, each linking to its own dashboard.
 
-### Councillors (per city)
+### Assembly members (per city)
 - URL pattern: ${baseUrl}/<city>/members
-- Description: Councillor-level metrics and links to detail pages.
+- Description: Assembly member-level metrics and links to detail pages.
 
 ### Council Groups (per city)
 - URL pattern: ${baseUrl}/<city>/groups
@@ -329,7 +329,7 @@ Mesta.DataTimes.cz. Currently covers: ${cities}.
 ## Key Topics
 
 - Czech municipal assembly
-- councillors
+- assembly members
 - council groups
 - attendance
 - voting behaviour
@@ -344,24 +344,24 @@ Mesta.DataTimes.cz. Currently covers: ${cities}.
 
   const datasetSkill = `---
 name: city-assembly-datasets
-description: Discover source data categories and derived analysis outputs used by Mesta.DataTimes.cz.
+description: Discover source data categories and derived analysis outputs used by Města.DataTimes.cz.
 ---
 
 # City Assembly Datasets
 
 ## Overview
 
-Use this skill to understand the main derived data categories used by Mesta.DataTimes.cz. Each
+Use this skill to understand the main derived data categories used by Města.DataTimes.cz. Each
 city's dashboard is derived from that city's own published roll-call vote data (see each city's
 "About" section for its specific data source).
 
 ## Data Categories
 
 ### Attendance
-- Description: Councillor attendance shares across roll-call voting events.
+- Description: Assembly member attendance shares across roll-call voting events.
 
 ### Rebelliousness
-- Description: Votes against the councillor's own group where comparable.
+- Description: Votes against the assembly member's own group where comparable.
 
 ### Coalition Alignment
 - Description: Agreement with the governing coalition.
@@ -379,14 +379,14 @@ city's dashboard is derived from that city's own published roll-call vote data (
     {
       name: "city-assembly-dashboard",
       type: "skill-md",
-      description: "Discover public dashboard pages and metrics for Mesta.DataTimes.cz.",
+      description: "Discover public dashboard pages and metrics for Města.DataTimes.cz.",
       url: "/.well-known/agent-skills/city-assembly-dashboard/SKILL.md",
       content: dashboardSkill,
     },
     {
       name: "city-assembly-datasets",
       type: "skill-md",
-      description: "Discover source data categories and derived analysis outputs used by Mesta.DataTimes.cz.",
+      description: "Discover source data categories and derived analysis outputs used by Města.DataTimes.cz.",
       url: "/.well-known/agent-skills/city-assembly-datasets/SKILL.md",
       content: datasetSkill,
     },

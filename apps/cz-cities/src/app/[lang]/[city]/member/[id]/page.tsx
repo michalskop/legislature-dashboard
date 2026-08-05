@@ -3,7 +3,7 @@ import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations, CITIES } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
 import { cityBasePath } from "@/lib/routing";
-import { PartyFace } from "@legislature/ui";
+import { PartyFace } from "@/components/PartyFace";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Image from "next/image";

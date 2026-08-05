@@ -41,8 +41,8 @@ export const prahaCs: ParliamentTranslations = {
   },
   about: { navLabel: "O projektu" },
   seo: {
-    siteTitle: "Zastupitelstvo hl. m. Prahy - Mesta.DataTimes.cz",
-    titleSuffix: " - Praha - Mesta.DataTimes.cz",
+    siteTitle: "Zastupitelstvo hl. m. Prahy - Města.DataTimes.cz",
+    titleSuffix: " - Praha - Města.DataTimes.cz",
     defaultDescription:
       "Přehled jmenovitých hlasování Zastupitelstva hlavního města Prahy — účast, rebelování, shoda s koalicí, pozice na základě hlasování.",
   },

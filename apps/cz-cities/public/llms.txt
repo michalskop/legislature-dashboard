@@ -1,10 +1,10 @@
-# Mesta.DataTimes.cz
+# Města.DataTimes.cz
 
 > Open dashboard of roll-call voting behaviour in Czech municipal (city) assemblies.
 
 ## About
 
-Mesta.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
+Města.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
 (WPCA) in Czech municipal assemblies, derived from each city's own roll-call vote data. Currently
 covers: praha. More cities are added over time — see
 DIVERGENCE.md in the app repository for the current rollout status.
@@ -13,21 +13,21 @@ DIVERGENCE.md in the app repository for the current rollout status.
 - Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
 - Update model: nightly data pipeline (scrape -> standardize -> validate -> analyse -> publish),
   dashboard revalidates on a schedule
-- Generated: 2026-08-04
+- Generated: 2026-08-05
 
 ## Cities
 
 ### praha
 https://mesta.datatimes.cz/praha
-66 councillors, 6 groups (2022-2026 term).
+66 assembly members, 6 groups (2022-2026 term).
 
 Groups: PRAHA SOBĚ, STAROSTOVÉ A NEZÁVISLÍ, Česká pirátská strana, SPOLU pro Prahu, SPD,Trik.,PES a nez. pro Prahu, ANO 2011
-Sample councillors: Kateřina Arnotová, Martin Benkovič, Jaromír Beránek, David Bodeček, Vladan Brož, Jiří Brůžek, Václav Bílek, Jan Chabr, Kristýna Drápalová, Zuzana Freitas, Marta Gellová, Zuzana Hamanová, Petr Hlaváček, Michal Hroza, Martin Hrubčík, Jan Hušbauer, Zdeněk Hřib, Tomáš Kaštovský, Antonín Klecanda, Radmila Kleslová
+Sample assembly members: Kateřina Arnotová, Martin Benkovič, Jaromír Beránek, David Bodeček, Vladan Brož, Jiří Brůžek, Václav Bílek, Jan Chabr, Kristýna Drápalová, Zuzana Freitas, Marta Gellová, Zuzana Hamanová, Petr Hlaváček, Michal Hroza, Martin Hrubčík, Jan Hušbauer, Zdeněk Hřib, Tomáš Kaštovský, Antonín Klecanda, Radmila Kleslová
 
 ## Data And Methods
 
-- Attendance: share of roll-call voting events where a councillor was present
-- Rebelliousness: share of votes cast against the councillor's own group where comparison is possible
+- Attendance: share of roll-call voting events where an assembly member was present
+- Rebelliousness: share of votes cast against the assembly member's own group where comparison is possible
 - Coalition alignment: share of votes matching the governing coalition where comparison is possible
 - WPCA positions: two-dimensional map derived from voting patterns
 

@@ -38,6 +38,14 @@ function getValue(mp: MpProfile, metric: MpMetric): number | null {
   return null;
 }
 
+// Owner review fix (2026-08-05, DIVERGENCE.md §3): party/group columns are
+// ordered by each party's mean WPCA dim1 value (`mp.wpca.x`, which is
+// `dims[0]` from praha/analyses/wpca/outputs/wpca.json — see lib/data.ts's
+// getAllMpProfiles), DESCENDING — higher mean dim1 (coalition side, per the
+// wpca_definition.json rotation anchored on the mayor, see DIVERGENCE.md's
+// item-4 writeup) sorts first/leftmost. Parties with no WPCA-included
+// members sort after those that do; among those, fall back to avgGovity
+// (higher coalition-alignment first) so the order is still deterministic.
 function sortedParties(mps: MpProfile[], parties: PartyProfile[]): PartyProfile[] {
   const wpcaByGroup: Record<string, number> = {};
   for (const party of parties) {
@@ -50,7 +58,7 @@ function sortedParties(mps: MpProfile[], parties: PartyProfile[]): PartyProfile[
   return [...parties].sort((a, b) => {
     const aW = wpcaByGroup[a.groupId];
     const bW = wpcaByGroup[b.groupId];
-    if (aW !== undefined && bW !== undefined) return aW - bW;
+    if (aW !== undefined && bW !== undefined) return bW - aW;
     if (aW !== undefined) return -1;
     if (bW !== undefined) return 1;
     return (b.avgGovity ?? 0) - (a.avgGovity ?? 0);

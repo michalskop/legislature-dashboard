@@ -1,6 +1,6 @@
 ---
 name: city-assembly-dashboard
-description: Discover public dashboard pages and metrics for Czech municipal assembly roll-call votes on Mesta.DataTimes.cz.
+description: Discover public dashboard pages and metrics for Czech municipal assembly roll-call votes on Města.DataTimes.cz.
 ---
 
 # City Assembly Dashboard
@@ -8,7 +8,7 @@ description: Discover public dashboard pages and metrics for Czech municipal ass
 ## Overview
 
 Use this skill to discover public pages, dashboard sections, and machine-readable summaries for
-Mesta.DataTimes.cz. Currently covers: praha.
+Města.DataTimes.cz. Currently covers: praha.
 
 ## Content Categories
 
@@ -16,9 +16,9 @@ Mesta.DataTimes.cz. Currently covers: praha.
 - URL: https://mesta.datatimes.cz/
 - Description: List of covered cities, each linking to its own dashboard.
 
-### Councillors (per city)
+### Assembly members (per city)
 - URL pattern: https://mesta.datatimes.cz/<city>/members
-- Description: Councillor-level metrics and links to detail pages.
+- Description: Assembly member-level metrics and links to detail pages.
 
 ### Council Groups (per city)
 - URL pattern: https://mesta.datatimes.cz/<city>/groups
@@ -27,7 +27,7 @@ Mesta.DataTimes.cz. Currently covers: praha.
 ## Key Topics
 
 - Czech municipal assembly
-- councillors
+- assembly members
 - council groups
 - attendance
 - voting behaviour

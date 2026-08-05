@@ -1,10 +1,10 @@
 /**
- * CityLogotype — generic network wordmark for Mesta.DataTimes.cz (task A1).
+ * CityLogotype — generic network wordmark for Města.DataTimes.cz (task A1).
  *
- * Renders as: Mesta.DataTimes.cz (per plan.md D1: mesta.datatimes.cz/<city>).
+ * Renders as: Města.DataTimes.cz (per plan.md D1: mesta.datatimes.cz/<city>).
  * This is a generic wordmark, not any specific city's branding — real
  * per-city logotypes/branding are task A3.
- *   color  — "Mesta" in brand-6, dots in yellow-7, "DataTimes.cz" in navy-9
+ *   color  — "Města" in brand-6, dots in yellow-7, "DataTimes.cz" in navy-9
  *   mono   — everything in a single `color` (dots at 0.6 opacity)
  */
 
@@ -58,7 +58,7 @@ export function CityLogotype({
   if (variant === "mono") {
     return (
       <span className={base} style={inlineTypography ? { ...inlineTypography, color } : { color }}>
-        Mesta
+        Města
         <span style={{ opacity: 0.6 }}>.</span>
         DataTimes
         <span style={{ opacity: 0.6 }}>.</span>
@@ -71,7 +71,7 @@ export function CityLogotype({
     if (variant === "dark") {
       return (
         <span className={base} style={inlineTypography}>
-          <span style={{ color: palette.brand6 }}>Mesta</span>
+          <span style={{ color: palette.brand6 }}>Města</span>
           <span style={{ color: palette.yellow7 }}>.</span>
           <span style={{ color: palette.navy0 }}>DataTimes</span>
           <span style={{ color: palette.yellow7 }}>.</span>
@@ -82,7 +82,7 @@ export function CityLogotype({
 
     return (
       <span className={base} style={inlineTypography}>
-        <span style={{ color: palette.brand6 }}>Mesta</span>
+        <span style={{ color: palette.brand6 }}>Města</span>
         <span style={{ color: palette.yellow7 }}>.</span>
         <span style={{ color: palette.navy9 }}>DataTimes</span>
         <span style={{ color: palette.yellow7 }}>.</span>
@@ -94,7 +94,7 @@ export function CityLogotype({
   if (variant === "dark") {
     return (
       <span className={base}>
-        <span className="text-brand-6">Mesta</span>
+        <span className="text-brand-6">Města</span>
         <span className="text-yellow-7">.</span>
         <span className="text-surface-1">DataTimes</span>
         <span className="text-yellow-7">.</span>
@@ -105,7 +105,7 @@ export function CityLogotype({
 
   return (
     <span className={base}>
-      <span className="text-brand-6">Mesta</span>
+      <span className="text-brand-6">Města</span>
       <span className="text-yellow-7">.</span>
       <span className="text-navy-9">DataTimes</span>
       <span className="text-yellow-7">.</span>

@@ -1,7 +1,7 @@
 import { DEFAULT_LANG } from "./i18n";
 
 // Site-wide (non-city) translations for the network landing page ("/", lists
-// cities) and the "/about" page — content that describes Mesta.DataTimes.cz
+// cities) and the "/about" page — content that describes Města.DataTimes.cz
 // as a whole, not any one city. Per-city copy lives in each CityConfig's own
 // `translations` (see city.config.ts) since D5 requires the language list to
 // be pure config + dictionaries at every level, not just per-city.
@@ -25,8 +25,8 @@ export interface SiteTranslations {
 
 export const SITE_TRANSLATIONS: Record<string, SiteTranslations> = {
   cs: {
-    siteTitle: "Mesta.DataTimes.cz",
-    titleSuffix: " - Mesta.DataTimes.cz",
+    siteTitle: "Města.DataTimes.cz",
+    titleSuffix: " - Města.DataTimes.cz",
     tagline: "Přehled jmenovitých hlasování zastupitelstev českých měst",
     defaultDescription:
       "Otevřený přehled docházky, rebelování a shody s koalicí v zastupitelstvech českých měst na základě jmenovitých hlasování.",
@@ -43,7 +43,7 @@ export const SITE_TRANSLATIONS: Record<string, SiteTranslations> = {
     },
   },
   en: {
-    siteTitle: "Mesta.DataTimes.cz",
+    siteTitle: "Města.DataTimes.cz",
     titleSuffix: " — mesta.datatimes.cz",
     tagline: "Roll-call vote monitor for Czech municipal assemblies",
     defaultDescription:

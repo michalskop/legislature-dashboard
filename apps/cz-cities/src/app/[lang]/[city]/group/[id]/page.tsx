@@ -3,7 +3,7 @@ import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations, CITIES } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
 import { cityBasePath } from "@/lib/routing";
-import { PartyFace } from "@legislature/ui";
+import { PartyFace } from "@/components/PartyFace";
 import { notFound } from "next/navigation";
 
 interface Props {

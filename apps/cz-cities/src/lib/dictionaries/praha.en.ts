@@ -3,13 +3,23 @@ import type { ParliamentTranslations } from "@legislature/parliament-core";
 // English dictionary for Praha — task A2. Minimal but real content: correct
 // and complete enough to render every page sensibly (not empty/broken).
 // Polish/full copy review is task A3 ("City branding + translations").
+//
+// Terminology rule (owner review fix, 2026-08-05, project-wide, not
+// Praha-only — see DIVERGENCE.md "Terminology: never 'councillor'"): never
+// use "councillor"/"councillors" in English UI copy. In Czech city
+// government the "rada" (executive council) is a different body from the
+// "zastupitelstvo" (elected assembly); "councillor" reads as a member of the
+// former to an English speaker, which is wrong for members of the latter.
+// Use "assembly member"/"assembly members" instead — pairs with this city's
+// own English org name, "Prague City Assembly" (home.title below). Every
+// future city's English dictionary must follow the same rule.
 export const prahaEn: ParliamentTranslations = {
-  nav: { overview: "Overview", members: "Councillors" },
+  nav: { overview: "Overview", members: "Assembly members" },
   member: {
-    singular: "councillor",
-    plural: "councillors",
-    current: "Current councillors",
-    former: "Former councillors",
+    singular: "assembly member",
+    plural: "assembly members",
+    current: "Current assembly members",
+    former: "Former assembly members",
   },
   metrics: {
     attendance: "Attendance",
@@ -19,20 +29,20 @@ export const prahaEn: ParliamentTranslations = {
     wpca: "Voting positions (WPCA)",
   },
   ui: {
-    memberCount: "{n} councillors",
+    memberCount: "{n} assembly members",
     voteCount: "of {total} votes",
     rebelVotes: "{n} rebellious votes",
     announcedCorrections: "{n} announced",
     outOf: "of",
-    currentMembers: "Current councillors",
+    currentMembers: "Current assembly members",
     backToOverview: "← Back to overview",
   },
   home: {
     title: "Prague City Assembly",
     description:
-      "Attendance, rebelliousness, and coalition alignment for Prague city councillors, derived from the City Assembly's roll-call votes (2022–2026 term).",
-    membersCardTitle: "Councillors",
-    membersCardDescription: "Attendance, group loyalty and other metrics for each councillor.",
+      "Attendance, rebelliousness, and coalition alignment for Prague City Assembly members, derived from the assembly's roll-call votes (2022–2026 term).",
+    membersCardTitle: "Assembly members",
+    membersCardDescription: "Attendance, group loyalty and other metrics for each assembly member.",
     groupsCardTitle: "Groups",
     groupsCardDescription: "Overview of council groups with aggregated metrics.",
   },
@@ -53,7 +63,7 @@ export const prahaEn: ParliamentTranslations = {
     allFilter: "All",
     sortAsc: "Sort ascending",
     sortDesc: "Sort descending",
-    name: "Councillor",
+    name: "Assembly member",
     party: "Group",
     attendance: "Attendance",
     rebelity: "Rebelliousness",

@@ -87,7 +87,7 @@ export function fetchWpca(citySlug: string) {
 // The "groups" vs "candidate_list" dual-write below mirrors the city
 // pipeline's own `praha/scripts/build_all_members.py`: Praha's live
 // klub/group data isn't scrapable, so group membership is sourced from each
-// councillor's original candidate-list affiliation instead (D7's documented
+// assembly member's original candidate-list affiliation instead (D7's documented
 // fallback), and treated as `classification: "group"` for display — exactly
 // how the four analysis outputs already model it (see e.g.
 // src/fixtures/praha/analyses/attendance/outputs/attendance.json, which

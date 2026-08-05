@@ -42,7 +42,7 @@ function DashboardJsonLd({
       {
         "@type": "WebSite",
         "@id": `${SITE_URL}/#website`,
-        name: "Mesta.DataTimes.cz",
+        name: "Města.DataTimes.cz",
         url: SITE_URL,
         inLanguage: ["cs", "en"],
         publisher: { "@id": `${SITE_URL}/#organization` },
@@ -60,13 +60,13 @@ function DashboardJsonLd({
         temporalCoverage: "2022/2026",
         spatialCoverage: { "@type": "City", name: cityName },
         variableMeasured: [
-          "Councillor attendance",
+          "Assembly member attendance",
           "Rebellious votes",
           "Coalition alignment",
           "WPCA voting positions",
         ],
         measurementTechnique: "Derived analysis of public roll-call voting data published by the city",
-        description: `Roll-call vote analyses for ${currentMpCount} current councillors across ${groupCount} groups.`,
+        description: `Roll-call vote analyses for ${currentMpCount} current assembly members across ${groupCount} groups.`,
       },
     ],
   };
@@ -85,7 +85,15 @@ export default async function CityHomePage({ params }: Props) {
   if (!city) notFound();
 
   const [allMps, parties] = await Promise.all([getAllMpProfiles(citySlug), getAllPartyProfiles(citySlug)]);
-  const mps = allMps.filter((m) => m.isCurrent);
+  // Owner review fix (2026-08-05, DIVERGENCE.md §8): the front-page charts
+  // must plot everyone present in the analysis outputs (attendance/rebelity/
+  // govity/wpca already correctly include members who left mid-term, e.g.
+  // STAN's David Procházka, departed 2025-03-27), not a separately-filtered
+  // "current members" subset — `isCurrent` undercounts who *appears* in the
+  // metric at all. `currentMps` is kept only for the JSON-LD dataset
+  // description below, a legitimate, different use of "current" (how many
+  // sit today), unrelated to the chart-population bug.
+  const currentMps = allMps.filter((m) => m.isCurrent);
   const t = getCityTranslations(city, lang);
   const basePath = cityBasePath(lang, citySlug);
 
@@ -95,7 +103,7 @@ export default async function CityHomePage({ params }: Props) {
         citySlug={citySlug}
         cityName={city.name}
         lang={lang}
-        currentMpCount={mps.length}
+        currentMpCount={currentMps.length}
         groupCount={parties.length}
       />
 
@@ -108,7 +116,7 @@ export default async function CityHomePage({ params }: Props) {
         blocks={city.pages.home}
         ctx={{
           lang,
-          mps,
+          mps: allMps,
           parties,
           chartLabels: { average: t.charts.average, wpcaXLabel: t.charts.wpca.xLabel, wpcaYLabel: t.charts.wpca.yLabel },
           tableLabels: t.table,

@@ -279,6 +279,161 @@ All three changes were then reverted (`git diff` after removal is empty for this
 
 ---
 
+## 6. Owner screenshot review fixes (2026-08-05)
+
+The project owner reviewed real screenshots of the A2 build and filed 8 findings. All are fixed
+except item 4 (investigated, confirmed already correct, deliberately left unchanged). Two of the
+fixes are **standing rules for every future city**, not Praha-only patches — see the two
+call-out boxes below; both are also cross-referenced from the relevant source files.
+
+1. **Party colors — real branding.** `src/lib/parties.ts`'s `PARTY_COLORS`/`PARTY_META` were a
+   "functional, distinct" placeholder palette (5.4's own words). Replaced with the owner-supplied
+   real colors: `spolu-pro-prahu #5e66d5`, `ano-2011 #272a59`, `ceska-piratska-strana #111111`,
+   `starostove-a-nezavisli #ff1a4a` (all four copied from `packages/ui/src/components/
+   PartyBadge.tsx`'s `CZ_PSP_PARTY_COLORS` — same party/coalition exists in Snemovna's own PSP
+   data), `spd-trik-pes-a-nez-pro-prahu #a47d03` (Snemovna's SPD color — SPD is the lead party of
+   that candidate list), and `praha-sobe #FFF021` (no Snemovna equivalent — sourced from the color
+   swatch in Czech Wikipedia's 2022 Prague election-results page, read from the raw HTML's
+   `style="background-color:#FFF021"`, not a text-only fetch which strips inline styles; given
+   `darkText: true` like Snemovna's KDU-ČSL `#ffcf02`). `ano-2011`'s and
+   `spd-trik-pes-a-nez-pro-prahu`'s old `darkText: true` were removed to match how Snemovna treats
+   those same colors (no `darkText` there).
+
+   > **Standing rule — party color lookup order, every future city:** (1) reuse Snemovna's color
+   > if the same party/coalition exists there (`packages/ui`'s `CZ_PSP_PARTY_COLORS` — read-only,
+   > copy the value, don't re-derive it); (2) else search Wikipedia's election-results page for
+   > that city/term for an official color swatch — **fetch the raw page HTML**, not a text-only
+   > fetch, since a text-only fetch strips inline `style="background-color:#..."` attributes;
+   > (3) else ask the project owner. **Never invent a color.**
+
+2. **Logotype text — missing diacritic.** Every exact-case occurrence of `Mesta.DataTimes.cz` (no
+   diacritic) is now `Města.DataTimes.cz` (genitive plural, matches cz-psp's own
+   `Sněmovna.DataTimes.cz`): `src/components/CityLogotype.tsx` (the actual rendered wordmark, not
+   just its doc comment — this is the header/footer logo on every page), `src/lib/site.ts`,
+   `src/lib/dictionaries/praha.cs.ts` (`seo.siteTitle`/`titleSuffix`), `src/content/about.ts`
+   (cs+en intro), `src/app/[lang]/[city]/page.tsx` (JSON-LD `WebSite.name`),
+   `src/app/[lang]/[city]/opengraph-image.tsx` (OG image fallback text),
+   `scripts/generate-ai-readability.mjs` (source of the generated `public/llms.txt`, `index.md`,
+   `about.md`, `.well-known/agent-skills/*` — regenerated via `node
+   scripts/generate-ai-readability.mjs` after the fix, not hand-edited, since those files are
+   build-generated), and the static `public/auth.md`. **Left alone, deliberately:** every
+   already-lowercase `mesta.datatimes.cz` occurrence (the real domain in URLs, and the
+   intentionally domain-style lowercase EN `titleSuffix` in `site.ts`/`praha.en.ts` — matching
+   cz-psp's own EN convention of `snemovna.datatimes.cz`, no diacritics, since domains can't carry
+   them) — the owner's ask was specifically the missing diacritic on the capitalized brand string,
+   not a casing overhaul.
+
+3. **Chart ordering by WPCA dimension 1.** `src/components/MpMetricSwarmChart.tsx`'s
+   `sortedParties()` already computed each party's mean WPCA dim1 (`mp.wpca.x`, sourced from
+   `praha/analyses/wpca/outputs/wpca.json`'s `dims[0]` via `src/lib/data.ts`) but sorted it
+   **ascending**. Changed to **descending** per the owner's explicit instruction, so the highest
+   mean-dim1 party sorts first/leftmost. `src/fixtures/praha/analyses/wpca/outputs/wpca.json` was
+   already present and confirmed byte-identical to the source repo — no fixture copy was needed.
+   Verified against real data: descending order gives ANO (mean +0.68) → SPOLU (+0.57) → SPD
+   (+0.14) → STAN (+0.02) → Piráti (−0.81) → Praha sobě (−0.98), which is exactly what all three
+   front-page swarm charts render post-fix (screenshot-verified). **Nuance for the owner:** the
+   task's framing ("higher dim1 = coalition side") doesn't hold cleanly on the real numbers — ANO
+   (opposition) has the *highest* mean dim1, ahead of coalition parties SPOLU/STAN. WPCA dim1
+   apparently isn't a clean coalition/opposition axis on this dataset (plausibly because
+   `govity`/coalition-alignment is ~100% for nearly every party — see the "Shoda s koalicí" chart —
+   leaving little separating signal). The fix implements the literal, unambiguous instruction
+   ("order by that aggregate, descending") rather than the informal parenthetical reasoning, since
+   the two conflict on real data; flagging this rather than silently picking one.
+
+4. **WPCA rotation check — confirmed correct, not changed.** The mayor, Bohuslav Svoboda
+   (`praha:person:bohuslav-svoboda`), is already the rotation anchor in
+   `praha/analyses/wpca/wpca_definition.json` (`rotate: {"voter_id":
+   "praha:person:bohuslav-svoboda", "dims": [1,1,1]}`), and the committed `wpca.json` shows his
+   `dims` as `[0.624, 0.162, 0.051]` — independently re-verified against the fixture, exact match.
+   Positive/positive is mathematically quadrant 1, and `packages/charts/src/components/
+   ScatterPlot.tsx`'s y-scale (`range: [yMax, 0]`) is correctly inverted so positive dim2 renders
+   toward the visual top — screenshot-confirmed on `/praha/member/bohuslav-svoboda`'s WPCA scatter:
+   his highlighted dot sits in the upper-right SPOLU cluster. **No code changed.** **Nuance flagged
+   for the owner:** he's in the quadrant but not the extreme corner — dim2 (0.162) is modest, not
+   large, so visually he reads as "upper-right-ish" rather than "far upper-right." A rotation can
+   only flip axis signs, not change how spread out the data is, so if the owner wants him more
+   visually prominent, that needs a different fix (e.g. axis scaling), not a rotation change — not
+   attempted here since it wasn't asked for.
+
+5. **Terminology — never "councillor".** Every English "councillor"/"councillors" in
+   `apps/cz-cities/src` (case-insensitive grep, 41 matches across 8 files) is now "assembly
+   member"/"assembly members": `src/lib/dictionaries/praha.en.ts` (nav, `member.*`, `ui.*`,
+   `home.*`, `table.name`), `src/content/about.ts` (en paragraphs), `src/lib/city.config.ts` (en
+   block descriptions + a code comment), `src/lib/data.ts` (a code comment), and
+   `src/app/[lang]/[city]/page.tsx` (JSON-LD `variableMeasured`/`description`). Also fixed in
+   `scripts/generate-ai-readability.mjs` (source of the generated `public/llms.txt`, `index.md`,
+   agent-skill files — regenerated, not hand-edited). Czech dictionary/content already used
+   "zastupitel/ka" throughout and needed no change.
+
+   > **Standing rule — terminology, every city, every language, not Praha-only:** never render
+   > "councillor"/"councillors" in English UI copy for any city dashboard. In Czech city
+   > government the "rada" (executive council) is a distinct body from the "zastupitelstvo"
+   > (elected assembly); "councillor" reads as a member of the former to an English speaker, which
+   > is the wrong body. Use "assembly member"/"assembly members" — it pairs with this city's own
+   > English org name ("Prague City Assembly", `home.title` in `praha.en.ts`); future cities should
+   > pick the equivalent pairing for their own assembly's English name. See the comment above
+   > `prahaEn` in `src/lib/dictionaries/praha.en.ts` for the same rule stated at the point future
+   > translators will actually see it.
+
+6. **& 7. Party badges inconsistent across pages.** Root cause: `@legislature/ui`'s `PartyFace`
+   and `SortableMpTable` (`packages/ui/src/components/PartyFace.tsx`,`SortableMpTable.tsx`,
+   read-only for this task) hardcode `CZ_PSP_PARTY_META`/`CZ_PSP_PARTY_COLORS` and
+   `SK_NRSR_PARTY_META`/`SK_NRSR_PARTY_COLORS` directly, with no prop to inject a different party
+   dictionary. They don't recognize this app's real Praha candidate-list slugs (e.g.
+   `starostove-a-nezavisli`) and fall back to `partyId.toUpperCase()` inside a fixed-size SVG face
+   — the illegible truncation the owner saw ("ANO-201…", "RATSKA"). The front-page charts never hit
+   this bug because they don't use `PartyFace`/`PartyBadge` at all — they pass `iconColor`/
+   `iconAbbr` straight into `@legislature/charts`' `SwarmPlot`/`ScatterPlot`, sourced from this
+   app's own `PARTY_META`/`PARTY_COLORS` (`src/lib/parties.ts`).
+   - **Confirmed affected, beyond the two pages the owner named:** every page importing `PartyFace`
+     from `@legislature/ui` had the same bug — `/praha/members` (via `SortableMpTable`),
+     `/praha/groups`, `/praha/group/[id]`, and `/praha/member/[id]`. The vote-event page
+     (`/praha/vote-event/[id]`) was **already correct** — its `buildGroups()` already built
+     `iconColor`/`iconAbbr`/`label` from this app's own `PARTY_META`/`PARTY_COLORS` via
+     `groupIdToPartyId()`, the same pattern the charts use, and never touched `PartyFace`. Its
+     colors only *looked* wrong before item 1's fix because the palette itself was a placeholder;
+     screenshot-confirmed correct (SPOLU/ANO/Praha sobě/Piráti/SPD a další/STAN, real colors, no
+     truncation) after items 1+6/7 landed.
+   - **Fix:** `src/components/PartyFace.tsx` (new) — a visual/prop-compatible fork of
+     `@legislature/ui`'s `PartyFace` reading from `src/lib/parties.ts` instead. Swapped into
+     `groups/page.tsx`, `group/[id]/page.tsx`, `member/[id]/page.tsx`. `src/components/
+     SortableMpTable.tsx` — was a thin wrapper around `@legislature/ui`'s `SortableMpTable`
+     (needed only for a `getMpHref` closure, per the client/server-boundary note in 5.5); is now a
+     full local fork of the same component (sorting, party filter, current/former split, `columns`
+     prop — all unchanged), using the local `PartyFace` and `PARTY_META` instead of the upstream
+     hardcoded dictionary. Screenshot-verified on `/praha/members`, `/en/praha/members`,
+     `/praha/groups`, `/praha/group/starostove-a-nezavisli`, `/praha/member/bohuslav-svoboda`: all
+     badges now show the same short abbreviations and colors as the front-page charts (SPOLU, ANO,
+     PIR, STAN, PS, SPD).
+   - **`classification: "group"` vs `"groups"` investigation (owner's specific hypothesis):**
+     real, but a red herring, not the cause. `wpca.json`'s per-person `organizations[]` entries do
+     say `"classification": "groups"` (plural) while `attendance.json`/`rebelity.json`/
+     `govity.json` say `"group"` (singular) for the equivalent entry — confirmed by direct
+     inspection of both fixture files. But `src/lib/data.ts`'s `getAllMpProfiles()` only reads
+     `classification` off `attendance` records (`a.organizations.find(o => o.classification ===
+     "group")`, singular — matches attendance.json correctly) to derive `groupId`/`partyId`; it
+     never reads `wpca`'s `organizations[].classification` at all (only `wpca.dims`/`weight`/
+     `included`/`person_id`). The plural/singular mismatch is real and worth normalizing upstream
+     for hygiene, but it has no effect on anything this app renders.
+
+8. **Front-page charts undercounting mid-term departures.** Confirmed root cause:
+   `src/app/[lang]/[city]/page.tsx` passed `allMps.filter(m => m.isCurrent)` to the front-page
+   swarm/scatter charts. `isCurrent` (from `src/lib/data.ts`'s `isCurrent()`, `end_date === null`
+   on the parliament membership interval) is false for STAN's David Procházka (left
+   2025-03-27, real/documented), so he was silently dropped from the charts even though
+   `attendance.json`/`rebelity.json`/`govity.json`/`wpca.json` already correctly include him (5
+   STAN members total, `included: true`, real `dims`) — confirmed by direct inspection before
+   changing anything. **Fix:** `page.tsx` now passes the unfiltered `allMps` to
+   `PageBlockRenderer`'s chart context; `currentMps` (still `isCurrent`-filtered) is kept only for
+   the JSON-LD dataset's `currentMpCount` — a legitimate, different use of "current" (how many sit
+   today), left untouched, same as the members-page current/former split. **Verified
+   programmatically, not just visually:** counted `<g>` (dot) elements inside the STAN column of
+   the rendered attendance chart's SVG via a headless-browser DOM query — 5 dots (previously would
+   have been 4), matching all 6 parties' dot counts (15+19+3+5+13+11 = 66) against the wpca.json
+   per-party member counts exactly.
+
+---
+
 ## Notes for T6 (future de-duplication refactor) — updated for A2
 
 - `@legislature/ui`'s `PartyBadge`/`PartyFace`/`SortableMpTable` still hardcode `CZ_PSP_PARTY_*` and
@@ -287,6 +442,19 @@ All three changes were then reverted (`git diff` after removal is empty for this
   `placeholder-a/b/c`, which if anything makes the T6 case stronger: a third, real, differently-
   shaped ID namespace (`spolu-pro-prahu` etc., not `psp:org:1750`-style numeric IDs) is now hitting
   the same hardcoded-dictionary wall.
+- **T6 case got materially stronger in the owner-review pass (section 6, items 6/7):** what A2 (and
+  A1 before it) treated as "chart components read `PARTY_META`/`PARTY_COLORS` directly, no big
+  deal" turned out to be a real, visible bug once `@legislature/ui`'s `PartyFace`/`SortableMpTable`
+  got used on non-chart pages (members table, group/member detail) — they silently render
+  illegible badges for any non-PSP/non-SK-NRSR party ID, with no error, no fallback warning. The
+  fix added **two more full local forks** — `src/components/PartyFace.tsx` and a fully-forked (not
+  thin-wrapped) `src/components/SortableMpTable.tsx` — specifically because `packages/ui` has no
+  prop to inject a custom party dictionary into either component. When T6 lands, the fix is
+  probably "`PartyBadge`/`PartyFace`/`SortableMpTable` take an optional `partyMeta`/`partyColors`
+  prop (defaulting to the current hardcoded PSP dict for back-compat)", which would let this app
+  (and cz-psp/sk-nrsr) delete their local forks/`parties.ts` workaround entirely — worth scoping
+  T6 to fix this specific gap first, since it's now the only thing forcing two of cz-cities' three
+  duplicated table/badge components to exist at all.
 - The `/region`, `/regions` routes A1 flagged as "T6 or A2 should decide" are **now deleted** (see
   5.1) — resolved, not deferred.
 - `src/lib/lang.ts`'s cookie-based `getLang()`, flagged by A1 as "A2 replaces this", is **now

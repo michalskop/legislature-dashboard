@@ -4,16 +4,16 @@
     {
       "name": "city-assembly-dashboard",
       "type": "skill-md",
-      "description": "Discover public dashboard pages and metrics for Mesta.DataTimes.cz.",
+      "description": "Discover public dashboard pages and metrics for Města.DataTimes.cz.",
       "url": "/.well-known/agent-skills/city-assembly-dashboard/SKILL.md",
-      "digest": "sha256:2eb08aca344b7b64ce2a29a8651e5d8048f93585c0fbedd9b197d126f2de01a2"
+      "digest": "sha256:60a75230c0a81f8c500c391f10847f562af2bbb2ab67605b8fb249f35fcc111b"
     },
     {
       "name": "city-assembly-datasets",
       "type": "skill-md",
-      "description": "Discover source data categories and derived analysis outputs used by Mesta.DataTimes.cz.",
+      "description": "Discover source data categories and derived analysis outputs used by Města.DataTimes.cz.",
       "url": "/.well-known/agent-skills/city-assembly-datasets/SKILL.md",
-      "digest": "sha256:50ed29836eab5aac93ee1d6e975c55485b0e9c85a93d6597b34363c1fc75df28"
+      "digest": "sha256:73ceccd19995b7b447f2b570ec8f91a031bf62c392e72ec4283fdb20a0c1ddd1"
     }
   ]
 }
