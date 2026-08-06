@@ -1,4 +1,4 @@
-import type { ParliamentTranslations } from "@legislature/parliament-core";
+import type { CityTranslations } from "../city.config";
 
 // English dictionary for Praha — task A2. Minimal but real content: correct
 // and complete enough to render every page sensibly (not empty/broken).
@@ -13,7 +13,7 @@ import type { ParliamentTranslations } from "@legislature/parliament-core";
 // Use "assembly member"/"assembly members" instead — pairs with this city's
 // own English org name, "Prague City Assembly" (home.title below). Every
 // future city's English dictionary must follow the same rule.
-export const prahaEn: ParliamentTranslations = {
+export const prahaEn: CityTranslations = {
   nav: { overview: "Overview", members: "Assembly members" },
   member: {
     singular: "assembly member",
@@ -73,11 +73,15 @@ export const prahaEn: ParliamentTranslations = {
   charts: {
     average: "Average",
     wpca: {
-      xLabel: "◄ ◄ ◄ Coalition | Opposition ► ► ►",
-      // Owner fix (2026-08-05, DIVERGENCE.md §7): see praha.cs.ts's comment —
-      // neutral label, since this leftover dimension's political meaning
-      // isn't established.
-      yLabel: "Other voting dimension",
+      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4, corrected after
+      // screenshot verification): see praha.cs.ts's matching comment — the
+      // FIRST word (nearest "◄◄◄") ends up on the POSITIVE/higher end after
+      // the SVG rotate(-90), verified against the chart's own gridlines.
+      govAxisLabelPositive: "◄ ◄ ◄ Coalition | Opposition ► ► ►",
+      govAxisLabelNegative: "◄ ◄ ◄ Opposition | Coalition ► ► ►",
+      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): reverted to the
+      // original text at the owner's request — see praha.cs.ts's comment.
+      otherAxisLabel: "Differences within coalition or opposition",
     },
   },
 };

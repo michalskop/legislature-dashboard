@@ -1,4 +1,4 @@
-import type { ParliamentTranslations } from "@legislature/parliament-core";
+import type { CityTranslations } from "../city.config";
 
 // Czech dictionary for Praha — task A2. Real content (not "placeholder"
 // scaffold copy). One dictionary file per (city, language) — see
@@ -6,7 +6,7 @@ import type { ParliamentTranslations } from "@legislature/parliament-core";
 // language to an existing city is "add one file like this one + register it
 // in city.config.ts's translations map + list the code in lib/i18n.ts's
 // LANGS" — no route/component/middleware code changes.
-export const prahaCs: ParliamentTranslations = {
+export const prahaCs: CityTranslations = {
   nav: { overview: "Přehled", members: "Zastupitelé" },
   member: {
     singular: "zastupitel/ka",
@@ -66,14 +66,26 @@ export const prahaCs: ParliamentTranslations = {
   charts: {
     average: "Průměr",
     wpca: {
-      xLabel: "◄ ◄ ◄ Koalice | Opozice ► ► ►",
-      // Owner fix (2026-08-05, DIVERGENCE.md §7): this is whichever WPCA
-      // dimension is left over once the government/opposition axis is
-      // detected (see lib/data.ts's pickWpcaAxes) — its political meaning
-      // isn't established, so the label stays neutral rather than claiming
-      // it represents "differences within coalition or opposition" (the old
-      // text, written when this axis was wrongly assumed to be dims[0]).
-      yLabel: "Jiná dimenze hlasování",
+      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4, corrected after
+      // screenshot verification): the word order must match which end
+      // government is actually on (government_axis.json's government_sign).
+      // Verified empirically against real rendered output (cross-referenced
+      // against the chart's own gridlines, not assumed from the rotation
+      // transform): for this rotate(-90) SVG label, the FIRST word in the
+      // string (nearest the "◄◄◄" arrows) ends up on the POSITIVE/higher
+      // end, and the LAST word (nearest "►►►") ends up on the
+      // NEGATIVE/lower end — so when government_sign is positive, the
+      // government word must come FIRST. Praha's current term has
+      // government_sign=+1, so "Koalice | Opozice" is the one currently in
+      // use — see lib/data.ts's getGovernmentAxisPlacement.
+      govAxisLabelPositive: "◄ ◄ ◄ Koalice | Opozice ► ► ►",
+      govAxisLabelNegative: "◄ ◄ ◄ Opozice | Koalice ► ► ►",
+      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): reverted to the
+      // original text at the owner's request — kept regardless of which raw
+      // dimension this ends up being, even though its precise relationship
+      // to coalition/opposition isn't the *detected* one shown on the other
+      // axis.
+      otherAxisLabel: "Rozdíly v rámci koalice nebo opozice",
     },
   },
 };

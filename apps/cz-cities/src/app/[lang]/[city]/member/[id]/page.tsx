@@ -1,4 +1,4 @@
-import { getAllMpProfiles, getAllPartyProfiles, getMpProfile, isGovernmentAxisOnX } from "@/lib/data";
+import { getAllMpProfiles, getAllPartyProfiles, getMpProfile, getGovernmentAxisPlacement } from "@/lib/data";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations, CITIES } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
@@ -45,11 +45,11 @@ export default async function MemberPage({ params }: Props) {
   const city = getCityConfig(citySlug);
   if (!city) notFound();
 
-  const [mp, allMps, parties, govAxisOnX] = await Promise.all([
+  const [mp, allMps, parties, govAxis] = await Promise.all([
     getMpProfile(citySlug, id),
     getAllMpProfiles(citySlug),
     getAllPartyProfiles(citySlug),
-    isGovernmentAxisOnX(citySlug),
+    getGovernmentAxisPlacement(citySlug),
   ]);
   if (!mp) notFound();
 
@@ -139,15 +139,21 @@ export default async function MemberPage({ params }: Props) {
           parties,
           highlightId: mp.personId,
           metricValues,
-          // See lib/data.ts's isGovernmentAxisOnX doc comment and page.tsx's
-          // identical construction — x/y are fixed (dims[0]/dims[1]), but the
-          // "Koalice | Opozice" label goes on whichever axis is actually the
-          // government axis for this term.
-          chartLabels: {
-            average: t.charts.average,
-            wpcaXLabel: govAxisOnX ? t.charts.wpca.xLabel : t.charts.wpca.yLabel,
-            wpcaYLabel: govAxisOnX ? t.charts.wpca.yLabel : t.charts.wpca.xLabel,
-          },
+          // See lib/data.ts's getGovernmentAxisPlacement doc comment and
+          // page.tsx's identical construction — x/y are fixed
+          // (dims[0]/dims[1]), but the coalition/opposition label goes on
+          // whichever axis is actually the government axis for this term,
+          // with word order following government_sign.
+          chartLabels: (() => {
+            const govLabel =
+              govAxis.sign > 0 ? t.charts.wpca.govAxisLabelPositive : t.charts.wpca.govAxisLabelNegative;
+            const otherLabel = t.charts.wpca.otherAxisLabel;
+            return {
+              average: t.charts.average,
+              wpcaXLabel: govAxis.onX ? govLabel : otherLabel,
+              wpcaYLabel: govAxis.onX ? otherLabel : govLabel,
+            };
+          })(),
           tableLabels: t.table,
         }}
       />

@@ -78,21 +78,28 @@ export function fetchWpca(citySlug: string) {
 // *which raw dimension* fed wpca.x/wpca.y (see git history's `pickWpcaAxes`).
 // That's reverted — `getAllMpProfiles` below now always maps x=dims[0],
 // y=dims[1], full stop. `effective_dim_index` is read only for *label*
-// placement (which axis gets the "Koalice | Opozice" text) — see
-// `isGovernmentAxisOnX` below and its call sites in the page components.
+// placement (which axis gets the "Koalice | Opozice"-style text) — see
+// `getGovernmentAxisPlacement` below and its call sites in the page
+// components.
 export function fetchGovernmentAxis(citySlug: string) {
   return fetchAnalysisJson<GovernmentAxisRecord>(citySlug, "wpca/outputs/government_axis.json");
 }
 
-// Whether the detected government/opposition axis (government_axis.json's
-// effective_dim_index) is dims[0] — i.e. whether it renders on the scatter
-// chart's fixed x axis (x=dims[0]) or its y axis (y=dims[1]). Used only to
-// decide chart *label* placement (see the three [lang]/[city] page
-// components' chartLabels construction) — never to remap which raw
-// dimension feeds x/y, which is fixed (see getAllMpProfiles below).
-export async function isGovernmentAxisOnX(citySlug: string): Promise<boolean> {
+// Where the detected government/opposition axis renders, and which end of it
+// government is on. `onX` decides which chart axis (x=dims[0] or y=dims[1],
+// both fixed — see getAllMpProfiles below) gets the coalition/opposition
+// label vs. the neutral "other dimension" label. `sign` (government_axis
+// .json's government_sign, +1 or -1) decides the *word order* within that
+// label: owner fix (2026-08-05, DIVERGENCE.md §8 round 4) — the label must
+// read so that the word appearing after the arrows (the "higher/further"
+// end) matches whichever end government is actually on, not a fixed
+// "Koalice | Opozice" order regardless of sign. See the three [lang]/[city]
+// page components' chartLabels construction for how this is applied.
+export async function getGovernmentAxisPlacement(
+  citySlug: string,
+): Promise<{ onX: boolean; sign: number }> {
   const axis = await fetchGovernmentAxis(citySlug);
-  return axis.effective_dim_index === 0;
+  return { onX: axis.effective_dim_index === 0, sign: axis.government_sign };
 }
 
 // vote-corrections deliberately not fetched — cities don't publish

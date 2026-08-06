@@ -1,6 +1,28 @@
-import type { ParliamentConfig } from "@legislature/parliament-core";
+import type { ParliamentConfig, ParliamentTranslations } from "@legislature/parliament-core";
 import { prahaCs } from "./dictionaries/praha.cs";
 import { prahaEn } from "./dictionaries/praha.en";
+
+// Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): the shared
+// ParliamentTranslations.charts.wpca (packages/parliament-core, read-only)
+// only has room for a fixed { xLabel, yLabel } pair — it assumes x is always
+// the coalition/opposition axis and y is always the neutral one, which cz-psp
+// and sk-nrsr can get away with but cz-cities can't (x/y are fixed at
+// dims[0]/dims[1] regardless of which one is actually government, per the
+// round-3 reversal, so the label text has to vary by sign at runtime, not
+// just by which axis it's on). Rather than edit the shared package (a bigger,
+// cross-app change needing its own review), redefine `charts.wpca` locally
+// with the 3 strings this app actually needs, keeping every other field of
+// ParliamentTranslations untouched.
+export type CityTranslations = Omit<ParliamentTranslations, "charts"> & {
+  charts: {
+    average: string;
+    wpca: {
+      govAxisLabelPositive: string;
+      govAxisLabelNegative: string;
+      otherAxisLabel: string;
+    };
+  };
+};
 
 // ─────────────────────────────────────────────────────────────────────────
 // Multi-city config — task A2 (plan.md D5/A2, replaces A1's single hardcoded
@@ -24,9 +46,10 @@ import { prahaEn } from "./dictionaries/praha.en";
 // real page) and is explicitly out of scope for A2 per the task brief.
 // ─────────────────────────────────────────────────────────────────────────
 
-export type CityConfig = ParliamentConfig & {
+export type CityConfig = Omit<ParliamentConfig, "translations"> & {
   /** URL segment for this city, e.g. "praha" -> /praha, /en/praha */
   citySlug: string;
+  translations: Record<string, CityTranslations>;
 };
 
 const PRAHA: CityConfig = {

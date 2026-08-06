@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getAllPartyProfiles } from "@/lib/data";
 import { PartyFace } from "@/components/PartyFace";
 import { getCityConfig, getCityTranslations } from "@/lib/city.config";
-import type { ParliamentTranslations } from "@legislature/parliament-core";
+import type { CityTranslations } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
 import { cityBasePath } from "@/lib/routing";
 import Link from "next/link";
@@ -28,7 +28,7 @@ function pct(v: number | null) {
 
 type Party = Awaited<ReturnType<typeof getAllPartyProfiles>>[0];
 
-function PartyCard({ party, t, basePath }: { party: Party; t: ParliamentTranslations; basePath: string }) {
+function PartyCard({ party, t, basePath }: { party: Party; t: CityTranslations; basePath: string }) {
   return (
     <Link
       href={`${basePath}/group/${party.slug}`}

@@ -844,3 +844,52 @@ fetch over the network for cz-cities — see section 5.4 for why (same reasoning
 published data repo yet, `next build` would depend on/break on its availability). The only change is
 *what* the local fixtures contain (real Praha data now, not fictional placeholders) and *how* they're
 read (`src/lib/data.ts` now also parses raw CSV tables to derive rosters — see 5.4.1).
+
+---
+
+## 9. Owner feedback round three (2026-08-05) — WPCA axis label word order corrected
+
+Owner feedback after reviewing §8's screenshots: the "Koalice | Opozice" label on the WPCA scatter
+was oriented backwards — for Praha's current term the coalition genuinely correlates positive/"up"
+on the detected government axis, but the rendered label had "Koalice" on the negative/down end.
+
+**What actually needed fixing, and how it was found**: §8 used a *fixed* label string per sign
+(`govAxisLabelPositive`/`govAxisLabelNegative`), but the initial word order assignment was based on
+a *theoretical* assumption about which end of the `rotate(-90)` SVG label the first word lands on —
+that assumption was wrong. Verified empirically instead: cross-referenced the actual rendered pixel
+position of "Koalice" and "Opozice" against the chart's own gridlines (0.00/0.50/-0.50) and against
+a real, named government-party member's highlighted dot (`jaromir-beranek`, Piráti) — his dot sits
+in the positive/upper region, and after the fix "Koalice" now sits there too, "Opozice" in the
+negative/lower region where the opposition dot clusters actually are. The correct rule for this
+component's rotation: the word nearest the "◄◄◄" arrows (first in the string) ends up on the
+**positive/higher** end, not the negative one as originally assumed — `govAxisLabelPositive` and
+`govAxisLabelNegative` in both dictionaries were swapped to match.
+
+**Also reverted per explicit owner request** (not a bug, a content choice): the "leftover" axis
+(whichever one isn't the detected government axis) keeps the original text "Rozdíly v rámci
+koalice nebo opozice" / "Differences within coalition or opposition" regardless of which raw
+dimension it ends up being — §8 had changed this to a neutral "Jiná dimenze hlasování"/"Other
+voting dimension" on the reasoning that the leftover axis's political meaning isn't established;
+the owner wants the original text kept anyway.
+
+**A type constraint surfaced along the way**: `packages/parliament-core`'s (read-only)
+`ParliamentTranslations.charts.wpca` only declares `{ xLabel: string; yLabel: string }` — too
+narrow for the 3-string, sign-aware shape this app now needs, and its own inline comments show it
+was designed assuming x is always the coalition axis (not true for cz-cities). Rather than edit the
+shared package, `city.config.ts` now exports a local `CityTranslations = Omit<ParliamentTranslations,
+"charts"> & { charts: { average: string; wpca: { govAxisLabelPositive; govAxisLabelNegative;
+otherAxisLabel } } }` and `CityConfig.translations` is typed against it instead — every consumer
+(`data.ts`'s `getGovernmentAxisPlacement` replaces the old `isGovernmentAxisOnX`, all three
+`[lang]/[city]/{page,member/[id],group/[id]}.tsx` files, and `groups/page.tsx`'s local `PartyCard`
+prop type) updated to match. `getGovernmentAxisPlacement` now returns `{ onX, sign }` instead of
+just a boolean, so both which axis gets the label *and* which word order it uses are read from
+`government_axis.json` in one call.
+
+**Verification**: `pnpm typecheck`, `pnpm lint`, `pnpm build --filter=@legislature/cz-cities` all
+pass. Screenshots against a freshly built + `next start` server (port confirmed free via `ss -tlnp`
+first, `Ready` log checked). Confirmed via three independent methods, not just one: (1) direct pixel
+cross-reference against the chart's own gridlines, (2) a real named government-party member's
+highlighted dot position on his own page, (3) a manual crop-and-rotate of the label text itself to
+read it unambiguously (rotated SVG text is easy to misread at a glance — this was gotten wrong once
+internally before landing on the verified-correct version, worth remembering for any future WPCA
+label work). The "other axis" label text reverted correctly, confirmed via direct screenshot crop.

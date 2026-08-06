@@ -1,4 +1,4 @@
-import { getAllMpProfiles, getAllPartyProfiles, getPartyProfile, isGovernmentAxisOnX } from "@/lib/data";
+import { getAllMpProfiles, getAllPartyProfiles, getPartyProfile, getGovernmentAxisPlacement } from "@/lib/data";
 import { PageBlockRenderer } from "@/components/PageBlockRenderer";
 import { getCityConfig, getCityTranslations, CITIES } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
@@ -39,11 +39,11 @@ export default async function GroupPage({ params }: Props) {
   const city = getCityConfig(citySlug);
   if (!city) notFound();
 
-  const [data, allMps, allParties, govAxisOnX] = await Promise.all([
+  const [data, allMps, allParties, govAxis] = await Promise.all([
     getPartyProfile(citySlug, id),
     getAllMpProfiles(citySlug),
     getAllPartyProfiles(citySlug),
-    isGovernmentAxisOnX(citySlug),
+    getGovernmentAxisPlacement(citySlug),
   ]);
   if (!data) notFound();
 
@@ -89,12 +89,18 @@ export default async function GroupPage({ params }: Props) {
           metricValues,
           formerLabel: t.member.former,
           // See page.tsx's identical construction / lib/data.ts's
-          // isGovernmentAxisOnX doc comment.
-          chartLabels: {
-            average: t.charts.average,
-            wpcaXLabel: govAxisOnX ? t.charts.wpca.xLabel : t.charts.wpca.yLabel,
-            wpcaYLabel: govAxisOnX ? t.charts.wpca.yLabel : t.charts.wpca.xLabel,
-          },
+          // getGovernmentAxisPlacement doc comment — word order follows
+          // government_sign.
+          chartLabels: (() => {
+            const govLabel =
+              govAxis.sign > 0 ? t.charts.wpca.govAxisLabelPositive : t.charts.wpca.govAxisLabelNegative;
+            const otherLabel = t.charts.wpca.otherAxisLabel;
+            return {
+              average: t.charts.average,
+              wpcaXLabel: govAxis.onX ? govLabel : otherLabel,
+              wpcaYLabel: govAxis.onX ? otherLabel : govLabel,
+            };
+          })(),
           tableLabels: t.table,
         }}
       />
