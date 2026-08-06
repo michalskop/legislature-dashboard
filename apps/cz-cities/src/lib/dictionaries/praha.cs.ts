@@ -66,20 +66,22 @@ export const prahaCs: CityTranslations = {
   charts: {
     average: "Průměr",
     wpca: {
-      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4, corrected after
-      // screenshot verification): the word order must match which end
-      // government is actually on (government_axis.json's government_sign).
-      // Verified empirically against real rendered output (cross-referenced
-      // against the chart's own gridlines, not assumed from the rotation
-      // transform): for this rotate(-90) SVG label, the FIRST word in the
-      // string (nearest the "◄◄◄" arrows) ends up on the POSITIVE/higher
-      // end, and the LAST word (nearest "►►►") ends up on the
-      // NEGATIVE/lower end — so when government_sign is positive, the
-      // government word must come FIRST. Praha's current term has
-      // government_sign=+1, so "Koalice | Opozice" is the one currently in
-      // use — see lib/data.ts's getGovernmentAxisPlacement.
-      govAxisLabelPositive: "◄ ◄ ◄ Koalice | Opozice ► ► ►",
-      govAxisLabelNegative: "◄ ◄ ◄ Opozice | Koalice ► ► ►",
+      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 5): the word order
+      // must match which end government is actually on (government_axis
+      // .json's government_sign) — confirmed directly by the project owner,
+      // twice, against the real rendered chart: for Praha's current term
+      // (government_sign=+1, coalition on the positive/"up" end), the
+      // correct string is "Opozice | Koalice" (government word LAST, nearest
+      // "►►►"). NOTE: an in-repo attempt to verify this independently
+      // (pixel cross-reference against gridlines + a named member's
+      // highlighted dot) produced the opposite conclusion and was corrected
+      // back after the owner's direct observation contradicted it twice —
+      // trust the owner's read of the live rendering over a repo-side replay
+      // of that verification if this is ever revisited, and re-derive the
+      // rotation rule from scratch rather than reuse this comment's earlier
+      // (wrong) reasoning. See lib/data.ts's getGovernmentAxisPlacement.
+      govAxisLabelPositive: "◄ ◄ ◄ Opozice | Koalice ► ► ►",
+      govAxisLabelNegative: "◄ ◄ ◄ Koalice | Opozice ► ► ►",
       // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): reverted to the
       // original text at the owner's request — kept regardless of which raw
       // dimension this ends up being, even though its precise relationship

@@ -73,12 +73,11 @@ export const prahaEn: CityTranslations = {
   charts: {
     average: "Average",
     wpca: {
-      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4, corrected after
-      // screenshot verification): see praha.cs.ts's matching comment — the
-      // FIRST word (nearest "◄◄◄") ends up on the POSITIVE/higher end after
-      // the SVG rotate(-90), verified against the chart's own gridlines.
-      govAxisLabelPositive: "◄ ◄ ◄ Coalition | Opposition ► ► ►",
-      govAxisLabelNegative: "◄ ◄ ◄ Opposition | Coalition ► ► ►",
+      // Owner fix (2026-08-05, DIVERGENCE.md §8 round 5): see praha.cs.ts's
+      // matching comment — confirmed directly by the owner against the real
+      // rendering, not derived from theory.
+      govAxisLabelPositive: "◄ ◄ ◄ Opposition | Coalition ► ► ►",
+      govAxisLabelNegative: "◄ ◄ ◄ Coalition | Opposition ► ► ►",
       // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): reverted to the
       // original text at the owner's request — see praha.cs.ts's comment.
       otherAxisLabel: "Differences within coalition or opposition",
