@@ -67,18 +67,28 @@ export default async function MemberPage({ params }: Props) {
   // Labels from org type config
   const groupOrg = city.organizations.find((o) => o.classification === "group");
   const groupLabel = groupOrg?.labels[lang]?.singular ?? "Group";
+  // Praha reconciliation (2026-08-06): a brand-new member with zero vote
+  // data still gets a non-null `mp.attendance`/`mp.rebelity`/`mp.govity`
+  // object (attendance.py/rebelity.py/govity.py always emit a record, just
+  // with present_share omitted or rebelity/govity: null) — so the plain
+  // `mp.attendance ? {...} : undefined` truthiness check below used to
+  // still build the block and call `pct()` on an undefined/null value,
+  // rendering "NaN %" (attendance) or a misleading "0.0 %" (rebelity/govity
+  // — `null * 100` coerces to 0 in JS, not NaN). Check the actual numeric
+  // field instead, so a new member with no data yet gets no metric card at
+  // all for that stat, same as a departed member with no vote_events.
   const metricValues = {
-    attendance: mp.attendance ? {
+    attendance: mp.attendance && mp.attendance.present_share != null ? {
       value: pct(mp.attendance.present_share),
       sub: `${mp.attendance.present} ${t.ui.outOf} ${mp.attendance.vote_events_total}`,
       description: t.metrics.attendance,
     } : undefined,
-    rebelity: mp.rebelity ? {
+    rebelity: mp.rebelity?.rebelity != null ? {
       value: pct(mp.rebelity.rebelity, 1),
       sub: t.ui.rebelVotes.replace("{n}", String(mp.rebelity.rebelity_total)),
       description: t.metrics.rebelity,
     } : undefined,
-    govity: mp.govity ? {
+    govity: mp.govity?.govity != null ? {
       value: pct(mp.govity.govity),
       sub: `${mp.govity.govity_total} ${t.ui.outOf} ${mp.govity.govity_possible}`,
       description: t.metrics.govity,

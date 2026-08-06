@@ -893,3 +893,154 @@ highlighted dot position on his own page, (3) a manual crop-and-rotate of the la
 read it unambiguously (rotated SVG text is easy to misread at a glance — this was gotten wrong once
 internally before landing on the verified-correct version, worth remembering for any future WPCA
 label work). The "other axis" label text reverted correctly, confirmed via direct screenshot crop.
+
+---
+
+## 10. Praha.eu live-roster reconciliation (2026-08-06) — 4 personnel gaps, and the memberCount formula reconsidered
+
+### 10.1 The gap
+
+The upstream data repo (`cz-municipalities-votes-2022-2026`)'s `praha/data/{persons,memberships}.csv`
+are derived entirely from the Golemio roll-call CSV (who has a vote column = who's a member) plus
+each member's original 2022 candidate-list affiliation. That CSV hasn't published anything new since
+2026-05-28 — a personnel change with no covering roll-call vote after that date is structurally
+invisible to it, and a brand-new substitute who hasn't voted yet has no column to derive them from at
+all. praha.eu/seznam-zastupitelu (the city's own live roster, current + former members via a toggle)
+and praha.eu/politicke-kluby are both client-rendered Angular SPAs a plain HTTP client can't read, but
+*are* readable with real browser automation (Playwright against the system-installed Chromium — see
+`praha/scripts/fetch_praha_roster.py` in the data repo). Cross-checking against a fresh fetch
+(2026-08-06) turned up exactly 4 discrepancies, each independently re-verified (praha.eu status,
+volby.cz candidate-list position, and news/Wikipedia sourcing) before being reconciled into
+`persons.csv`/`memberships.csv` in the data repo:
+
+- **ANO 2011**: Ondřej Prokop had actually left the assembly entirely (praha.eu's former-members
+  list), not just changed party — his zastupitelstvo-hmp AND candidate-list:ano-2011 memberships were
+  both closed 2026-06-30 (precise date, from Wikipedia's infobox + his resignation announcement over
+  an undisclosed-assets controversy). Replaced by **Mária Ševčíková** (`praha:person:maria-sevcikova`),
+  2nd-in-line ANO substitute per volby.cz, seated from the same 2026-06-30 date (a proxy — no more
+  precise oath date was discoverable).
+- **SPD**: Josef Nerušil's departure (2026-03-26) was already correctly in the data. Replaced by
+  **Klára Cingrošová** (`praha:person:klara-cingrosova`), 1st-in-line SPD substitute per volby.cz,
+  start_date proxied from Nerušil's existing end_date.
+- **STAN**: David Procházka's departure (2025-03-27) was already correctly in the data. Replaced by
+  **Michal Biskup** (`praha:person:michal-biskup`) — start_date 2025-04-24 is *not* a proxy here, it's
+  the actual date from the zastupitelstvo session's own stenographic record.
+- **SPOLU pro Prahu**: Hana Kordová Marvanová (`praha:person:hana-marvanova`) is still a *current*
+  assembly member (her zastupitelstvo-hmp membership is untouched) but praha.eu shows her as
+  "Nezařazení" (independent) — only her candidate-list:spolu-pro-prahu membership was closed. Research
+  turned up a real date here too, 2023-02-17 (Wikipedia + contemporary news: she was excluded from the
+  SPOLU klub for not backing Bohuslav Svoboda's primátor vote in December 2022) — much earlier than
+  this task's own starting assumption of "unknown, use today as an upper-bound approximation."
+
+Re-verified against the same 2026-08-06 fetch: current-member party counts now match praha.eu exactly
+— SPOLU 18, ANO 14, Piráti 13, PRAHA SOBĚ 11, STAN 5, SPD 3 (+ 1 Nezařazení = 65 total).
+
+Fixtures (`apps/cz-cities/src/fixtures/praha/{data,analyses}`) were re-copied from the reconciled data
+repo, same paths as every prior round.
+
+### 10.2 A real bug the reconciliation exposed: `groupOrg` selection didn't check currency
+
+Kordová Marvanová's case (a *current* assembly member with a *closed* candidate-list membership) is
+new — no one in this data has ever been in that state before (everyone else who left a party also
+left the assembly on the same date, mirrored end_dates). It broke an assumption `getAllMpProfiles`
+(`src/lib/data.ts`) was silently relying on: `a.organizations.find(o => o.classification === "group")`
+picked *any* group entry regardless of whether it had ended, on the assumption a person has at most
+one group record and it's implicitly current. For her, that's her now-closed SPOLU record — so before
+this fix she'd still have been attributed to SPOLU forever, in every count and on every page, with no
+way to represent "used to be SPOLU, now unaffiliated." Fixed to `o.classification === "group" &&
+!o.until` (and the equivalent for `candidate_list`); a person whose only group record has ended now
+correctly gets `groupId: null` (falls through to the "other"/unaffiliated bucket the member page
+already handles by simply not rendering a party badge — `mp.partyId && mp.groupName &&
+<PartyFace .../>`), while their history is still available separately via the already-existing,
+already-end_date-filtered `previousGroupIds`. This is exactly the mechanism `getPartyProfile`'s
+`formerGroupMembers` was already built to use (`mp.groupId !== party.groupId &&
+mp.previousGroupIds.includes(party.groupId)`) — it just never had a real "closed group, still current
+assembly member" case to exercise it before. Confirmed on the SPOLU group page: Marvanová now renders
+under "Bývalí zastupitelé" (former members), not counted in the "18 zastupitelů" figure.
+
+### 10.3 The memberCount formula, reconsidered again
+
+§10.1's own reasoning above already explains most of why: after fixing 10.2, `byGroup` (built by
+grouping `mps` on `mp.groupId`) only ever contains people with a *currently open* group membership —
+so `members.length` and `currentMembers.length` (the existing `.filter(m => m.isCurrent)`, which also
+requires assembly-currency) now compute over what is effectively the same already-current-filtered
+population. But which one to actually assign to `memberCount` is still a real choice, and this
+round's 2nd in-data mid-term replacement (Prokop → Ševčíková, alongside the pre-existing
+Hrubčík → Kaněra swap) makes the choice from §9's predecessor round concretely wrong if left as-is:
+
+- §9's round set `memberCount: members.length` — "everyone who ever held this group's seat" — to fix
+  an undercount where a departed member with *no in-data replacement yet* (STAN's Procházka, before
+  Biskup existed in this data at all) just vanished from the count on this one page while other pages
+  still showed the old, higher number. That was a real bug, but the chosen fix generalizes badly:
+  full-term distinct-person counting *overcounts* every time a seat changes hands mid-term and the
+  data has both people on record. ANO 2011 now has **two** such swaps (Hrubčík→Kaněra *and*
+  Prokop→Ševčíková) — `members.length` would read 16 for a party that has exactly 14 seats, matching
+  neither praha.eu nor its own candidate-list org's seat count.
+- The undercount's actual root cause was never the formula — it was (a) missing personnel data
+  (Biskup didn't exist in this data at the time) and (b) the §10.2 `groupOrg`-currency bug. Both are
+  now fixed: (a) via this round's praha.eu reconciliation, (b) via 10.2 above. With both fixed,
+  `currentMembers.length` — count of people who are both assembly-current *and* currently affiliated
+  with this specific group — is simply correct, and matches praha.eu exactly for all 6 parties (see
+  10.1's count list). It's also the more defensible formula on its own semantic terms:
+  `memberCount` is displayed right next to `avgAttendance`/`avgRebelity`/`avgGovity`, which were
+  never in dispute and have always been current-members-only — there's no good reason for the count
+  right next to them to silently mean a different, broader population.
+
+`memberCount` is now `currentMembers.length` again (not `members.length`), with `currentMembers`
+kept as an explicit second filter (on top of `byGroup` already being current-group-only after 10.2)
+as defense in depth against a hypothetical future data row with an open candidate-list membership but
+a closed assembly one — the pipeline's own convention is to mirror those two dates, so this shouldn't
+happen, but "shouldn't happen" isn't a schema-enforced guarantee.
+
+### 10.4 A second real bug found while verifying: "NaN %" / misleading "0.0 %" for zero-vote members
+
+The 3 new members have no vote records at all yet in the current Golemio snapshot (confirmed: the
+shared `attendance`/`rebelity`/`govity` analyses all handle this gracefully at the data level — zero
+attendance, `rebelity`/`govity: null` rather than crashing or omitting the person — see the data
+repo's own commit for the full behavior). But two UI spots assumed "the analysis record exists" meant
+"the numeric value inside it exists", which isn't true here (attendance.py omits `present_share`
+rather than nulling it when `vote_events_total` is 0; rebelity.py/govity.py always emit
+`{..., rebelity: null}`):
+
+- `SortableMpTable.tsx`: `mp.attendance ? pct(mp.attendance.present_share) : "—"` rendered
+  `pct(undefined)` = **"NaN %"** for a member with zero recorded votes (`mp.attendance` itself is
+  always truthy — the record exists, just without `present_share`). `mp.rebelity != null ?
+  pct(mp.rebelity.rebelity) : "—"` similarly rendered `pct(null)` = a **misleading "0.0 %"** (`null *
+  100` coerces to 0 in JS, not NaN) rather than "no data yet".
+- `member/[id]/page.tsx`: the same pattern in `metricValues` (`mp.attendance ? {...} : undefined`)
+  produced the same "NaN %" metric card on a new member's own profile page.
+
+Both fixed to check the actual numeric field (`mp.attendance?.present_share != null`, `mp.rebelity
+?.rebelity != null`, `mp.govity?.govity != null`) rather than the wrapper object's truthiness — a
+brand-new member with no data now gets "—" (table) / no metric card at all (profile page), same
+treatment as any other "no data for this stat" case. `group/[id]/page.tsx`'s `pct(party.avgAttendance)`
+has the same latent unconditional-call shape, but `avg()` already filters to non-null values before
+computing the average, and none of the 6 real parties are currently all-zero-data, so it isn't
+actively producing NaN today — left as a noted-but-unfixed edge case rather than changed speculatively.
+
+### 10.5 Verification
+
+`pnpm typecheck` and `pnpm build --filter=@legislature/cz-cities` both pass clean (`pnpm lint` only
+shows the pre-existing, unrelated `MatomoScript.tsx` unused-vars warning). Rebuilt, confirmed the port
+was free first (`ss -tlnp`), started with `next start -p 3013`, confirmed the `Ready` log line (a
+stale server from a previous session was caught and killed this way before it could produce a false
+reading). Screenshots (Playwright against the system Chromium) of the front page, `/praha/groups`, and
+all 4 affected group pages confirm: all 6 party counts match praha.eu exactly (SPOLU 18, ANO 14,
+Piráti 13, PRAHA SOBĚ 11, STAN 5, SPD 3), Ševčíková/Cingrošová/Biskup each appear by name as *current*
+members of their correct group with "—" (not "NaN %") for their no-data-yet stats, and Prokop/Nerušil
+/Procházka/Marvanová each correctly appear under "Bývalí zastupitelé" (former members) on their old
+group's page instead of being counted.
+
+### 10.6 Open follow-ups (not actioned this round)
+
+- **Re-running `standardize.py` would silently undo this reconciliation.** It rewrites
+  `persons.csv`/`memberships.csv` from scratch from the (still-stale) Golemio CSV — the same class of
+  gap already documented for `party_affiliation.py`'s nightly re-apply step. A praha.eu-reconciliation
+  re-apply step would need the same treatment before any of this could survive an unattended pipeline
+  run.
+- **Whether a live praha.eu check should become a recurring (nightly) step, or stay a one-time manual
+  reconciliation, is an open decision, not made here.** If it did, the nightly runner would need a
+  working Playwright browser-install step (or the same system-Chromium workaround used locally) —
+  not currently present in `nightly.yml`.
+- `group/[id]/page.tsx`'s unconditional `pct(party.avgAttendance)` (§10.4) is a latent NaN risk for a
+  hypothetical future all-zero-data group — noted, not fixed, since it isn't actively wrong today.

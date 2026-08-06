@@ -264,8 +264,19 @@ export async function getAllMpProfiles(citySlug: string): Promise<MpProfile[]> {
   const wpcaMap = new Map(wpca.map((r) => [r.person_id, r]));
 
   return attendance.map((a): MpProfile => {
-    const groupOrg = a.organizations.find((o) => o.classification === "group");
-    const candidateOrg = a.organizations.find((o) => o.classification === "candidate_list");
+    // Praha reconciliation (2026-08-06, DIVERGENCE.md §10): a person can now
+    // have a "group" organizations entry that has ENDED while they remain a
+    // current assembly member (Hana Kordová Marvanová — excluded from the
+    // SPOLU pro Prahu klub 2023-02-17, still a sitting independent). Picking
+    // *any* group entry regardless of `until` (the old behavior) would keep
+    // attributing her to SPOLU forever. Only a still-open group entry counts
+    // as this person's CURRENT group/party — a closed one means "no current
+    // party" (falls through to null -> the "other"/unaffiliated bucket in
+    // PARTY_META), with the historical fact preserved separately via
+    // `previousGroupIds` below (already end_date-filtered, unaffected by
+    // this change).
+    const groupOrg = a.organizations.find((o) => o.classification === "group" && !o.until);
+    const candidateOrg = a.organizations.find((o) => o.classification === "candidate_list" && !o.until);
 
     const groupId = groupOrg?.id ?? null;
     const partyId = groupId ? groupIdToPartyId(groupId) : null;
@@ -366,6 +377,40 @@ export async function getAllPartyProfiles(citySlug: string): Promise<PartyProfil
       slug: groupSlug(gid),
       name,
       partyId: groupIdToPartyId(gid),
+      // Reconsidered again (2026-08-06, DIVERGENCE.md §10) after the
+      // praha.eu reconciliation. The 2026-08-05 "owner fix" switched this
+      // from `currentMembers.length` to `members.length` (everyone who ever
+      // held this group's seat) to fix an undercount — but full-term
+      // distinct-person counting has the opposite failure mode: it
+      // OVERcounts whenever a seat changed hands mid-term and the data has
+      // both people (e.g. ANO 2011's Hrubčík->Kaněra swap, already in the
+      // data, plus this round's Prokop->Ševčíková swap, would have made
+      // `members.length` read 16 for a party that actually has 14 seats).
+      // That failure mode wasn't hypothetical — it was one Election Day
+      // away from being wrong the moment a second mid-term replacement
+      // landed in the data, which is exactly what happened this round.
+      //
+      // The actual root cause of the original undercount wasn't the
+      // formula, it was `groupOrg` selection (above, in getAllMpProfiles)
+      // not filtering for a CURRENT group entry — so a departed member
+      // with no in-data replacement (STAN's David Procházka, before Michal
+      // Biskup existed in this data at all) just vanished from every
+      // count, current or full-term. Now that (a) that selection bug is
+      // fixed and (b) live praha.eu data (not just the stale, months-old
+      // Golemio CSV) is reconciled into persons/memberships.csv, `members`
+      // here already only contains people with a CURRENTLY open group
+      // membership — so `members.length` and `currentMembers.length` are
+      // computed from the same already-current-filtered array either way.
+      // `currentMembers.length` is used explicitly (not `members.length`)
+      // because it also requires assembly-currency, not just group-currency
+      // — belt-and-suspenders against a hypothetical future data row with an
+      // open candidate-list membership but a closed assembly one (shouldn't
+      // happen given how this pipeline mirrors the two dates, but "shouldn't
+      // happen" isn't a schema guarantee). This also matches the average
+      // stat columns' scope (attendance/rebelity/govity below), which were
+      // never in dispute — memberCount now means the same "currently active
+      // members of this group" as those averages, not a different, broader
+      // population.
       memberCount: currentMembers.length,
       avgAttendance: avg(attendanceValues),
       avgRebelity: avg(rebelityValues),

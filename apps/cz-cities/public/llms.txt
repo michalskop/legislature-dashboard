@@ -13,13 +13,13 @@ DIVERGENCE.md in the app repository for the current rollout status.
 - Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
 - Update model: nightly data pipeline (scrape -> standardize -> validate -> analyse -> publish),
   dashboard revalidates on a schedule
-- Generated: 2026-08-05
+- Generated: 2026-08-06
 
 ## Cities
 
 ### praha
 https://mesta.datatimes.cz/praha
-66 assembly members, 6 groups (2022-2026 term).
+69 assembly members, 6 groups (2022-2026 term).
 
 Groups: PRAHA SOBĚ, STAROSTOVÉ A NEZÁVISLÍ, Česká pirátská strana, SPOLU pro Prahu, SPD,Trik.,PES a nez. pro Prahu, ANO 2011
 Sample assembly members: Kateřina Arnotová, Martin Benkovič, Jaromír Beránek, David Bodeček, Vladan Brož, Jiří Brůžek, Václav Bílek, Jan Chabr, Kristýna Drápalová, Zuzana Freitas, Marta Gellová, Zuzana Hamanová, Petr Hlaváček, Michal Hroza, Martin Hrubčík, Jan Hušbauer, Zdeněk Hřib, Tomáš Kaštovský, Antonín Klecanda, Radmila Kleslová

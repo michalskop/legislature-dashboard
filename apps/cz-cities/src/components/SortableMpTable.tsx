@@ -230,17 +230,31 @@ export function SortableMpTable({
         </td>
         {visibleCols.includes("attendance") && (
           <td className="py-2 pr-4 text-right tabular-nums">
-            {mp.attendance ? pct(mp.attendance.present_share) : "—"}
+            {/* Praha reconciliation (2026-08-06): checking only that the
+                `attendance`/`rebelity`/`govity` wrapper object exists isn't
+                enough — attendance.py always returns a record (present_share
+                simply omitted, i.e. undefined, when vote_events_total is 0),
+                and rebelity.py/govity.py always return `{..., rebelity:
+                null}` rather than omitting the record. The old `mp.attendance
+                ? pct(...) : "—"` / `mp.rebelity != null ? pct(...) : "—"`
+                checks were both truthy for a brand-new member with zero vote
+                data, so `pct(undefined)` rendered "NaN %" and `pct(null)`
+                rendered a misleading "0.0 %" (JS coerces `null * 100` to 0,
+                not NaN) — neither is "no data yet". Check the actual numeric
+                field instead. */}
+            {mp.attendance && mp.attendance.present_share != null
+              ? pct(mp.attendance.present_share)
+              : "—"}
           </td>
         )}
         {visibleCols.includes("rebelity") && (
           <td className="py-2 pr-4 text-right tabular-nums">
-            {mp.rebelity != null ? pct(mp.rebelity.rebelity) : "—"}
+            {mp.rebelity?.rebelity != null ? pct(mp.rebelity.rebelity) : "—"}
           </td>
         )}
         {visibleCols.includes("govity") && (
           <td className="py-2 text-right tabular-nums">
-            {mp.govity != null ? pct(mp.govity.govity) : "—"}
+            {mp.govity?.govity != null ? pct(mp.govity.govity) : "—"}
           </td>
         )}
       </tr>
