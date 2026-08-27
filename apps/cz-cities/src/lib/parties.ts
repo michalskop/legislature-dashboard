@@ -89,6 +89,49 @@
 //     these two specifically. Until then both fall through to the generic
 //     gray (PARTY_COLORS lookups all end `?? "#bcbcb0"`) — readable label,
 //     placeholder color, not a broken or silently-wrong one.
+//
+// Sourcing per party (Ostrava 2022 candidate lists, added 2026-08-27):
+//   - kdu-csl                  -> Snemovna's KDU-ČSL color (#ffcf02, darkText)
+//     — unlike Brno's "Lidovci a Starostové" joint list, Ostrava's vote-page
+//     data shows KDU-ČSL as its own standalone registered klub (a separate
+//     `<th>` header from "ODS + TOP09"), confirmed directly from primary
+//     data — see ostrava/scripts/party_affiliation.py in the city data repo.
+//   - ods-top09                -> Snemovna's ODS color (#5e66d5) — same
+//     treatment as Praha's spolu-pro-prahu / Brno's ods-a-top-09 (ODS is the
+//     lead party of "Koalice SPOLU (ODS, KDU-ČSL, TOP 09)").
+//   - spd                      -> Snemovna's SPD color (#a47d03) — Ostrava's
+//     "SPD" is its own standalone klub (unlike Praha/Brno's SPD+Trikolora
+//     joint lists), so no "lead party" reasoning needed, direct reuse.
+//   - starostove-pro-ostravu   -> Snemovna's STAN color (#ff1a4a) — Czech
+//     Wikipedia's own 2022 Ostrava election results table glosses this list
+//     as "STAROSTOVÉ pro OSTRAVU (tj. STAN a nezávislí kandidáti)" ("i.e.
+//     STAN and independent candidates"), confirming the STAN affiliation
+//     directly; same treatment as Praha's starostove-a-nezavisli.
+//   - ano-2011 / pirati        -> same key/color as Praha/Brno (same real
+//     parties).
+//   - ostravak                 -> NOT in Snemovna (a local/regional
+//     movement, no national-level equivalent) — sourced from the color
+//     swatch in Czech Wikipedia's own 2022 Ostrava election results table
+//     (cs.wikipedia.org/wiki/Volby_do_Zastupitelstva_města_Ostravy_2022),
+//     verified in the raw page HTML (`style="background-color:#8b0000"` next
+//     to the "Ostravak" row).
+//   - ostravska-levice         -> NOT in Snemovna (a local coalition, KSČM +
+//     nezávislí kandidáti) — sourced the same way, from the same Wikipedia
+//     table (`style="background-color:#bf0202"` next to "OSTRAVSKÁ LEVICE").
+//     A visually distinct red from Brno's cssd-vasi-starostove (#E63636)
+//     despite both being reds — different real parties, kept independently
+//     sourced rather than assumed to match.
+//   - nezarazeni                -> reuses the SAME key already added for
+//     Brno (same "unaffiliated" semantic — this genuinely is the identical
+//     concept, not just a coincidentally-matching slug).
+//   - jdeto                     -> shortName/faceAbbr added (its real name),
+//     but DELIBERATELY NO COLOR, same reasoning as Brno's "nezavisli"/"brno
+//     klidem" entries: "JDETO!!!" is a 2023 mid-term movement (see the city
+//     data repo's ostrava/scripts/party_affiliation.py for the dated
+//     evidence of its formation after the ANO 2011 club split), not a 2022
+//     election-list party, so neither Snemovna reuse nor the 2022 Wikipedia
+//     election page apply. Ask the project owner if/when this needs a real
+//     brand color; falls through to the generic gray until then.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -109,6 +152,13 @@ export const PARTY_META: Record<
   nezarazeni: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
   nezavisli: { shortName: "Nezávislí", faceAbbr: "NEZ", darkText: true },
   "brno-klidem-a-nezavisli-zastupitele": { shortName: "Brno klidem", faceAbbr: "BK", darkText: true },
+  "kdu-csl": { shortName: "KDU-ČSL", faceAbbr: "KDU", darkText: true },
+  "ods-top09": { shortName: "ODS + TOP09", faceAbbr: "ODS" },
+  spd: { shortName: "SPD", faceAbbr: "SPD" },
+  "starostove-pro-ostravu": { shortName: "STAN", faceAbbr: "STAN" },
+  ostravak: { shortName: "Ostravak", faceAbbr: "OSTA" },
+  "ostravska-levice": { shortName: "Ostravská levice", faceAbbr: "OLE" },
+  jdeto: { shortName: "JDETO!!!", faceAbbr: "JDT", darkText: true },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -127,5 +177,11 @@ export const PARTY_COLORS: Record<string, string> = {
   socdem: "#E63636",
   "zeleni-a-zit-brno": "#00AD43",
   nezarazeni: "#bcbcb0",
+  "kdu-csl": "#ffcf02",
+  "ods-top09": "#5e66d5",
+  spd: "#a47d03",
+  "starostove-pro-ostravu": "#ff1a4a",
+  ostravak: "#8b0000",
+  "ostravska-levice": "#bf0202",
   other: "#bcbcb0",
 };
