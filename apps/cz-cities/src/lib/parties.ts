@@ -132,6 +132,36 @@
 //     election-list party, so neither Snemovna reuse nor the 2022 Wikipedia
 //     election page apply. Ask the project owner if/when this needs a real
 //     brand color; falls through to the generic gray until then.
+//
+// Sourcing per party (Most 2022 election lists, added 2026-08-28):
+//   - ano-2011              -> same key/color as Praha/Brno/Ostrava (same
+//     real party). Most's own Wikipedia infobox legend shows a different
+//     hex (#2f2f65) for its local ANO 2011 list color, NOT used here — same
+//     "same real party, same color across cities" convention already
+//     established (see Brno's ods-a-top-09 note above for the precedent of
+//     preferring Snemovna reuse over an available city-specific swatch).
+//   - spd-s-pod-trik        -> Snemovna's SPD color (#a47d03) — SPD is the
+//     lead party of "SPD s podporou Trikolóry", same lead-party treatment
+//     as Praha/Brno/Ostrava's other SPD-led joint lists.
+//   - ods-a-nezavisli       -> Snemovna's ODS color (#5e66d5) — ODS is the
+//     lead party of "ODS a NEZÁVISLÍ", same treatment as Brno's
+//     ods-a-top-09/Ostrava's ods-top09.
+//   - promost               -> NOT in Snemovna (a local movement, "Pro
+//     Most", no national-level equivalent) — sourced from Czech Wikipedia's
+//     own Most city-council article's infobox legend
+//     (cs.wikipedia.org/wiki/Zastupitelstvo_města_Mostu, raw wikitext
+//     `{{legenda|#0079c0|[[ProMOST]]}}`).
+//   - smm                   -> NOT in Snemovna (Sdružení Mostečané Mostu, a
+//     local movement) — sourced the same way, from the same infobox legend
+//     (`{{legenda|#19488e|...}}`).
+//   - nezaraz               -> reuses the SAME neutral gray already used for
+//     Brno/Ostrava's "nezarazeni" (identical "unaffiliated" semantic, just a
+//     different real-data slug — Most's feed abbreviates the group name to
+//     "Nezařaz."). Most's own Wikipedia legend shows a distinct light gray
+//     (#DEDEDE) for its "Nezařazení" list color, not used here for the same
+//     reason "nezarazeni" itself was never city-sourced: this is a
+//     no-affiliation bucket, not a real party brand, so the existing
+//     generic neutral color applies directly.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -159,6 +189,11 @@ export const PARTY_META: Record<
   ostravak: { shortName: "Ostravak", faceAbbr: "OSTA" },
   "ostravska-levice": { shortName: "Ostravská levice", faceAbbr: "OLE" },
   jdeto: { shortName: "JDETO!!!", faceAbbr: "JDT", darkText: true },
+  "spd-s-pod-trik": { shortName: "SPD a další", faceAbbr: "SPD" },
+  "ods-a-nezavisli": { shortName: "ODS a nezávislí", faceAbbr: "ODS" },
+  promost: { shortName: "ProMOST", faceAbbr: "PM" },
+  smm: { shortName: "SMM", faceAbbr: "SMM" },
+  nezaraz: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -183,5 +218,10 @@ export const PARTY_COLORS: Record<string, string> = {
   "starostove-pro-ostravu": "#ff1a4a",
   ostravak: "#8b0000",
   "ostravska-levice": "#bf0202",
+  "spd-s-pod-trik": "#a47d03",
+  "ods-a-nezavisli": "#5e66d5",
+  promost: "#0079c0",
+  smm: "#19488e",
+  nezaraz: "#bcbcb0",
   other: "#bcbcb0",
 };

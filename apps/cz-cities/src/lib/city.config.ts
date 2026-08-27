@@ -5,6 +5,8 @@ import { brnoCs } from "./dictionaries/brno.cs";
 import { brnoEn } from "./dictionaries/brno.en";
 import { ostravaCs } from "./dictionaries/ostrava.cs";
 import { ostravaEn } from "./dictionaries/ostrava.en";
+import { mostCs } from "./dictionaries/most.cs";
+import { mostEn } from "./dictionaries/most.en";
 
 // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): the shared
 // ParliamentTranslations.charts.wpca (packages/parliament-core, read-only)
@@ -559,8 +561,166 @@ const OSTRAVA: CityConfig = {
   },
 };
 
+// Added 2026-08-28, once Most's data pipeline reached the same maturity as
+// Praha's/Brno's/Ostrava's (C9/C4/D7 all done — see most/config/sources.yml in
+// the city data repo): same shared zastupko.cz backend Brno uses, real DATED
+// klub organizations straight from the feed's politickeSubjekty[] intervals
+// (same mechanism as Brno, not Ostrava's per-vote grouping), owner-approved
+// government_groups (ProMOST + ANO 2011), and nightly automation already
+// producing real committed output. Rada (executive council) data deliberately
+// NOT wired here — zastupitelstvo-only per the owner's 2026-08-27 scope
+// decision; rada is a distinct future phase.
+const MOST: CityConfig = {
+  id: "most",
+  citySlug: "most",
+  name: "Zastupitelstvo města Mostu",
+  defaultLang: "cs",
+
+  dataBase:
+    "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main/most/analyses",
+
+  // vote-corrections deliberately excluded — cities don't publish corrections
+  // (plan.md D6), same as Praha/Brno/Ostrava.
+  analyses: ["attendance", "rebelity", "govity", "wpca"],
+
+  matomo: {
+    url: "//matomo.kohovolit.eu/",
+    siteId: "PLACEHOLDER", // D10 — owner creates a real Matomo site ID before go-live (task A4)
+  },
+
+  // Same as Brno: Most's organizations.csv rows are natively
+  // `classification: "group"` — real klub membership derived from dated
+  // politickeSubjekty[] intervals, not a candidate-list relabeling.
+  organizations: [
+    {
+      classification: "group",
+      urlSegment: "group",
+      listUrlSegment: "groups",
+      hasPage: true,
+      labels: {
+        cs: { singular: "klub", plural: "kluby", listTitle: "Zastupitelské kluby" },
+        en: { singular: "group", plural: "groups", listTitle: "Council groups" },
+      },
+    },
+  ],
+
+  translations: { cs: mostCs, en: mostEn },
+
+  pages: {
+    home: [
+      {
+        id: "attendance-swarm",
+        config: {
+          type: "swarm-chart",
+          analysis: "attendance",
+          referenceLines: [{ value: 0.5, label: "50 %" }],
+        },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Jeden bod = jeden zastupitel/ka. Kliknutím přejdete na jejich profil." },
+          en: { title: "Attendance", description: "Each dot = one assembly member. Click to open their profile." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "2D mapa zastupitelů podle způsobu hlasování (WPCA). Kliknutím přejdete na jejich profil." },
+          en: { title: "Positions based on voting behaviour", description: "2D map of assembly members by voting patterns (WPCA). Click to open their profile." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Rebelování", description: "Jak často zastupitel/ka hlasuje proti svému klubu." },
+          en: { title: "Rebelliousness", description: "How often the assembly member votes against their own group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        // Same yMode special-case + yDecimals:1 as Praha/Brno/Ostrava — see
+        // PRAHA's matching comment above for both the yMode reasoning and the
+        // 2026-08-27 yDecimals:1 addition.
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
+          en: { title: "Coalition alignment", description: "How often the assembly member votes in line with the coalition." },
+        },
+      },
+    ],
+
+    memberDetail: [
+      {
+        id: "metrics-grid",
+        config: { type: "metrics-grid" },
+      },
+      {
+        id: "attendance-swarm",
+        config: {
+          type: "swarm-chart",
+          analysis: "attendance",
+          referenceLines: [{ value: 0.5, label: "50 %" }],
+        },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Attendance", description: "Position within the assembly." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "Poloha na základě analýzy hlasování." },
+          en: { title: "Positions based on voting behaviour", description: "Position based on voting analysis." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Rebelování", description: "Jak často hlasuje proti svému klubu." },
+          en: { title: "Rebelliousness", description: "How often they vote against their group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Shoda s koalicí", description: "Jak často hlasuje shodně s koalicí." },
+          en: { title: "Coalition alignment", description: "How often they vote in line with the coalition." },
+        },
+      },
+    ],
+
+    groupDetail: [
+      {
+        id: "metrics-grid",
+        config: { type: "metrics-grid" },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "Členové klubu v kontextu celého zastupitelstva." },
+          en: { title: "Positions based on voting behaviour", description: "Group members in the context of the full assembly." },
+        },
+      },
+      {
+        id: "member-table",
+        config: { type: "member-table", showPartyFilter: false },
+        labels: {
+          cs: { title: "Členové klubu" },
+          en: { title: "Group members" },
+        },
+      },
+    ],
+
+    // No regionDetail — cities have no constituency organization (see D5 note above).
+  },
+};
+
 /** All configured cities. Append here to add a city (see module doc above). */
-export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA];
+export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, MOST];
 
 export function getCityConfig(citySlug: string): CityConfig | undefined {
   return CITIES.find((c) => c.citySlug === citySlug);
