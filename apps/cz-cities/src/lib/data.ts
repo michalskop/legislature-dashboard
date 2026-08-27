@@ -12,36 +12,53 @@ import type {
 } from "./types";
 import { groupIdToPartyId, personSlug, groupSlug } from "./groups";
 import { parseCsv } from "./csv";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
+import { getCityConfig } from "./city.config";
 
 // ─────────────────────────────────────────────────────────────────────────
-// Data source — task A2. Real, committed local fixtures per city (populated
-// from the owner-approved Praha data in cz-municipalities-votes-2022-2026,
-// see DIVERGENCE.md "Real data instead of fictional placeholders"), read the
-// same way A1 read placeholder fixtures: from disk, not the network. Once
-// the city data repo is actually published and stable, swap `fetchAnalysisJson`
-// and `readCityCsv` below to `fetch(cityConfig.dataBase + "/" + path)` /
-// `fetch(rawTablesBase + "/" + table + ".csv")` — every call site is
-// unchanged, only these two functions' bodies need to change.
+// Data source — swapped 2026-08-27 from committed local fixtures (task A2's
+// original approach, see git history for that version of this file) to real
+// `fetch()` calls against the city data repo's raw GitHub URLs, mirroring
+// apps/cz-psp/src/lib/data.ts's established BASE/REVALIDATE/fetchJson
+// pattern exactly (same NaN-tolerant text-replace-before-parse, same
+// `next: { revalidate }` ISR hint). This was the deferred half of task A2 —
+// the city data repo (cz-municipalities-votes-2022-2026) now has real
+// nightly automation for both Praha and Brno (G4/G7 gates, committed
+// straight to `main`), so "wait until it's published and stable" no longer
+// applies.
 //
-// Layout mirrors the future real repo:
-//   src/fixtures/<citySlug>/analyses/<analysis>/outputs/<analysis>.json
-//   src/fixtures/<citySlug>/data/{persons,organizations,memberships}.csv
+// `cityConfig.dataBase` is the analyses root (e.g.
+// ".../praha/analyses"); `rawTablesBase` below derives the sibling raw-table
+// root (".../praha/data") the same way city.config.ts's own comment always
+// said this file would.
 // ─────────────────────────────────────────────────────────────────────────
 
-const FIXTURES_DIR = join(process.cwd(), "src/fixtures");
+const REVALIDATE = 3600; // 1 hour — same cadence as apps/cz-psp/src/lib/data.ts
+
+function dataBaseFor(citySlug: string): string {
+  const city = getCityConfig(citySlug);
+  if (!city) throw new Error(`Unknown citySlug: ${citySlug}`);
+  return city.dataBase;
+}
+
+function rawTablesBaseFor(citySlug: string): string {
+  return dataBaseFor(citySlug).replace(/\/analyses$/, "/data");
+}
 
 async function fetchAnalysisJson<T>(citySlug: string, path: string): Promise<T> {
-  const text = await readFile(join(FIXTURES_DIR, citySlug, "analyses", path), "utf-8");
+  const url = `${dataBaseFor(citySlug)}/${path}`;
+  const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+  const text = await res.text();
   // NaN-tolerant parse — some real analysis outputs contain bare `NaN`
   // (invalid JSON per RFC 8259; audit T4 tracks fixing this upstream).
   return JSON.parse(text.replace(/:\s*NaN/g, ": null")) as T;
 }
 
 async function readCityCsv(citySlug: string, table: string): Promise<Record<string, string>[]> {
-  const text = await readFile(join(FIXTURES_DIR, citySlug, "data", `${table}.csv`), "utf-8");
-  return parseCsv(text);
+  const url = `${rawTablesBaseFor(citySlug)}/${table}.csv`;
+  const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+  if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
+  return parseCsv(await res.text());
 }
 
 /** Safe column access for parsed CSV rows (tsconfig's noUncheckedIndexedAccess
@@ -192,9 +209,19 @@ async function deriveAllMembers(citySlug: string): Promise<CurrentMember[]> {
       if (classification === "assembly" || classification === "parliament") {
         parliament.push(interval);
       } else if (classification === "candidate_list") {
-        // Dual-write — see module doc above.
+        // Dual-write — see module doc above. Praha's D7 fallback: no live
+        // klub data, so group membership is sourced from (and doubles as)
+        // each member's 2022 candidate-list affiliation.
         groups.push(interval);
         candidateList.push({ ...interval });
+      } else if (classification === "group") {
+        // Brno (added 2026-08-27): real, live klub data straight from the
+        // source feed (D7's preferred case, not a candidate-list fallback)
+        // — see brno/scripts/party_affiliation.py in the city data repo.
+        // Single-write only: this genuinely isn't candidate-list-origin
+        // data, so it must not also land in `candidateList` the way
+        // Praha's fallback does.
+        groups.push(interval);
       }
       // classification === "constituency" never occurs for cities.
     }

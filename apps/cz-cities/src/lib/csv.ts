@@ -3,7 +3,8 @@
 // each) this app reads. Handles quoted fields, doubled-quote escaping,
 // embedded commas, and embedded newlines inside quoted fields (the city data
 // pipeline's `sources`/`identifiers` columns are JSON blobs that legally
-// contain commas and quotes — see src/fixtures/praha/data/*.csv).
+// contain commas and quotes — see e.g. cz-municipalities-votes-2022-2026's
+// praha/data/*.csv or brno/data/*.csv).
 export function parseCsv(text: string): Record<string, string>[] {
   const rows: string[][] = [];
   let field = "";

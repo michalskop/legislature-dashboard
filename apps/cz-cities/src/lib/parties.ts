@@ -42,6 +42,53 @@
 //     verified in the raw page HTML (`style="background-color:#FFF021"` next
 //     to the PRAHA SOBĚ row). Bright yellow — needs `darkText: true`, same
 //     treatment as Snemovna's KDU-ČSL (#ffcf02, also `darkText: true`).
+//
+// Sourcing per party (Brno 2022 candidate lists, added 2026-08-27):
+//   - ods-a-top-09         -> Snemovna's ODS color (#5e66d5) — same treatment
+//     as Praha's spolu-pro-prahu (ODS is the lead party of "SPOLEČNĚ – ODS a
+//     TOP 09"); Wikipedia's own Brno-specific swatch for this list is
+//     #034EA2, not used here to keep the "same real coalition family, same
+//     color across cities" convention Praha already established.
+//   - ano-2011             -> same key/color as Praha (same real party).
+//   - pirati                -> Snemovna's Piráti color (#111111) — Brno's
+//     Wikipedia swatch for "Česká pirátská strana" independently shows
+//     #000000, consistent.
+//   - lidovci-a-starostove -> Snemovna's KDU-ČSL color (#ffcf02, darkText) —
+//     KDU-ČSL ("Lidovci") is the lead party of "Lidovci a Starostové" (list
+//     leader Petr Hladík is a KDU-ČSL politician).
+//   - spd-trikolora        -> Snemovna's SPD color (#a47d03) — SPD is the
+//     lead party of "SPD, TRIKOLORA, MORAVANÉ a nezávislí", same treatment
+//     as Praha's spd-trik-pes-a-nez-pro-prahu.
+//   - cssd-vasi-starostove / socdem -> NOT in Snemovna (ČSSD holds no
+//     Sněmovna seats) — sourced from the color swatch in Czech Wikipedia's
+//     own 2022 Brno election results table
+//     (cs.wikipedia.org/wiki/Volby_do_Zastupitelstva_města_Brna_2022),
+//     verified in the raw page HTML (`style="background-color:#E63636"` next
+//     to the "ČSSD VAŠI STAROSTOVÉ" row). Both slugs are the SAME real party
+//     across its 2023 ČSSD->SOCDEM national rebrand (see
+//     brno/analyses/govity/govity_definition.json's government_groups_citation
+//     in the city data repo) — same color for both, for visual continuity.
+//   - zeleni-a-zit-brno    -> NOT reused from Snemovna's "szs" entry
+//     (uncertain whether that's the same real Green Party entity) — sourced
+//     from the Brno-specific Wikipedia swatch instead
+//     (`style="background-color:#00AD43"` next to "Zelení a Žít Brno s
+//     podporou Idealistů").
+//   - nezarazeni           -> reuses the existing neutral "other" gray
+//     (#bcbcb0, darkText) — this slug literally means "unaffiliated", not a
+//     real party brand, so the existing no-affiliation color applies
+//     directly rather than needing its own source.
+//   - nezavisli / brno-klidem-a-nezavisli-zastupitele -> shortName/faceAbbr
+//     added (their real names, already known from the source data — not
+//     something that needs sourcing), but DELIBERATELY NO COLOR. Neither is
+//     a real 2022 election-list party (both are 2026 mid-term relabelings of
+//     the same ex-ANO 2011 group after their Dec 2025 expulsion — see the
+//     city data repo's govity_definition.json), so neither Snemovna reuse
+//     nor the 2022 Wikipedia election page apply, and "Brno klidem" is too
+//     new to have an established brand color findable via the same method.
+//     Per rule 3 above ("never invent a color"): ask the project owner for
+//     these two specifically. Until then both fall through to the generic
+//     gray (PARTY_COLORS lookups all end `?? "#bcbcb0"`) — readable label,
+//     placeholder color, not a broken or silently-wrong one.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -52,6 +99,16 @@ export const PARTY_META: Record<
   "ano-2011": { shortName: "ANO", faceAbbr: "ANO" },
   "praha-sobe": { shortName: "Praha sobě", faceAbbr: "PS", darkText: true },
   "spd-trik-pes-a-nez-pro-prahu": { shortName: "SPD a další", faceAbbr: "SPD" },
+  "ods-a-top-09": { shortName: "ODS a TOP 09", faceAbbr: "ODS" },
+  pirati: { shortName: "Piráti", faceAbbr: "PIR" },
+  "lidovci-a-starostove": { shortName: "Lidovci a Starostové", faceAbbr: "KDU", darkText: true },
+  "spd-trikolora": { shortName: "SPD a další", faceAbbr: "SPD" },
+  "cssd-vasi-starostove": { shortName: "ČSSD", faceAbbr: "ČSSD" },
+  socdem: { shortName: "SOCDEM", faceAbbr: "ČSSD" },
+  "zeleni-a-zit-brno": { shortName: "Zelení", faceAbbr: "ZELENÍ" },
+  nezarazeni: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
+  nezavisli: { shortName: "Nezávislí", faceAbbr: "NEZ", darkText: true },
+  "brno-klidem-a-nezavisli-zastupitele": { shortName: "Brno klidem", faceAbbr: "BK", darkText: true },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -62,5 +119,13 @@ export const PARTY_COLORS: Record<string, string> = {
   "ano-2011": "#272a59",
   "praha-sobe": "#FFF021",
   "spd-trik-pes-a-nez-pro-prahu": "#a47d03",
+  "ods-a-top-09": "#5e66d5",
+  pirati: "#111111",
+  "lidovci-a-starostove": "#ffcf02",
+  "spd-trikolora": "#a47d03",
+  "cssd-vasi-starostove": "#E63636",
+  socdem: "#E63636",
+  "zeleni-a-zit-brno": "#00AD43",
+  nezarazeni: "#bcbcb0",
   other: "#bcbcb0",
 };

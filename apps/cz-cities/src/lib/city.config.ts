@@ -1,6 +1,8 @@
 import type { ParliamentConfig, ParliamentTranslations } from "@legislature/parliament-core";
 import { prahaCs } from "./dictionaries/praha.cs";
 import { prahaEn } from "./dictionaries/praha.en";
+import { brnoCs } from "./dictionaries/brno.cs";
+import { brnoEn } from "./dictionaries/brno.en";
 
 // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): the shared
 // ParliamentTranslations.charts.wpca (packages/parliament-core, read-only)
@@ -39,10 +41,10 @@ export type CityTranslations = Omit<ParliamentTranslations, "charts"> & {
 // route code should look up a city; `generateStaticParams` in
 // src/app/[lang]/[city]/layout.tsx enumerates exactly this array.
 //
-// Only Praha is populated for now — real data exists (plan.md C7/C8, owner
-// sign-off DONE 2026-08-04). Brno/Ostrava don't have working data pipelines
-// yet (kod.brno.cz was 503 during C1; Ostrava's C9 hasn't run) — adding
-// placeholder configs for them here would be premature (no data to back a
+// Praha and Brno are populated (real data, owner sign-off DONE 2026-08-04
+// and 2026-08-27 respectively). Ostrava doesn't have a working data pipeline
+// yet (C9 hasn't run) — adding a placeholder config for it here would be
+// premature (no data to back a
 // real page) and is explicitly out of scope for A2 per the task brief.
 // ─────────────────────────────────────────────────────────────────────────
 
@@ -58,16 +60,16 @@ const PRAHA: CityConfig = {
   name: "Zastupitelstvo hlavního města Prahy",
   defaultLang: "cs",
 
-  // Documents the future real fetch shape (per plan.md D2/D3/D8): the city
-  // data repo (cz-municipalities-votes-2022-2026, public, no B2) commits both
-  // the four analysis outputs under `<city>/analyses/<slug>/outputs/` and the
-  // raw standard tables under `<city>/data/*.csv`. `dataBase` here points at
-  // the analyses root (same convention apps/cz-psp already uses for its own
-  // `dataBase`); src/lib/data.ts derives the sibling raw-tables URL from it.
-  // Not fetched yet — src/lib/data.ts reads committed local fixtures under
-  // src/fixtures/praha/ instead (same fixture strategy A1 used, now
-  // populated with real, schema-validated, owner-approved Praha data instead
-  // of fictional placeholders — see DIVERGENCE.md "Real data" section).
+  // The city data repo (cz-municipalities-votes-2022-2026, public, no B2)
+  // commits both the four analysis outputs under
+  // `<city>/analyses/<slug>/outputs/` and the raw standard tables under
+  // `<city>/data/*.csv`. `dataBase` here points at the analyses root (same
+  // convention apps/cz-psp already uses for its own `dataBase`);
+  // src/lib/data.ts derives the sibling raw-tables URL from it and fetches
+  // both live (real `fetch()` against raw.githubusercontent.com, swapped
+  // 2026-08-27 from the original committed-local-fixtures approach — see
+  // src/lib/data.ts's module doc for the fetchAnalysisJson/readCityCsv
+  // implementation and git history for the pre-swap fixture version).
   dataBase:
     "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main/praha/analyses",
 
@@ -233,8 +235,167 @@ const PRAHA: CityConfig = {
   },
 };
 
+// Added 2026-08-27, once Brno's data pipeline reached the same maturity as
+// Praha's (C2/C3/C4/D7 all done — see brno/README.md in the city data repo):
+// real party/klub organizations (D7's PREFERRED case, not Praha's
+// candidate_list fallback — Brno's live feed gives dated group-membership
+// intervals directly), owner-approved government_groups, and nightly
+// automation (G4/G7 gates) already producing real committed output.
+const BRNO: CityConfig = {
+  id: "brno",
+  citySlug: "brno",
+  name: "Zastupitelstvo města Brna",
+  defaultLang: "cs",
+
+  dataBase:
+    "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main/brno/analyses",
+
+  // vote-corrections deliberately excluded — cities don't publish corrections
+  // (plan.md D6), same as Praha.
+  analyses: ["attendance", "rebelity", "govity", "wpca"],
+
+  matomo: {
+    url: "//matomo.kohovolit.eu/",
+    siteId: "PLACEHOLDER", // D10 — owner creates a real Matomo site ID before go-live (task A4)
+  },
+
+  // Unlike Praha's `classification: "group"` (which models a D7 FALLBACK —
+  // candidate-list origin data relabeled as "group" for display, since
+  // praha.eu's live klub data isn't scrapable), Brno's underlying
+  // organizations.csv rows are ALREADY `classification: "group"` natively —
+  // real live klub membership from the feed, no relabeling involved. The
+  // CityConfig-level routing/display shape is identical either way (both
+  // cities have a "kluby"/"groups" concept with its own list + detail
+  // pages), so this block is structurally the same as Praha's.
+  organizations: [
+    {
+      classification: "group",
+      urlSegment: "group",
+      listUrlSegment: "groups",
+      hasPage: true,
+      labels: {
+        cs: { singular: "klub", plural: "kluby", listTitle: "Zastupitelské kluby" },
+        en: { singular: "group", plural: "groups", listTitle: "Council groups" },
+      },
+    },
+  ],
+
+  translations: { cs: brnoCs, en: brnoEn },
+
+  pages: {
+    home: [
+      {
+        id: "attendance-swarm",
+        config: {
+          type: "swarm-chart",
+          analysis: "attendance",
+          referenceLines: [{ value: 0.5, label: "50 %" }],
+        },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Jeden bod = jeden zastupitel/ka. Kliknutím přejdete na jejich profil." },
+          en: { title: "Attendance", description: "Each dot = one assembly member. Click to open their profile." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "2D mapa zastupitelů podle způsobu hlasování (WPCA). Kliknutím přejdete na jejich profil." },
+          en: { title: "Positions based on voting behaviour", description: "2D map of assembly members by voting patterns (WPCA). Click to open their profile." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Rebelování", description: "Jak často zastupitel/ka hlasuje proti svému klubu." },
+          en: { title: "Rebelliousness", description: "How often the assembly member votes against their own group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        // Same yMode special-case as Praha — see PRAHA's matching comment
+        // above for why this can't be a third PageBlockConfig yMode literal.
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
+        labels: {
+          cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
+          en: { title: "Coalition alignment", description: "How often the assembly member votes in line with the coalition." },
+        },
+      },
+    ],
+
+    memberDetail: [
+      {
+        id: "metrics-grid",
+        config: { type: "metrics-grid" },
+      },
+      {
+        id: "attendance-swarm",
+        config: {
+          type: "swarm-chart",
+          analysis: "attendance",
+          referenceLines: [{ value: 0.5, label: "50 %" }],
+        },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Attendance", description: "Position within the assembly." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "Poloha na základě analýzy hlasování." },
+          en: { title: "Positions based on voting behaviour", description: "Position based on voting analysis." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Rebelování", description: "Jak často hlasuje proti svému klubu." },
+          en: { title: "Rebelliousness", description: "How often they vote against their group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
+        labels: {
+          cs: { title: "Shoda s koalicí", description: "Jak často hlasuje shodně s koalicí." },
+          en: { title: "Coalition alignment", description: "How often they vote in line with the coalition." },
+        },
+      },
+    ],
+
+    groupDetail: [
+      {
+        id: "metrics-grid",
+        config: { type: "metrics-grid" },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "Členové klubu v kontextu celého zastupitelstva." },
+          en: { title: "Positions based on voting behaviour", description: "Group members in the context of the full assembly." },
+        },
+      },
+      {
+        id: "member-table",
+        config: { type: "member-table", showPartyFilter: false },
+        labels: {
+          cs: { title: "Členové klubu" },
+          en: { title: "Group members" },
+        },
+      },
+    ],
+
+    // No regionDetail — cities have no constituency organization (see D5 note above).
+  },
+};
+
 /** All configured cities. Append here to add a city (see module doc above). */
-export const CITIES: CityConfig[] = [PRAHA];
+export const CITIES: CityConfig[] = [PRAHA, BRNO];
 
 export function getCityConfig(citySlug: string): CityConfig | undefined {
   return CITIES.find((c) => c.citySlug === citySlug);
