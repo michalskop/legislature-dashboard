@@ -105,7 +105,7 @@ export const PARTY_META: Record<
   "spd-trikolora": { shortName: "SPD a další", faceAbbr: "SPD" },
   "cssd-vasi-starostove": { shortName: "ČSSD", faceAbbr: "ČSSD" },
   socdem: { shortName: "SOCDEM", faceAbbr: "ČSSD" },
-  "zeleni-a-zit-brno": { shortName: "Zelení", faceAbbr: "ZELENÍ" },
+  "zeleni-a-zit-brno": { shortName: "Zelení", faceAbbr: "ZEL" },
   nezarazeni: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
   nezavisli: { shortName: "Nezávislí", faceAbbr: "NEZ", darkText: true },
   "brno-klidem-a-nezavisli-zastupitele": { shortName: "Brno klidem", faceAbbr: "BK", darkText: true },

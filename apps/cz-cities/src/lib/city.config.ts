@@ -147,7 +147,12 @@ const PRAHA: CityConfig = {
         // made every party look identically clustered at ~100%, hiding the
         // real ~98.7–100% party-mean spread (individual members range
         // ~97.9–100%).
-        config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
+        // yDecimals:1 added 2026-08-27 (owner request): with yDecimals defaulting to 0,
+        // the average reference line rounded to a flat "100 %" even when the real party
+        // mean was e.g. 99.6%, reading as more uniform than the data actually is. Same
+        // fixed-1-decimal treatment rebelity already gets above, for the same reason
+        // (small/near-ceiling differences need at least one decimal to stay legible).
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
           en: { title: "Coalition alignment", description: "How often the assembly member votes in line with the coalition." },
@@ -200,7 +205,12 @@ const PRAHA: CityConfig = {
         // made every party look identically clustered at ~100%, hiding the
         // real ~98.7–100% party-mean spread (individual members range
         // ~97.9–100%).
-        config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
+        // yDecimals:1 added 2026-08-27 (owner request): with yDecimals defaulting to 0,
+        // the average reference line rounded to a flat "100 %" even when the real party
+        // mean was e.g. 99.6%, reading as more uniform than the data actually is. Same
+        // fixed-1-decimal treatment rebelity already gets above, for the same reason
+        // (small/near-ceiling differences need at least one decimal to stay legible).
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často hlasuje shodně s koalicí." },
           en: { title: "Coalition alignment", description: "How often they vote in line with the coalition." },
@@ -316,7 +326,7 @@ const BRNO: CityConfig = {
         id: "govity-swarm",
         // Same yMode special-case as Praha — see PRAHA's matching comment
         // above for why this can't be a third PageBlockConfig yMode literal.
-        config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
           en: { title: "Coalition alignment", description: "How often the assembly member votes in line with the coalition." },
@@ -359,7 +369,7 @@ const BRNO: CityConfig = {
       },
       {
         id: "govity-swarm",
-        config: { type: "swarm-chart", analysis: "govity", yMode: "auto" },
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
         labels: {
           cs: { title: "Shoda s koalicí", description: "Jak často hlasuje shodně s koalicí." },
           en: { title: "Coalition alignment", description: "How often they vote in line with the coalition." },
