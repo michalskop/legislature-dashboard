@@ -162,6 +162,43 @@
 //     reason "nezarazeni" itself was never city-sourced: this is a
 //     no-affiliation bucket, not a real party brand, so the existing
 //     generic neutral color applies directly.
+//
+// Sourcing per party (Plzeň 2022 election lists, added 2026-08-28):
+//   - ano-2011-a-nezavisli   -> Snemovna's ANO color (#272a59) — same real
+//     party as every other city's "ano-2011" key, just a different slug here
+//     since Plzeň's own klub label includes "a nezávislí".
+//   - ceska-piratska-strana  -> reuses the EXISTING key/color already added
+//     for Praha (#111111, Snemovna's Piráti color) — same slug, no new entry
+//     needed.
+//   - kdu-csl / spd          -> reuse the EXISTING keys/colors already added
+//     for Ostrava (#ffcf02 darkText / #a47d03) — same slugs, no new entries
+//     needed.
+//   - stan                   -> Snemovna's STAN color (#ff1a4a) — Plzeň's own
+//     slug is plain "stan" (not "starostove-a-nezavisli"/"starostove-pro-
+//     ostravu" like Praha/Ostrava use), so it needs its OWN entry despite
+//     being the same real party — PARTY_COLORS is an exact-match lookup, not
+//     a fuzzy alias resolver (caught via a local dev-server visual check
+//     showing STAN falling back to gray before this entry was added).
+//   - ods                    -> Snemovna's ODS color (#5e66d5) — Plzeň's ODS
+//     is its own standalone klub (unlike Praha/Brno's joint SPOLU-style
+//     lists), direct reuse, same treatment as Ostrava's "ods-top09".
+//   - ods-kdu-csl-top-09     -> the term's ORIGINAL (2022-2024) joint "Spolu"
+//     list, before it split into 3 separate klubs (see the city data repo's
+//     plzen/scripts/party_affiliation.py for the confirmed 9/3/3 real split,
+//     not a mere relabeling) — reuses ODS's color, ODS being the lead party
+//     of the list, same lead-party convention as every other city's joint
+//     SPOLU/coalition lists.
+//   - top-09                 -> Snemovna's TOP 09 color (#812840,
+//     packages/ui's CZ_PSP_PARTY_COLORS) — Plzeň's TOP 09 is its own
+//     standalone klub from 2024 onward (after the Spolu list's real split).
+//   - pro-plzen              -> NOT in Snemovna (a local movement, no
+//     national-level equivalent) — no dedicated Wikipedia election-results
+//     page exists for Plzeň's 2022 council election (checked 2026-08-28,
+//     unlike every prior city). shortName/faceAbbr added (its real name),
+//     but DELIBERATELY NO COLOR per rule 3 above ("never invent a color") —
+//     same treatment as Ostrava's "jdeto"/Brno's "nezavisli". Ask the
+//     project owner if/when this needs a real brand color; falls through to
+//     the generic gray until then.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -194,6 +231,12 @@ export const PARTY_META: Record<
   promost: { shortName: "ProMOST", faceAbbr: "PM" },
   smm: { shortName: "SMM", faceAbbr: "SMM" },
   nezaraz: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
+  "ano-2011-a-nezavisli": { shortName: "ANO", faceAbbr: "ANO" },
+  ods: { shortName: "ODS", faceAbbr: "ODS" },
+  "ods-kdu-csl-top-09": { shortName: "Spolu", faceAbbr: "SPOLU" },
+  "top-09": { shortName: "TOP 09", faceAbbr: "TOP" },
+  "pro-plzen": { shortName: "PRO PLZEŇ", faceAbbr: "PP" },
+  stan: { shortName: "STAN", faceAbbr: "STAN" },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -223,5 +266,10 @@ export const PARTY_COLORS: Record<string, string> = {
   promost: "#0079c0",
   smm: "#19488e",
   nezaraz: "#bcbcb0",
+  "ano-2011-a-nezavisli": "#272a59",
+  ods: "#5e66d5",
+  "ods-kdu-csl-top-09": "#5e66d5",
+  "top-09": "#812840",
+  stan: "#ff1a4a",
   other: "#bcbcb0",
 };
