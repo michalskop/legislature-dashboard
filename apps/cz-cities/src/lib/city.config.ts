@@ -880,7 +880,10 @@ const PLZEN: CityConfig = {
 };
 
 /** All configured cities. Append here to add a city (see module doc above). */
-export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, MOST, PLZEN];
+// Ordered by population (owner preference, 2026-08-28): Praha, Brno, Ostrava, Plzeň, Most — Plzeň
+// is the Czech Republic's 4th-largest city (larger than Most), so it's listed ahead of Most here
+// even though Most's own pipeline/dashboard work happened first.
+export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, PLZEN, MOST];
 
 export function getCityConfig(citySlug: string): CityConfig | undefined {
   return CITIES.find((c) => c.citySlug === citySlug);
