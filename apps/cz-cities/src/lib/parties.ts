@@ -199,6 +199,30 @@
 //     same treatment as Ostrava's "jdeto"/Brno's "nezavisli". Ask the
 //     project owner if/when this needs a real brand color; falls through to
 //     the generic gray until then.
+//
+// Sourcing per party (Ústí nad Labem 2022 election lists, added 2026-08-29):
+//   - ods / spd / nezarazeni  -> Ústí's own klub slugs (from
+//     usti-nad-labem/data/organizations.csv, last org-id segment) happen to
+//     be the EXACT SAME strings as existing keys ("ods", "spd",
+//     "nezarazeni") — no new PARTY_META/PARTY_COLORS entries needed at all,
+//     the existing lookups already apply directly (PARTY_COLORS is an
+//     exact-match lookup, see Plzeň's "stan" note above for why this
+//     matters).
+//   - ano2011                -> Snemovna's ANO color (#272a59) — same real
+//     party as every other city's "ano-2011"/"ano-2011-a-nezavisli" keys,
+//     just yet another differently-formatted slug (no hyphen here), so it
+//     needs its own entry despite being the identical real party/color.
+//   - pro-usti / ufo / vaseusti -> NOT in Snemovna (three local movements,
+//     no national-level equivalent) — no dedicated Wikipedia
+//     election-results page exists for Ústí nad Labem's 2022 council
+//     election, and no dedicated Wikipedia article for "Zastupitelstvo
+//     města Ústí nad Labem" or for "PRO!Ústí"/"UFO"/"VašeÚstí" individually
+//     either (checked 2026-08-29, same "not every city has one" outcome as
+//     Plzeň's pro-plzen). shortName/faceAbbr added (their real names), but
+//     DELIBERATELY NO COLOR per rule 3 above ("never invent a color") — same
+//     treatment as Plzeň's "pro-plzen"/Ostrava's "jdeto"/Brno's
+//     "nezavisli". Ask the project owner if/when these need real brand
+//     colors; fall through to the generic gray until then.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -237,6 +261,10 @@ export const PARTY_META: Record<
   "top-09": { shortName: "TOP 09", faceAbbr: "TOP" },
   "pro-plzen": { shortName: "PRO PLZEŇ", faceAbbr: "PP" },
   stan: { shortName: "STAN", faceAbbr: "STAN" },
+  ano2011: { shortName: "ANO", faceAbbr: "ANO" },
+  "pro-usti": { shortName: "PRO!Ústí", faceAbbr: "PRO" },
+  ufo: { shortName: "UFO", faceAbbr: "UFO" },
+  vaseusti: { shortName: "VašeÚstí", faceAbbr: "VÚ" },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -271,5 +299,6 @@ export const PARTY_COLORS: Record<string, string> = {
   "ods-kdu-csl-top-09": "#5e66d5",
   "top-09": "#812840",
   stan: "#ff1a4a",
+  ano2011: "#272a59",
   other: "#bcbcb0",
 };
