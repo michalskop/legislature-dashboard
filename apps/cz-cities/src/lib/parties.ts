@@ -218,25 +218,38 @@
 //     election (checked 2026-08-28/29, same "not every city has one"
 //     outcome as Plzeň's pro-plzen). UPDATE 2026-08-30 — colors found
 //     directly from each movement's own real branding materials (a stronger
-//     source than a Wikipedia swatch), added per owner request:
-//       - pro-usti  -> #0c0c64, confirmed via TWO independent sources on
-//         prousti.cz: the theme's own `--color-base` CSS variable AND the
-//         official favicon.svg (a solid navy "PRO!ÚSTÍ" wordmark) — both
-//         give the exact same hex, no ambiguity.
-//       - ufo       -> #14387f, read directly from ufo-usti.cz's own
-//         favicon/logo SVG fill (`.cls-1{fill:#14387f}`), a solid
-//         single-color navy wordmark — site itself was down (WordPress
-//         fatal error) at check time, sourced via the Wayback Machine's
-//         2026-03-11 snapshot instead.
-//       - vaseusti  -> #1843a1, sourced from the movement's actual
-//         Facebook cover-photo logo (extracted via ImageMagick histogram
-//         analysis, not their website theme's generic `--ac-color:#77a9ca`,
-//         which turned out to NOT match the real logo at all). The real
-//         logo is genuinely two-tone (red "vaše"+heart ~#e71d2c, blue
-//         "ústí" ~#1843a1, roughly equal pixel weight) — asked the project
-//         owner which half to use as the single representative swatch;
-//         owner chose blue (also matches the "ZLS" emblem shown alongside
-//         the wordmark in the same logo).
+//     source than a Wikipedia swatch), added per owner request. FIRST PASS
+//     picked each movement's PRIMARY color, but all three landed in the
+//     same navy/blue family as the existing "ano2011"/"ods" entries
+//     (#0c0c64/#14387f/#1843a1 vs. #272a59/#5e66d5) — visually
+//     indistinguishable on a badge. Owner caught this and asked for each
+//     movement's SECOND color instead, still sourced from real branding
+//     (never invented):
+//       - pro-usti  -> #f8f4e0 (a warm cream), prousti.cz's own
+//         `--color-secondary` CSS variable — the site's only other real
+//         color besides the navy `--color-base` (#0c0c64, now correctly
+//         set aside as too close to ano2011/ods). Needs `darkText: true`
+//         (luma ~243), same treatment as Praha's praha-sobe/KDU-ČSL's
+//         other pale/bright real-brand colors.
+//       - ufo       -> #86bc24 (a vivid green), ufo-usti.cz's own Elementor
+//         kit `--e-global-color-accent` (confirmed via the Wayback
+//         Machine's 2026-03-11 snapshot, since the live site was down —
+//         WordPress fatal error — at check time; the kit CSS is applied
+//         directly to real buttons/CTAs on the page, not just a stray
+//         palette entry) — set aside the logo's own solid navy
+//         (`.cls-1{fill:#14387f}`, the movement's PRIMARY, too close to
+//         ano2011/ods) in favor of this genuinely distinct accent. Needs
+//         `darkText: true` (luma ~155).
+//       - vaseusti  -> #e71d2c (red), the OTHER half of the movement's
+//         actual two-tone Facebook-logo wordmark (red "vaše"+heart, blue
+//         "ústí", ~equal pixel weight, extracted via ImageMagick histogram
+//         analysis — NOT their website theme's generic `--ac-color:#77a9ca`,
+//         which doesn't match the real logo at all). The owner initially
+//         chose the blue half (#1843a1) when only asked to pick one side of
+//         a two-tone logo; once the ANO/ODS collision became visible
+//         on-page, switched to the red half instead — still a real,
+//         logo-sourced color, just the other one. No darkText needed
+//         (luma ~91, dark enough for white text).
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -276,8 +289,8 @@ export const PARTY_META: Record<
   "pro-plzen": { shortName: "PRO PLZEŇ", faceAbbr: "PP" },
   stan: { shortName: "STAN", faceAbbr: "STAN" },
   ano2011: { shortName: "ANO", faceAbbr: "ANO" },
-  "pro-usti": { shortName: "PRO!Ústí", faceAbbr: "PRO" },
-  ufo: { shortName: "UFO", faceAbbr: "UFO" },
+  "pro-usti": { shortName: "PRO!Ústí", faceAbbr: "PRO", darkText: true },
+  ufo: { shortName: "UFO", faceAbbr: "UFO", darkText: true },
   vaseusti: { shortName: "VašeÚstí", faceAbbr: "VÚ" },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
@@ -314,8 +327,8 @@ export const PARTY_COLORS: Record<string, string> = {
   "top-09": "#812840",
   stan: "#ff1a4a",
   ano2011: "#272a59",
-  "pro-usti": "#0c0c64",
-  ufo: "#14387f",
-  vaseusti: "#1843a1",
+  "pro-usti": "#f8f4e0",
+  ufo: "#86bc24",
+  vaseusti: "#e71d2c",
   other: "#bcbcb0",
 };
