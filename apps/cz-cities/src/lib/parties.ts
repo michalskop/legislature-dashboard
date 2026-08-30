@@ -213,16 +213,30 @@
 //     just yet another differently-formatted slug (no hyphen here), so it
 //     needs its own entry despite being the identical real party/color.
 //   - pro-usti / ufo / vaseusti -> NOT in Snemovna (three local movements,
-//     no national-level equivalent) — no dedicated Wikipedia
+//     no national-level equivalent) and no dedicated Wikipedia
 //     election-results page exists for Ústí nad Labem's 2022 council
-//     election, and no dedicated Wikipedia article for "Zastupitelstvo
-//     města Ústí nad Labem" or for "PRO!Ústí"/"UFO"/"VašeÚstí" individually
-//     either (checked 2026-08-29, same "not every city has one" outcome as
-//     Plzeň's pro-plzen). shortName/faceAbbr added (their real names), but
-//     DELIBERATELY NO COLOR per rule 3 above ("never invent a color") — same
-//     treatment as Plzeň's "pro-plzen"/Ostrava's "jdeto"/Brno's
-//     "nezavisli". Ask the project owner if/when these need real brand
-//     colors; fall through to the generic gray until then.
+//     election (checked 2026-08-28/29, same "not every city has one"
+//     outcome as Plzeň's pro-plzen). UPDATE 2026-08-30 — colors found
+//     directly from each movement's own real branding materials (a stronger
+//     source than a Wikipedia swatch), added per owner request:
+//       - pro-usti  -> #0c0c64, confirmed via TWO independent sources on
+//         prousti.cz: the theme's own `--color-base` CSS variable AND the
+//         official favicon.svg (a solid navy "PRO!ÚSTÍ" wordmark) — both
+//         give the exact same hex, no ambiguity.
+//       - ufo       -> #14387f, read directly from ufo-usti.cz's own
+//         favicon/logo SVG fill (`.cls-1{fill:#14387f}`), a solid
+//         single-color navy wordmark — site itself was down (WordPress
+//         fatal error) at check time, sourced via the Wayback Machine's
+//         2026-03-11 snapshot instead.
+//       - vaseusti  -> #1843a1, sourced from the movement's actual
+//         Facebook cover-photo logo (extracted via ImageMagick histogram
+//         analysis, not their website theme's generic `--ac-color:#77a9ca`,
+//         which turned out to NOT match the real logo at all). The real
+//         logo is genuinely two-tone (red "vaše"+heart ~#e71d2c, blue
+//         "ústí" ~#1843a1, roughly equal pixel weight) — asked the project
+//         owner which half to use as the single representative swatch;
+//         owner chose blue (also matches the "ZLS" emblem shown alongside
+//         the wordmark in the same logo).
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -300,5 +314,8 @@ export const PARTY_COLORS: Record<string, string> = {
   "top-09": "#812840",
   stan: "#ff1a4a",
   ano2011: "#272a59",
+  "pro-usti": "#0c0c64",
+  ufo: "#14387f",
+  vaseusti: "#1843a1",
   other: "#bcbcb0",
 };
