@@ -263,18 +263,29 @@
 //     the SAME generic gray (#bcbcb0) every other city's nezařazení bucket
 //     uses — a project-wide convention for the unaffiliated bucket, not an
 //     invented color.
-//   - hdk-top09 / rh / zphz -> three local Hradec joint lists (Hradecký
-//     demokratický klub + TOP 09; Rozvíjíme Hradec; Změna pro Hradec a
-//     Strana zelených). No dedicated Wikipedia election-results page color
-//     swatch exists for HK's 2022 council election (checked 2026-08-30, same
-//     "not every city has one" outcome as Plzeň's pro-plzen / Ústí's local
-//     movements before their branding was researched). shortName/faceAbbr
-//     added (their real names), but DELIBERATELY NO COLOR per rule 3 above
-//     ("never invent a color") — they fall through to the generic gray.
-//     hdk-top09 and zphz each carry a national partner (TOP 09 / Strana
-//     zelených) whose color could arguably be reused, but both are
-//     local-list-led, so left for the owner to decide — flagged for a
-//     brand-color research pass if wanted, same as was later done for Ústí.
+//   - hdk-top09 / rh / zphz -> three local Hradec joint lists. The 2022
+//     council-election Wikipedia page itself has no per-party swatch, but
+//     each list's (or its named co-owner's) OWN cs.wikipedia article carries
+//     a real infobox legend color (added 2026-08-30, owner-requested pass):
+//       - hdk-top09 -> #ba9c71 (gold). Hradecký demokratický klub's infobox
+//         gives `barva = modrá, zlatá`; the legend swatch is #BA9C71 and the
+//         movement's own site (hdkhk.cz) independently uses #bfa371 17× in
+//         its CSS — same gold, cross-confirmed. Chose the GOLD half, not the
+//         blue (#16376d), because the blue lands in the same navy family as
+//         the existing ano2011/ods entries (same distinctiveness rule the
+//         owner enforced for Ústí's movements). Note #ba9c71 sits somewhat
+//         near SPD's #a47d03 in hue, but is much lighter/greyer — reads
+//         distinct on a badge. Needs darkText (luma ~160).
+//       - rh -> #ea555b (coral red). Rozvíjíme Hradec's infobox:
+//         `barva = {{legenda|#EA555B|[[červená]]}}`. No live site (their
+//         domain 404s), so the Wikipedia legend is the source. No other HK
+//         klub is red — no collision.
+//       - zphz -> #00AD43 (green). The list is "Změna pro Hradec a Strana
+//         zelených"; Strana zelených is a named co-owner and its cs.wikipedia
+//         infobox legend is `{{legenda|#00AD43|[[zelená]]}}`. Same hex as
+//         Brno's "zeleni-a-zit-brno" (same underlying party) — fine, a
+//         different city slug for the same real party/color, like ano2011
+//         across cities. No other HK klub is green.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -317,7 +328,7 @@ export const PARTY_META: Record<
   "pro-usti": { shortName: "PRO!Ústí", faceAbbr: "PRO", darkText: true },
   ufo: { shortName: "UFO", faceAbbr: "UFO", darkText: true },
   vaseusti: { shortName: "VašeÚstí", faceAbbr: "VÚ" },
-  "hdk-top09": { shortName: "HDK/TOP09", faceAbbr: "HDK" },
+  "hdk-top09": { shortName: "HDK/TOP09", faceAbbr: "HDK", darkText: true },
   rh: { shortName: "Rozvíjíme Hradec", faceAbbr: "RH" },
   zphz: { shortName: "Změna pro Hradec", faceAbbr: "ZpH" },
   nez: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
@@ -359,6 +370,9 @@ export const PARTY_COLORS: Record<string, string> = {
   "pro-usti": "#f8f4e0",
   ufo: "#86bc24",
   vaseusti: "#e71d2c",
+  "hdk-top09": "#ba9c71",
+  rh: "#ea555b",
+  zphz: "#00AD43",
   nez: "#bcbcb0",
   other: "#bcbcb0",
 };
