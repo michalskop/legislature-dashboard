@@ -250,6 +250,31 @@
 //         on-page, switched to the red half instead — still a real,
 //         logo-sourced color, just the other one. No darkText needed
 //         (luma ~91, dark enough for white text).
+//
+// Sourcing per party (Hradec Králové 2022 election klubs, added 2026-08-30):
+//   - pirati / ano-2011 / ods / spd -> HK's own klub slugs (from
+//     hradec-kralove/data/organizations.csv, last org-id segment) are the
+//     EXACT SAME strings as existing keys ("pirati", "ano-2011", "ods",
+//     "spd") — no new PARTY_META/PARTY_COLORS entries needed, the existing
+//     lookups already apply directly (PARTY_COLORS is an exact-match lookup,
+//     see Plzeň's "stan" note above for why this matters).
+//   - nez -> HK's slug for "nezařazení" (unaffiliated) is "nez", which does
+//     NOT exact-match the existing "nezarazeni"/"nezaraz" keys. Added with
+//     the SAME generic gray (#bcbcb0) every other city's nezařazení bucket
+//     uses — a project-wide convention for the unaffiliated bucket, not an
+//     invented color.
+//   - hdk-top09 / rh / zphz -> three local Hradec joint lists (Hradecký
+//     demokratický klub + TOP 09; Rozvíjíme Hradec; Změna pro Hradec a
+//     Strana zelených). No dedicated Wikipedia election-results page color
+//     swatch exists for HK's 2022 council election (checked 2026-08-30, same
+//     "not every city has one" outcome as Plzeň's pro-plzen / Ústí's local
+//     movements before their branding was researched). shortName/faceAbbr
+//     added (their real names), but DELIBERATELY NO COLOR per rule 3 above
+//     ("never invent a color") — they fall through to the generic gray.
+//     hdk-top09 and zphz each carry a national partner (TOP 09 / Strana
+//     zelených) whose color could arguably be reused, but both are
+//     local-list-led, so left for the owner to decide — flagged for a
+//     brand-color research pass if wanted, same as was later done for Ústí.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -292,6 +317,10 @@ export const PARTY_META: Record<
   "pro-usti": { shortName: "PRO!Ústí", faceAbbr: "PRO", darkText: true },
   ufo: { shortName: "UFO", faceAbbr: "UFO", darkText: true },
   vaseusti: { shortName: "VašeÚstí", faceAbbr: "VÚ" },
+  "hdk-top09": { shortName: "HDK/TOP09", faceAbbr: "HDK" },
+  rh: { shortName: "Rozvíjíme Hradec", faceAbbr: "RH" },
+  zphz: { shortName: "Změna pro Hradec", faceAbbr: "ZpH" },
+  nez: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -330,5 +359,6 @@ export const PARTY_COLORS: Record<string, string> = {
   "pro-usti": "#f8f4e0",
   ufo: "#86bc24",
   vaseusti: "#e71d2c",
+  nez: "#bcbcb0",
   other: "#bcbcb0",
 };
