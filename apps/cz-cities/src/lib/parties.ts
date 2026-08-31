@@ -294,16 +294,19 @@
 //     (same as Praha's "spolu-pro-prahu" / Ostrava's "ods-kdu-csl-top-09"):
 //     Pardubice's "SPOLU" klub IS that national coalition (its councillors
 //     are labelled ODS/SPOLU, TOP 09/SPOLU, KDU-ČSL/SPOLU in the source).
-//   - spp (Společně pro Pardubice), zp (Žijeme Pardubice), nase-pardubice
-//     (NAŠE PARDUBICE), nezavisla-spd (a one-person "Nezávislá/SPD" klub),
-//     progresivni-pce (the Piráti klub renamed "Progresivní Pce" at meeting
-//     38, 2026-05-25) -> local movements with NO national equivalent and no
-//     dedicated Wikipedia election-results page for Pardubice 2022 (checked
-//     2026-08-31, 404 — same "not every city has one" outcome as Plzeň's
-//     pro-plzen / Ústí's movements). shortName/faceAbbr added, DELIBERATELY
-//     NO COLOR per rule 3 ("never invent one") — they fall through to the
-//     generic gray. Flagged for a brand-color research pass if the owner
-//     wants one, same as was later done for Ústí and Hradec Králové.
+//   - spp / zp / nase-pardubice / nezavisla-spd -> the 2022-election page has
+//     no dedicated article, but the cs.wikipedia "Zastupitelstvo Pardubic"
+//     article carries a full {{legenda|#hex|...}} legend (owner-requested
+//     colour pass, 2026-08-31): spp (SPOLEČNĚ PRO PARDUBICE) #953c3c brick
+//     red; zp (Žijeme Pardubice) #ff5f61 coral; nase-pardubice (NAŠE
+//     PARDUBICE) #ffee8c pale yellow (darkText); nezavisla-spd -> #5d5d5d,
+//     the legend's own "nezávislí" grey (Dvořáčková is an independent on the
+//     SPD list — a one-person klub, defunct since she left the council in
+//     2023, so it only ever shows as a historical badge).
+//   - progresivni-pce (the Piráti klub renamed "Progresivní Pce" at meeting
+//     38, 2026-05-25) -> #c6f432 lime, the primary accent in
+//     progresivnipardubice.cz's own CSS (its brand palette is deliberately
+//     multi-colour — lime/teal/red/amber; lime is the most-used). darkText.
 //
 // Sourcing per party (České Budějovice 2022 klubs, added 2026-08-31):
 //   - ods / pirati / spd / nezarazeni -> exact-match existing keys, reused
@@ -370,9 +373,9 @@ export const PARTY_META: Record<
   spolu: { shortName: "SPOLU", faceAbbr: "SPOLU" },
   spp: { shortName: "Společně pro Pce", faceAbbr: "SpP" },
   zp: { shortName: "Žijeme Pardubice", faceAbbr: "ŽP" },
-  "nase-pardubice": { shortName: "NAŠE PARDUBICE", faceAbbr: "NP" },
+  "nase-pardubice": { shortName: "NAŠE PARDUBICE", faceAbbr: "NP", darkText: true },
   "nezavisla-spd": { shortName: "Nezávislá/SPD", faceAbbr: "N/SPD" },
-  "progresivni-pce": { shortName: "Progresivní Pce", faceAbbr: "PP" },
+  "progresivni-pce": { shortName: "Progresivní Pce", faceAbbr: "PP", darkText: true },
   ano: { shortName: "ANO", faceAbbr: "ANO" },
   hopb: { shortName: "Občané pro Budějovice", faceAbbr: "OPB" },
   "jihocesi-2012": { shortName: "Jihočeši 2012", faceAbbr: "JČ" },
@@ -421,6 +424,11 @@ export const PARTY_COLORS: Record<string, string> = {
   zphz: "#00AD43",
   nez: "#bcbcb0",
   spolu: "#5e66d5",
+  spp: "#953c3c",
+  zp: "#ff5f61",
+  "nase-pardubice": "#ffee8c",
+  "nezavisla-spd": "#5d5d5d",
+  "progresivni-pce": "#c6f432",
   ano: "#272a59",
   nezavisli: "#bcbcb0",
   hopb: "#ff2908",
