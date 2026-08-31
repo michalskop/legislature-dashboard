@@ -17,6 +17,8 @@ import { hradecKraloveCs } from "./dictionaries/hradec-kralove.cs";
 import { hradecKraloveEn } from "./dictionaries/hradec-kralove.en";
 import { pardubiceCs } from "./dictionaries/pardubice.cs";
 import { pardubiceEn } from "./dictionaries/pardubice.en";
+import { ceskeBudejoviceCs } from "./dictionaries/ceske-budejovice.cs";
+import { ceskeBudejoviceEn } from "./dictionaries/ceske-budejovice.en";
 
 // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): the shared
 // ParliamentTranslations.charts.wpca (packages/parliament-core, read-only)
@@ -1045,6 +1047,168 @@ const USTI_NAD_LABEM: CityConfig = {
   },
 };
 
+// Added 2026-08-31, once České Budějovice's data pipeline reached the same
+// maturity as every other city (C9/C4/D7 all done — see
+// ceske-budejovice/config/sources.yml in the city data repo). Source: the
+// city's own VOATT "Jak se hlasovalo" statistics portal on www.c-budejovice.cz
+// (plain-GET HTML tables, per-councillor named votes, one consistent format
+// 2022→2026). The portal publishes no přijato/nepřijato outcome, so vote_event
+// `result` is derived (pass iff ≥23 of 45 "Hlasoval pro", § 87 zákona č.
+// 128/2000 Sb.). organizations.csv rows are natively `classification: "group"`
+// — real dated klub membership from the per-vote Klub column (mode per meeting
+// + contiguous-run intervals; the 10 raw labels are already clean, no
+// canonicalisation). Owner-approved government_groups (D7, 2026-08-31): ODS +
+// NEZAŘAZENÍ + NAŠE ČESKO (the three labels the primátorka's klub of ~14
+// councillors wore as ODS → left ODS after governor Kuba founded a new movement)
+// + KDU-TOP09 + Jihočeši 2012. Piráti EXCLUDED — they walked out of the
+// coalition in Oct 2024, governing only ~2 of the 4 years. Minority coalition
+// since; a real but weaker government/opposition WPCA axis (dim0 r=0.88).
+const CESKE_BUDEJOVICE: CityConfig = {
+  id: "ceske-budejovice",
+  citySlug: "ceske-budejovice",
+  name: "Zastupitelstvo statutárního města České Budějovice",
+  defaultLang: "cs",
+
+  dataBase:
+    "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main/ceske-budejovice/analyses",
+
+  // vote-corrections deliberately excluded — cities don't publish corrections
+  // (plan.md D6), same as every other city.
+  analyses: ["attendance", "rebelity", "govity", "wpca"],
+
+  matomo: {
+    url: "//matomo.kohovolit.eu/",
+    siteId: "PLACEHOLDER", // D10 — owner creates a real Matomo site ID before go-live (task A4)
+  },
+
+  // ceske-budejovice's organizations.csv rows are natively `classification:
+  // "group"` — real klub membership from the per-vote Klub column (mode per
+  // meeting + contiguous-run intervals), same mechanism as Plzeň's / Ústí's.
+  organizations: [
+    {
+      classification: "group",
+      urlSegment: "group",
+      listUrlSegment: "groups",
+      hasPage: true,
+      labels: {
+        cs: { singular: "klub", plural: "kluby", listTitle: "Zastupitelské kluby" },
+        en: { singular: "group", plural: "groups", listTitle: "Council groups" },
+      },
+    },
+  ],
+
+  translations: { cs: ceskeBudejoviceCs, en: ceskeBudejoviceEn },
+
+  pages: {
+    home: [
+      {
+        id: "attendance-swarm",
+        config: {
+          type: "swarm-chart",
+          analysis: "attendance",
+          referenceLines: [{ value: 0.5, label: "50 %" }],
+        },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Jeden bod = jeden zastupitel/ka. Kliknutím přejdete na jejich profil." },
+          en: { title: "Attendance", description: "Each dot = one assembly member. Click to open their profile." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "2D mapa zastupitelů podle způsobu hlasování (WPCA). Kliknutím přejdete na jejich profil." },
+          en: { title: "Positions based on voting behaviour", description: "2D map of assembly members by voting patterns (WPCA). Click to open their profile." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Rebelování", description: "Jak často zastupitel/ka hlasuje proti svému klubu." },
+          en: { title: "Rebelliousness", description: "How often the assembly member votes against their own group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Shoda s koalicí", description: "Jak často zastupitel/ka hlasuje shodně s koalicí." },
+          en: { title: "Coalition alignment", description: "How often the assembly member votes in line with the coalition." },
+        },
+      },
+    ],
+
+    memberDetail: [
+      {
+        id: "metrics-grid",
+        config: { type: "metrics-grid" },
+      },
+      {
+        id: "attendance-swarm",
+        config: {
+          type: "swarm-chart",
+          analysis: "attendance",
+          referenceLines: [{ value: 0.5, label: "50 %" }],
+        },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Attendance", description: "Position within the assembly." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "Poloha na základě analýzy hlasování." },
+          en: { title: "Positions based on voting behaviour", description: "Position based on voting analysis." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Rebelování", description: "Jak často hlasuje proti svému klubu." },
+          en: { title: "Rebelliousness", description: "How often they vote against their group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Shoda s koalicí", description: "Jak často hlasuje shodně s koalicí." },
+          en: { title: "Coalition alignment", description: "How often they vote in line with the coalition." },
+        },
+      },
+    ],
+
+    groupDetail: [
+      {
+        id: "metrics-grid",
+        config: { type: "metrics-grid" },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Pozice na základě hlasování", description: "Členové klubu v kontextu celého zastupitelstva." },
+          en: { title: "Positions based on voting behaviour", description: "Group members in the context of the full assembly." },
+        },
+      },
+      {
+        id: "member-table",
+        config: { type: "member-table", showPartyFilter: false },
+        labels: {
+          cs: { title: "Členové klubu" },
+          en: { title: "Group members" },
+        },
+      },
+    ],
+
+    // No regionDetail — cities have no constituency organization (see D5 note above).
+  },
+};
+
 // Added 2026-08-30, once Hradec Králové's data pipeline reached the same
 // maturity as every other city (C9/C4/D7 all done — see
 // hradec-kralove/config/sources.yml in the city data repo): the same shared
@@ -1525,12 +1689,13 @@ const MOST_RADA: CityConfig = {
 };
 
 // Ordered by population (owner preference, 2026-08-28), latest ČSÚ figures (1 Jan 2026): Praha
-// (~1.27M), Brno (~384k), Ostrava (~302k), Plzeň (~188k), Hradec Králové (93,354), Pardubice
-// (92,713), Ústí nad Labem (90,035), Most (~63k). Hradec Králové, Pardubice and Ústí nad Labem
-// are within ~3k of each other, ordered strictly by the 1 Jan 2026 figure — same "list by size,
-// not build order" rule the owner gave for Plzeň-vs-Most. most-rada sits last: a bonus second
-// body for Most, not a separate real city, listed after every real city regardless of size.
-export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, PLZEN, HRADEC_KRALOVE, PARDUBICE, USTI_NAD_LABEM, MOST, MOST_RADA];
+// (~1.27M), Brno (~384k), Ostrava (~302k), Plzeň (~188k), České Budějovice (97,128), Hradec
+// Králové (93,354), Pardubice (92,713), Ústí nad Labem (90,035), Most (~63k). České Budějovice,
+// Hradec Králové, Pardubice and Ústí nad Labem are all within ~7k of each other, ordered strictly
+// by the 1 Jan 2026 figure — same "list by size, not build order" rule the owner gave for
+// Plzeň-vs-Most. most-rada sits last: a bonus second body for Most, not a separate real city,
+// listed after every real city regardless of size.
+export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, PLZEN, CESKE_BUDEJOVICE, HRADEC_KRALOVE, PARDUBICE, USTI_NAD_LABEM, MOST, MOST_RADA];
 
 export function getCityConfig(citySlug: string): CityConfig | undefined {
   return CITIES.find((c) => c.citySlug === citySlug);

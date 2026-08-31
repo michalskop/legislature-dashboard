@@ -304,6 +304,23 @@
 //     NO COLOR per rule 3 ("never invent one") — they fall through to the
 //     generic gray. Flagged for a brand-color research pass if the owner
 //     wants one, same as was later done for Ústí and Hradec Králové.
+//
+// Sourcing per party (České Budějovice 2022 klubs, added 2026-08-31):
+//   - ods / pirati / spd / nezarazeni -> exact-match existing keys, reused
+//     (ODS #5e66d5, Piráti #111111, SPD #a47d03, Nezařazení #bcbcb0).
+//   - ano -> reuse the ANO navy #272a59 (same real party as every other
+//     city's "ano-2011"/"ano2011" keys; CB's klub label is the bare "ANO").
+//   - nezavisli -> the shortName already exists (from Brno); add the same
+//     #bcbcb0 gray every unaffiliated/independent bucket uses (3 ex-SPD
+//     councillors who left to sit as "NEZÁVISLÍ" in 2025).
+//   - hopb / jihocesi-2012 / kdu-top09 / nase-cesko -> real colors from the
+//     cs.wikipedia "Zastupitelstvo města České Budějovice" article's own
+//     {{Legenda|#hex|...}} entries (the 2022-election page itself has no
+//     dedicated article): hopb (Občané pro Budějovice) #ff2908 red;
+//     jihocesi-2012 #682775 violet; kdu-top09 ("Společně pro Budějovice" =
+//     KDU-ČSL + TOP 09) #f7f012 yellow (needs darkText); nase-cesko (governor
+//     Kuba's 2026 movement, ex-ODS) #0352c6 blue — deliberately its own
+//     colour, distinct from ODS's #5e66d5, since it's now a separate movement.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -356,6 +373,11 @@ export const PARTY_META: Record<
   "nase-pardubice": { shortName: "NAŠE PARDUBICE", faceAbbr: "NP" },
   "nezavisla-spd": { shortName: "Nezávislá/SPD", faceAbbr: "N/SPD" },
   "progresivni-pce": { shortName: "Progresivní Pce", faceAbbr: "PP" },
+  ano: { shortName: "ANO", faceAbbr: "ANO" },
+  hopb: { shortName: "Občané pro Budějovice", faceAbbr: "OPB" },
+  "jihocesi-2012": { shortName: "Jihočeši 2012", faceAbbr: "JČ" },
+  "kdu-top09": { shortName: "Společně pro Bud.", faceAbbr: "SpB", darkText: true },
+  "nase-cesko": { shortName: "Naše Česko", faceAbbr: "NČ" },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -399,5 +421,11 @@ export const PARTY_COLORS: Record<string, string> = {
   zphz: "#00AD43",
   nez: "#bcbcb0",
   spolu: "#5e66d5",
+  ano: "#272a59",
+  nezavisli: "#bcbcb0",
+  hopb: "#ff2908",
+  "jihocesi-2012": "#682775",
+  "kdu-top09": "#f7f012",
+  "nase-cesko": "#0352c6",
   other: "#bcbcb0",
 };
