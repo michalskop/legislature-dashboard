@@ -286,6 +286,24 @@
 //         Brno's "zeleni-a-zit-brno" (same underlying party) — fine, a
 //         different city slug for the same real party/color, like ano2011
 //         across cities. No other HK klub is green.
+//
+// Sourcing per party (Pardubice 2022 election klubs, added 2026-08-31):
+//   - ano-2011 / pirati / spd -> exact-match existing keys (ANO #272a59,
+//     Piráti #111111, SPD #a47d03), reused directly, no new entry.
+//   - spolu -> reuse the established SPOLU/ODS+TOP09+KDU-ČSL blue #5e66d5
+//     (same as Praha's "spolu-pro-prahu" / Ostrava's "ods-kdu-csl-top-09"):
+//     Pardubice's "SPOLU" klub IS that national coalition (its councillors
+//     are labelled ODS/SPOLU, TOP 09/SPOLU, KDU-ČSL/SPOLU in the source).
+//   - spp (Společně pro Pardubice), zp (Žijeme Pardubice), nase-pardubice
+//     (NAŠE PARDUBICE), nezavisla-spd (a one-person "Nezávislá/SPD" klub),
+//     progresivni-pce (the Piráti klub renamed "Progresivní Pce" at meeting
+//     38, 2026-05-25) -> local movements with NO national equivalent and no
+//     dedicated Wikipedia election-results page for Pardubice 2022 (checked
+//     2026-08-31, 404 — same "not every city has one" outcome as Plzeň's
+//     pro-plzen / Ústí's movements). shortName/faceAbbr added, DELIBERATELY
+//     NO COLOR per rule 3 ("never invent one") — they fall through to the
+//     generic gray. Flagged for a brand-color research pass if the owner
+//     wants one, same as was later done for Ústí and Hradec Králové.
 export const PARTY_META: Record<
   string,
   { shortName: string; faceAbbr: string; darkText?: true }
@@ -332,6 +350,12 @@ export const PARTY_META: Record<
   rh: { shortName: "Rozvíjíme Hradec", faceAbbr: "RH" },
   zphz: { shortName: "Změna pro Hradec", faceAbbr: "ZpH" },
   nez: { shortName: "Nezařazení", faceAbbr: "NEZ", darkText: true },
+  spolu: { shortName: "SPOLU", faceAbbr: "SPOLU" },
+  spp: { shortName: "Společně pro Pce", faceAbbr: "SpP" },
+  zp: { shortName: "Žijeme Pardubice", faceAbbr: "ŽP" },
+  "nase-pardubice": { shortName: "NAŠE PARDUBICE", faceAbbr: "NP" },
+  "nezavisla-spd": { shortName: "Nezávislá/SPD", faceAbbr: "N/SPD" },
+  "progresivni-pce": { shortName: "Progresivní Pce", faceAbbr: "PP" },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -374,5 +398,6 @@ export const PARTY_COLORS: Record<string, string> = {
   rh: "#ea555b",
   zphz: "#00AD43",
   nez: "#bcbcb0",
+  spolu: "#5e66d5",
   other: "#bcbcb0",
 };
