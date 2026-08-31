@@ -20,6 +20,9 @@ export interface SiteTranslations {
     projectsSection: string;
     contactSection: string;
     dataSource: string;
+    /** "{date}" is replaced with the newest vote date; "{datetime}" with the last pipeline run. */
+    dataAsOf: string;
+    lastChecked: string;
   };
 }
 
@@ -40,6 +43,8 @@ export const SITE_TRANSLATIONS: Record<string, SiteTranslations> = {
       projectsSection: "Naše projekty",
       contactSection: "Kontakt",
       dataSource: "Otevřená data jednotlivých měst — viz stránka konkrétního města.",
+      dataAsOf: "Data k {date}",
+      lastChecked: "poslední kontrola {datetime}",
     },
   },
   en: {
@@ -58,6 +63,8 @@ export const SITE_TRANSLATIONS: Record<string, SiteTranslations> = {
       projectsSection: "Our projects",
       contactSection: "Contact",
       dataSource: "Open data per city — see each city's own page.",
+      dataAsOf: "Data as of {date}",
+      lastChecked: "last checked {datetime}",
     },
   },
 };

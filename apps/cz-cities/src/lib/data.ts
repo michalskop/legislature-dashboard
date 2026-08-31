@@ -102,6 +102,29 @@ export function fetchGovernmentAxis(citySlug: string) {
   return fetchAnalysisJson<GovernmentAxisRecord>(citySlug, "wpca/outputs/government_axis.json");
 }
 
+// Per-city pipeline heartbeat written by cz-municipalities-votes-2022-2026's
+// scripts/write_run_status.py at the end of every nightly job (committed even
+// when nothing else changed). Drives the footer's "data as of / last checked"
+// line. Returns null on any fetch/parse failure — a brand-new city has no
+// _run_status.json until its first nightly run, and the footer must not break.
+export interface RunStatus {
+  last_successful_run_utc: string;
+  last_data_change_utc: string;
+  latest_vote_event_date: string | null;
+  vote_events_count: number | null;
+}
+
+export async function fetchRunStatus(citySlug: string): Promise<RunStatus | null> {
+  try {
+    const url = `${dataBaseFor(citySlug)}/_run_status.json`;
+    const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+    if (!res.ok) return null;
+    return (await res.json()) as RunStatus;
+  } catch {
+    return null;
+  }
+}
+
 // Where the detected government/opposition axis renders, and which end of it
 // government is on. `onX` decides which chart axis (x=dims[0] or y=dims[1],
 // both fixed — see getAllMpProfiles below) gets the coalition/opposition

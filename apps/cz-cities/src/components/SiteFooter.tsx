@@ -4,6 +4,33 @@ import type { CityConfig } from "@/lib/city.config";
 import { getCityTranslations } from "@/lib/city.config";
 import { getSiteTranslations } from "@/lib/site";
 import { globalBasePath } from "@/lib/routing";
+import { fetchRunStatus } from "@/lib/data";
+
+function fmtDate(iso: string | null | undefined, lang: string): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toLocaleDateString(lang === "en" ? "en-GB" : "cs-CZ", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    timeZone: "Europe/Prague",
+  });
+}
+
+function fmtDateTime(iso: string | null | undefined, lang: string): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toLocaleString(lang === "en" ? "en-GB" : "cs-CZ", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Prague",
+  });
+}
 
 function FooterSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -32,9 +59,19 @@ interface Props {
   city: CityConfig;
 }
 
-export function SiteFooter({ lang, city }: Props) {
+export async function SiteFooter({ lang, city }: Props) {
   const t = getCityTranslations(city, lang);
   const site = getSiteTranslations(lang);
+
+  const status = await fetchRunStatus(city.citySlug);
+  const dataAsOf = fmtDate(status?.last_data_change_utc, lang);
+  const lastChecked = fmtDateTime(status?.last_successful_run_utc, lang);
+  const freshnessLine = [
+    dataAsOf && site.footer.dataAsOf.replace("{date}", dataAsOf),
+    lastChecked && site.footer.lastChecked.replace("{datetime}", lastChecked),
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <footer className="w-full border-t border-border bg-surface-0 mt-auto">
@@ -45,6 +82,9 @@ export function SiteFooter({ lang, city }: Props) {
           <p className="text-xs text-muted-foreground leading-relaxed">
             {t.footer.dataSource}
           </p>
+          {freshnessLine && (
+            <p className="text-xs text-muted-foreground">{freshnessLine}</p>
+          )}
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} DataTimes.cz
           </p>
