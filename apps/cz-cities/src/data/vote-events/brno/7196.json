@@ -1,0 +1,419 @@
+{
+  "id": "brno:vote-event:7196",
+  "identifier": "Z9/36/47",
+  "parliament_id": "brno:org:zastupitelstvo-mesta-brna",
+  "start_date": "2026-06-23T15:41:37",
+  "title": "Dotace na provoz Ronda",
+  "statement": "Hlasovali byste pro dotaci 18,441 milionu korun společnosti KOMETA GROUP na provoz Ronda v roce 2026?",
+  "detail": "Individuální neinvestiční dotace podporuje provoz Ronda v roce 2026. Hlasování zahrnuje také dotační smlouvu. Nejde o investiční podporu nové arény ani o samostatnou dotaci hokejové akademii.",
+  "tags": [
+    "sport a veřejné výdaje"
+  ],
+  "question_id": "e3770a01-2f9c-5b20-928d-528b0ec5545e",
+  "motion_title": "61. Návrh na poskytnutí individuální neinvestiční dotace společnosti KOMETA GROUP, a. s., na úhradu provozních nákladů haly Rondo v roce 2026",
+  "result": "pass",
+  "definition_name": null,
+  "sources": [
+    {
+      "url": "https://zastupko.fit.vutbr.cz/flask/brno/zastupitelstvo/9/dataset",
+      "note": "hlasovani id=7196"
+    },
+    {
+      "url": "https://apl.brno.cz/protokoly-zmb/zmb-z9-36/20260623-47-56497.html",
+      "note": "official protocol page"
+    }
+  ],
+  "polarity_counts": {
+    "support": 41,
+    "oppose": 0,
+    "neutral": 14,
+    "total": 55
+  },
+  "votes": [
+    {
+      "voter_id": "brno:person:marketa-vankova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Markéta Vaňková",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:rene-cerny",
+      "option": "yes",
+      "polarity": "support",
+      "name": "René Černý",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:katerina-jarosova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Kateřina Jarošová",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:karel-kalivoda",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Karel Kalivoda",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:rene-novotny",
+      "option": "yes",
+      "polarity": "support",
+      "name": "René Novotný",
+      "group_id": "brno:org:group:ano-2011"
+    },
+    {
+      "voter_id": "brno:person:vit-prygl",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Vít Prýgl",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:jiri-oliva",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jiří Oliva",
+      "group_id": "brno:org:group:nezarazeni"
+    },
+    {
+      "voter_id": "brno:person:marek-viskot",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Marek Viskot",
+      "group_id": "brno:org:group:nezarazeni"
+    },
+    {
+      "voter_id": "brno:person:petr-hladik",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Petr Hladík",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:filip-chvatal",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Filip Chvátal",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:filip-leder",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Filip Leder",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:jaroslav-suchy",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jaroslav Suchý",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:david-grund",
+      "option": "yes",
+      "polarity": "support",
+      "name": "David Grund",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:jiri-herman",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jiří Herman",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:michal-chladek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Chládek",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:pavel-jankuj",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Pavel Jankůj",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:robert-kerndl",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Robert Kerndl",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:petr-kratochvil",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Petr Kratochvíl",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:andrea-pazderova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Andrea Pazderová",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:martin-priborsky",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Martin Příborský",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:david-trllo",
+      "option": "yes",
+      "polarity": "support",
+      "name": "David Trllo",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:tomas-kolacny",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Tomáš Koláčný",
+      "group_id": "brno:org:group:pirati"
+    },
+    {
+      "voter_id": "brno:person:jiri-kment",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jiří Kment",
+      "group_id": "brno:org:group:spd-trikolora"
+    },
+    {
+      "voter_id": "brno:person:karin-podivinska",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Karin Podivinská",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:alena-gruberova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Alena Gruberová",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:pavel-kriz",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Pavel Kříž",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:miroslav-kubasek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Miroslav Kubásek",
+      "group_id": "brno:org:group:ano-2011"
+    },
+    {
+      "voter_id": "brno:person:pavel-outrata",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Pavel Outrata",
+      "group_id": "brno:org:group:ano-2011"
+    },
+    {
+      "voter_id": "brno:person:daniel-struz",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Daniel Struž",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:bretislav-stefan",
+      "option": "not voting",
+      "polarity": "neutral",
+      "name": "Břetislav Štefan",
+      "group_id": "brno:org:group:nezarazeni"
+    },
+    {
+      "voter_id": "brno:person:jakub-hruska",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jakub Hruška",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:martin-malecek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Martin Maleček",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:michal-marek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Michal Marek",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:irena-matonohova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Irena Matonohová",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:radomir-vondra",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Radomír Vondra",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:tomas-aberl",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Aberl",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:vladan-krasny",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Vladan Krásný",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:anna-putnova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Anna Putnová",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:dagmar-seidlova",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Dagmar Seidlová",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:pavel-urubek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Pavel Urubek",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:libor-zabransky",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Libor Zábranský",
+      "group_id": "brno:org:group:ods-a-top-09"
+    },
+    {
+      "voter_id": "brno:person:marek-lahoda",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Marek Lahoda",
+      "group_id": "brno:org:group:pirati"
+    },
+    {
+      "voter_id": "brno:person:monika-lukasova-spilkova",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Monika Lukášová Spilková",
+      "group_id": "brno:org:group:pirati"
+    },
+    {
+      "voter_id": "brno:person:adam-zemek",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Adam Zemek",
+      "group_id": "brno:org:group:pirati"
+    },
+    {
+      "voter_id": "brno:person:tomas-anderle",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Anderle",
+      "group_id": "brno:org:group:spd-trikolora"
+    },
+    {
+      "voter_id": "brno:person:blanka-borovska",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Blanka Borovská",
+      "group_id": "brno:org:group:spd-trikolora"
+    },
+    {
+      "voter_id": "brno:person:petr-levicek",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Petr Levíček",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:leos-prokes",
+      "option": "absent",
+      "polarity": "neutral",
+      "name": "Leoš Prokeš",
+      "group_id": "brno:org:group:spd-trikolora"
+    },
+    {
+      "voter_id": "brno:person:tomas-skricka",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Tomáš Skřička",
+      "group_id": "brno:org:group:spd-trikolora"
+    },
+    {
+      "voter_id": "brno:person:jana-drapalova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Jana Drápalová",
+      "group_id": "brno:org:group:zeleni-a-zit-brno"
+    },
+    {
+      "voter_id": "brno:person:jasna-flamikova",
+      "option": "abstain",
+      "polarity": "neutral",
+      "name": "Jasna Flamiková",
+      "group_id": "brno:org:group:zeleni-a-zit-brno"
+    },
+    {
+      "voter_id": "brno:person:petr-borecky-121",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Petr Bořecký",
+      "group_id": "brno:org:group:lidovci-a-starostove"
+    },
+    {
+      "voter_id": "brno:person:sabina-benesova",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Sabina Benešová",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    },
+    {
+      "voter_id": "brno:person:matous-vencalek",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Matouš Vencálek",
+      "group_id": "brno:org:group:zeleni-a-zit-brno"
+    },
+    {
+      "voter_id": "brno:person:petr-borecky-3",
+      "option": "yes",
+      "polarity": "support",
+      "name": "Petr Bořecký",
+      "group_id": "brno:org:group:brno-klidem-a-nezavisli-zastupitele"
+    }
+  ]
+}

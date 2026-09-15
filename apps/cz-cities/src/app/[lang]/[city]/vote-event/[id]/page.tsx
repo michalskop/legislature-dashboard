@@ -29,10 +29,26 @@ const REQUIREMENT_LABELS: Record<string, string> = {
 };
 
 async function loadVoteEvent(citySlug: string, id: string): Promise<RawVoteEvent | null> {
-  const filePath = join(process.cwd(), "src/data/vote-events", citySlug, `${id}.json`);
   try {
+    id = decodeURIComponent(id);
+  } catch {
+    return null;
+  }
+
+  const canonicalPrefix = `${citySlug}:vote-event:`;
+  const fileId = id.startsWith(canonicalPrefix) ? id.slice(canonicalPrefix.length) : id;
+
+  // Event files use the source identifier as their filename (for example
+  // `4103.json`), while their canonical `id` may be namespaced
+  // (`brno:vote-event:4103`). Accept both URL forms, but only allow a plain
+  // filename component to reach the filesystem.
+  if (!fileId || fileId.includes("/") || fileId.includes("\\")) return null;
+
+  try {
+    const filePath = join(process.cwd(), "src/data/vote-events", citySlug, `${fileId}.json`);
     const raw = await readFile(filePath, "utf-8");
-    return JSON.parse(raw) as RawVoteEvent;
+    const event = JSON.parse(raw) as RawVoteEvent;
+    return event.id === id || event.id === fileId || event.id === `${canonicalPrefix}${fileId}` ? event : null;
   } catch {
     return null;
   }
