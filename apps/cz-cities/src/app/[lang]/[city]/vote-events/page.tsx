@@ -16,6 +16,7 @@ interface VoteEventSummary {
     oppose: number;
     neutral: number;
   };
+  votes: Array<{ option: string }>;
 }
 
 interface Props {
@@ -28,7 +29,8 @@ const LABELS = {
     empty: "Pro toto město zatím nejsou vybraná žádná hlasování.",
     support: "pro",
     oppose: "proti",
-    neutral: "nehlasovalo",
+    abstain: "se zdrželo",
+    didNotVote: "nehlasovalo / chybělo",
     pass: "Schváleno",
     fail: "Zamítnuto",
   },
@@ -37,7 +39,8 @@ const LABELS = {
     empty: "No votes have been selected for this city yet.",
     support: "for",
     oppose: "against",
-    neutral: "did not vote",
+    abstain: "abstained",
+    didNotVote: "absent / did not vote",
     pass: "Passed",
     fail: "Rejected",
   },
@@ -45,6 +48,14 @@ const LABELS = {
 
 function labelsFor(lang: string) {
   return lang === "en" ? LABELS.en : LABELS.cs;
+}
+
+function optionCounts(event: VoteEventSummary) {
+  const abstain = event.votes.filter((vote) => vote.option === "abstain").length;
+  return {
+    abstain,
+    didNotVote: event.polarity_counts.neutral - abstain,
+  };
 }
 
 async function loadVoteEvents(citySlug: string): Promise<VoteEventSummary[]> {
@@ -100,31 +111,35 @@ export default async function VoteEventsPage({ params }: Props) {
         <p className="text-muted-foreground">{labels.empty}</p>
       ) : (
         <div className="divide-y divide-border">
-          {events.map((event) => (
-            <Link
-              key={event.id}
-              href={`${basePath}/vote-event/${event.id}`}
-              className="flex flex-col gap-2 py-4 first:pt-0 hover:text-primary transition-colors sm:flex-row sm:items-start sm:justify-between"
-            >
-              <div>
-                <h2 className="font-semibold">{event.title ?? event.id}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {dateFormatter.format(new Date(event.start_date))}
-                </p>
-              </div>
-              <div className="shrink-0 text-sm text-muted-foreground sm:text-right">
-                {event.result && (
-                  <p className="font-medium text-foreground">
-                    {event.result === "pass" ? labels.pass : labels.fail}
+          {events.map((event) => {
+            const counts = optionCounts(event);
+            return (
+              <Link
+                key={event.id}
+                href={`${basePath}/vote-event/${event.id}`}
+                className="flex flex-col gap-2 py-4 first:pt-0 hover:text-primary transition-colors sm:flex-row sm:items-start sm:justify-between"
+              >
+                <div>
+                  <h2 className="font-semibold">{event.title ?? event.id}</h2>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {dateFormatter.format(new Date(event.start_date))}
                   </p>
-                )}
-                <p>
-                  {event.polarity_counts.support} {labels.support} · {event.polarity_counts.oppose}{" "}
-                  {labels.oppose} · {event.polarity_counts.neutral} {labels.neutral}
-                </p>
-              </div>
-            </Link>
-          ))}
+                </div>
+                <div className="shrink-0 text-sm text-muted-foreground sm:text-right">
+                  {event.result && (
+                    <p className="font-medium text-foreground">
+                      {event.result === "pass" ? labels.pass : labels.fail}
+                    </p>
+                  )}
+                  <p>
+                    {event.polarity_counts.support} {labels.support} · {event.polarity_counts.oppose}{" "}
+                    {labels.oppose} · {counts.abstain} {labels.abstain} · {counts.didNotVote}{" "}
+                    {labels.didNotVote}
+                  </p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
