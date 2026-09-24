@@ -381,6 +381,10 @@ export const PARTY_META: Record<
   "jihocesi-2012": { shortName: "Jihočeši 2012", faceAbbr: "JČ" },
   "kdu-top09": { shortName: "Společně pro Bud.", faceAbbr: "SpB", darkText: true },
   "nase-cesko": { shortName: "Naše Česko", faceAbbr: "NČ" },
+  "nezavisli-pro-plasko": { shortName: "Nezávislí pro Plasko", faceAbbr: "NpP", darkText: true },
+  cssd: { shortName: "ČSSD", faceAbbr: "ČSSD" },
+  my: { shortName: "MY", faceAbbr: "MY", darkText: true },
+  "jdeto-s-podporou-top-09": { shortName: "JdeTo / TOP 09", faceAbbr: "JdeTo" },
   other: { shortName: "Jiní", faceAbbr: "Jiní", darkText: true },
 };
 
@@ -435,5 +439,10 @@ export const PARTY_COLORS: Record<string, string> = {
   "jihocesi-2012": "#682775",
   "kdu-top09": "#f7f012",
   "nase-cesko": "#0352c6",
+  // NpP's light green follows the project owner's explicit color instruction.
+  "nezavisli-pro-plasko": "#8bc34a",
+  cssd: "#E63636",
+  // JdeTo is the local list backed by TOP 09; use TOP 09's established color.
+  "jdeto-s-podporou-top-09": "#812840",
   other: "#bcbcb0",
 };

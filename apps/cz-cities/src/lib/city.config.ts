@@ -1692,9 +1692,8 @@ const MOST_RADA: CityConfig = {
   },
 };
 
-// Plasy (added 2026-09-24): the archive provides named votes and meeting attendance but no
-// group/coalition affiliations. Keep the city page to the supported attendance analysis and
-// member/vote data; do not imply group metrics from absent evidence. Data is refreshed manually.
+// Plasy (added 2026-09-24): named votes are manually transcribed from the official minutes;
+// group affiliations are sourced from the official council roster. Refresh remains manual.
 const PLASY: CityConfig = {
   id: "plasy",
   citySlug: "plasy",
@@ -1703,8 +1702,19 @@ const PLASY: CityConfig = {
   defaultLang: "cs",
   dataBase:
     "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main/plasy/analyses",
-  analyses: ["attendance"],
-  organizations: [],
+  analyses: ["attendance", "rebelity", "govity", "wpca"],
+  organizations: [
+    {
+      classification: "group",
+      urlSegment: "group",
+      listUrlSegment: "groups",
+      hasPage: true,
+      labels: {
+        cs: { singular: "uskupení", plural: "uskupení", listTitle: "Volební uskupení" },
+        en: { singular: "group", plural: "groups", listTitle: "Electoral groups" },
+      },
+    },
+  ],
   translations: { cs: plasyCs, en: plasyEn },
   pages: {
     home: [
@@ -1716,6 +1726,30 @@ const PLASY: CityConfig = {
           en: { title: "Attendance", description: "Assembly members' attendance at recorded votes." },
         },
       },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Podobnost hlasování", description: "Podobnost hlasování zastupitelů a zastupitelek." },
+          en: { title: "Voting similarity", description: "Similarity in how assembly members vote." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Hlasování proti uskupení", description: "Jak často členové hlasují jinak než jejich uskupení." },
+          en: { title: "Voting against group", description: "How often members vote differently from their group." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Hlasování koalice a opozice", description: "Rozdílnost hlasování koaličních a opozičních uskupení." },
+          en: { title: "Coalition and opposition voting", description: "Voting differences between governing and opposition groups." },
+        },
+      },
     ],
     memberDetail: [
       {
@@ -1724,6 +1758,30 @@ const PLASY: CityConfig = {
         labels: {
           cs: { title: "Účast na hlasováních", description: "Pozice v rámci zastupitelstva." },
           en: { title: "Attendance", description: "Position within the assembly." },
+        },
+      },
+      {
+        id: "wpca-scatter",
+        config: { type: "scatter-chart", analysis: "wpca" },
+        labels: {
+          cs: { title: "Podobnost hlasování", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Voting similarity", description: "Position within the assembly." },
+        },
+      },
+      {
+        id: "rebelity-swarm",
+        config: { type: "swarm-chart", analysis: "rebelity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Hlasování proti uskupení", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Voting against group", description: "Position within the assembly." },
+        },
+      },
+      {
+        id: "govity-swarm",
+        config: { type: "swarm-chart", analysis: "govity", yMode: "auto", yDecimals: 1 },
+        labels: {
+          cs: { title: "Hlasování koalice a opozice", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Coalition and opposition voting", description: "Position within the assembly." },
         },
       },
     ],
