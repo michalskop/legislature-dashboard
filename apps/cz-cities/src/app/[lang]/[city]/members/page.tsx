@@ -34,6 +34,11 @@ export default async function MembersPage({ params }: Props) {
         lang={lang}
         labels={t.table}
         formerLabel={t.member.former}
+        showPartyFilter={city.organizations.some((organization) => organization.classification === "group")}
+        showPartyColumn={city.organizations.some((organization) => organization.classification === "group")}
+        columns={city.analyses.filter((analysis): analysis is "attendance" | "rebelity" | "govity" =>
+          analysis === "attendance" || analysis === "rebelity" || analysis === "govity"
+        )}
         basePath={basePath}
       />
     </div>

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getCityConfig } from "@/lib/city.config";
 import { buildCityMetadata } from "@/lib/metadata";
 import { cityBasePath } from "@/lib/routing";
+import { getCityVoteEvents } from "@/lib/vote-events";
 
 interface VoteEventSummary {
   id: string;
@@ -25,8 +26,8 @@ interface Props {
 
 const LABELS = {
   cs: {
-    title: "Vybraná hlasování",
-    empty: "Pro toto město zatím nejsou vybraná žádná hlasování.",
+    title: "Hlasování",
+    empty: "Pro toto město zatím nejsou dostupná žádná jmenovitá hlasování.",
     support: "pro",
     oppose: "proti",
     abstain: "se zdrželo",
@@ -35,8 +36,8 @@ const LABELS = {
     fail: "Zamítnuto",
   },
   en: {
-    title: "Selected votes",
-    empty: "No votes have been selected for this city yet.",
+    title: "Votes",
+    empty: "No roll-call votes are available for this city yet.",
     support: "for",
     oppose: "against",
     abstain: "abstained",
@@ -59,6 +60,7 @@ function optionCounts(event: VoteEventSummary) {
 }
 
 async function loadVoteEvents(citySlug: string): Promise<VoteEventSummary[]> {
+  if (getCityConfig(citySlug)?.hasVoteEvents) return getCityVoteEvents(citySlug);
   const directory = join(process.cwd(), "src/data/vote-events", citySlug);
 
   try {

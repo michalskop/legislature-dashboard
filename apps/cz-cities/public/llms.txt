@@ -1,28 +1,97 @@
 # Města.DataTimes.cz
 
-> Open dashboard of roll-call voting behaviour in Czech municipal (city) assemblies.
+> Open dashboard of attendance and roll-call voting behaviour in Czech municipal (city) assemblies.
 
 ## About
 
-Města.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
-(WPCA) in Czech municipal assemblies, derived from each city's own roll-call vote data. Currently
-covers: praha. More cities are added over time — see
+Města.DataTimes.cz publishes attendance and, where the source supports it, rebelliousness, coalition
+alignment, voting positions (WPCA), and named vote events. Currently covers: praha, brno, ostrava, plzen, ceske-budejovice, hradec-kralove, pardubice, usti-nad-labem, most, plasy, most-rada. More cities are added over time — see
 DIVERGENCE.md in the app repository for the current rollout status.
 
 - Web: https://mesta.datatimes.cz
 - Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
-- Update model: nightly data pipeline (scrape -> standardize -> validate -> analyse -> publish),
-  dashboard revalidates on a schedule
-- Generated: 2026-08-06
+- Update model: city-specific; some data is updated nightly, while Plasy is updated manually from
+  official minutes and published as standard data tables
+- Generated: 2026-09-24
 
 ## Cities
 
 ### praha
 https://mesta.datatimes.cz/praha
-69 assembly members, 6 groups (2022-2026 term).
+69 assembly members, 6 groups and 0 recorded votes (2022-2026 term).
 
 Groups: PRAHA SOBĚ, STAROSTOVÉ A NEZÁVISLÍ, Česká pirátská strana, SPOLU pro Prahu, SPD,Trik.,PES a nez. pro Prahu, ANO 2011
 Sample assembly members: Kateřina Arnotová, Martin Benkovič, Jaromír Beránek, David Bodeček, Vladan Brož, Jiří Brůžek, Václav Bílek, Jan Chabr, Kristýna Drápalová, Zuzana Freitas, Marta Gellová, Zuzana Hamanová, Petr Hlaváček, Michal Hroza, Martin Hrubčík, Jan Hušbauer, Zdeněk Hřib, Tomáš Kaštovský, Antonín Klecanda, Radmila Kleslová
+
+### brno
+https://mesta.datatimes.cz/brno
+60 assembly members, 8 groups and 0 recorded votes (2022-2026 term).
+
+Groups: ODS a TOP 09, Brno klidem a nezávislí zastupitelé, ANO 2011, nezařazení, Lidovci a Starostové, Česká pirátská strana, SPD+Trikolora, Zelení a Žít Brno
+Sample assembly members: Markéta Vaňková, René Černý, Kateřina Jarošová, Karel Kalivoda, René Novotný, Vít Prýgl, Jiří Oliva, Marek Viskot, Petr Hladík, Filip Chvátal, Jitka Ivičičová, Filip Leder, Jaroslav Suchý, David Grund, Jiří Herman, Michal Chládek, Pavel Jankůj, Robert Kerndl, Petr Kratochvíl, Andrea Pazderová
+
+### ostrava
+https://mesta.datatimes.cz/ostrava
+59 assembly members, 9 groups and 0 recorded votes (2022-2026 term).
+
+Groups: STAROSTOVÉ pro OSTRAVU, ODS + TOP09, Piráti, Ostravak, ANO 2011, SPD, Ostravská levice, JDETO!!!, KDU-ČSL
+Sample assembly members: Aleš Boháč, Aleš Linhart, Andrea Hoffmannová, Břetislav Riger, Dagmar Macháčková, David Witosz, Filip Čmiel, František Kolařík, Gabriela Poštulková, Hana Tichánková, Iveta Vozňáková, Jan Dohnal, Jan Síla, Jaroslav Trnovec, Jiří Jureček, Jiří Vávra, Josef Babka, Karel Malík, Kateřina Šebestová, Libor Pavel
+
+### plzen
+https://mesta.datatimes.cz/plzen
+50 assembly members, 8 groups and 0 recorded votes (2022-2026 term).
+
+Groups: STAN, Česká pirátská strana, ANO 2011 a nezávislí, ODS, SPD, PRO PLZEŇ, KDU-ČSL, TOP 09
+Sample assembly members: Aleš Tolar, Daniel Kůs, David Procházka, David Šlouf, Eliška Bartáková, Helena Řežábová, Jan Kakeš, Jan Kalián, Jan Kůrka, Jaroslav Kubalík, Jindřich Blažek, Jiří Klečka, JIří Lodr, Jiří Novák, Jiří Rezek, Jiří Sládek, Jiří Šrámek, Jiří Uhlík, Jiří Winkelhöfer, Kristýna Nachtmann Švédová
+
+### ceske-budejovice
+https://mesta.datatimes.cz/ceske-budejovice
+49 assembly members, 9 groups and 0 recorded votes (2022-2026 term).
+
+Groups: NAŠE ČESKO, NEZÁVISLÍ, ANO, HOPB, PIRÁTI, SPD, ODS, Jihočeši 2012, KDU-TOP09
+Sample assembly members: Adéla Ruiderová, Alice Stierandová, Andrea Nádravská, Dagmar Škodová Parmová, Ivo Moravec, Jan Hošek, Jan Kadlec, Jan Krob, Jan Michl, Jan Zahradník, Jaroslav Berka, Jiří Borovka, Jiří Svoboda, Juraj Thoma, Karel Vaškovský, Lubomír Bureš, Lucie Kozlová, Lukáš Bajt, Martin Kuba, Martin Maršík
+
+### hradec-kralove
+https://mesta.datatimes.cz/hradec-kralove
+40 assembly members, 8 groups and 0 recorded votes (2022-2026 term).
+
+Groups: PIRÁTI, ANO 2011, HDK/TOP09, NEZ, ODS, RH, ZPHZ, SPD
+Sample assembly members: Aleš Dohnal, Denis Doksanský, Romana Dürrerová, Ilona Dvořáková, Jan Fajfr, Lukáš Fiedler, Zdeněk Fink, Jiří Gelbič, Jan Groh, Miroslav Hloušek, Jan Holásek, Alexandr Hrabálek, Roman Chlíbek, Jiří Kos, Ivo Králíček, Jan Kříž, Pavel Marek, Jiří Mašek, Petr Nebeský, Miloslav Nejedlý
+
+### pardubice
+https://mesta.datatimes.cz/pardubice
+43 assembly members, 7 groups and 0 recorded votes (2022-2026 term).
+
+Groups: ANO 2011, Progresivní Pce, SPOLU, NAŠE PARDUBICE, SpP, ŽP, SPD
+Sample assembly members: Adéla Zdráhalová, Dominik Bečka, Dušan Salfický, Dušan Stránský, Filip Sedlák, Filip Šťastný, František Brendl, František Němec, Helena Dvořáčková, Ivana Böhmová, Jakub Rychtecký, Jan Hrabal, Jan Mazuch, Jan Metelka, Jan Nadrchal, Jan Procházka, Jana Hanzlíková, Jiří Lejhanec, Jiří Rejda, Jiřina Klčová
+
+### usti-nad-labem
+https://mesta.datatimes.cz/usti-nad-labem
+40 assembly members, 7 groups and 0 recorded votes (2022-2026 term).
+
+Groups: ANO2011, SPD, PRO!Ústí, UFO, VašeÚstí, ODS, nezařazení
+Sample assembly members: Alena Pinkasová, Bohumil Ježek, Dušan Oslej, Eva Fialová, Eva Nováková, Jan Bartoníček, Jan Hrouda, Jana Kočárková Maredová, Jaromír Hůla, Jaroslav Pém, Jiří Horák, Jiří Krois, Jiří Madar, Jiří Valenta, Josef Holub, Karolína Žákovská, Kateřina Pejznochová, Lenka Vonka Černá, Lukáš Blažej, Lukáš Sinu
+
+### most
+https://mesta.datatimes.cz/most
+49 assembly members, 6 groups and 0 recorded votes (2022-2026 term).
+
+Groups: ANO 2011, SMM, ProMOST, SPD s pod.Trik., Nezařaz., ODS a NEZÁVISLÍ
+Sample assembly members: Alexandr Agh, Hana Aulická Jírovcová, Lukáš Bednařík, Renáta Císařová, Alena Dernerová, Martin Domín, Daniel Drtík, Daniel Dunovský, Jana Falterová Zudová, Josef Fiala, Petr Formánek, Jarmila Fuchsová, Pavel Gál, Roman Houska, Helena Houšková, Jaroslav Hrvol, Marek Hrvol, Ivana Hvězdová, Pavla Chotěborská, Zbyněk Jakš
+
+### plasy
+https://mesta.datatimes.cz/plasy
+16 assembly members, 0 groups and 274 recorded votes (2022-2026 term).
+
+Groups: none yet
+Sample assembly members: Emanuel Belbl, Jitka Bezdíčková, Václav Gross, Zdeněk Hanzlíček, Martina Ježková, Eva Kantor Pořádková, Ivo Kornatovský, Tomáš Kouba, Petr Kovářík, Petr Neuman, Jiří Novotný, Eliška Palmová, Lukáš Pfeifer, Zdenka Tyrpeklová, Veronika Urbanová, Michal Škop
+
+### most-rada
+https://mesta.datatimes.cz/most-rada
+10 assembly members, 2 groups and 0 recorded votes (2022-2026 term).
+
+Groups: ANO 2011, ProMOST
+Sample assembly members: Jana Falterová Zudová, Marek Hrvol, Ivana Hvězdová, Vladimír Kubík, Jan Paparega, Patricie Prokešová, Markéta Stará, Vlastimil Vozka, Václav Zahradníček, Ondřej Málek
 
 ## Data And Methods
 

@@ -22,14 +22,22 @@ function DashboardJsonLd({
   lang,
   currentMpCount,
   groupCount,
+  analyses,
 }: {
   citySlug: string;
   cityName: string;
   lang: string;
   currentMpCount: number;
   groupCount: number;
+  analyses: string[];
 }) {
   const pageUrl = `${SITE_URL}${cityBasePath(lang, citySlug)}`;
+  const metricLabels: Record<string, string> = {
+    attendance: "Assembly member attendance",
+    rebelity: "Rebellious votes",
+    govity: "Coalition alignment",
+    wpca: "WPCA voting positions",
+  };
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -59,14 +67,11 @@ function DashboardJsonLd({
         license: `${SITE_URL}/about`,
         temporalCoverage: "2022/2026",
         spatialCoverage: { "@type": "City", name: cityName },
-        variableMeasured: [
-          "Assembly member attendance",
-          "Rebellious votes",
-          "Coalition alignment",
-          "WPCA voting positions",
-        ],
+        variableMeasured: analyses.map((analysis) => metricLabels[analysis] ?? analysis),
         measurementTechnique: "Derived analysis of public roll-call voting data published by the city",
-        description: `Roll-call vote analyses for ${currentMpCount} current assembly members across ${groupCount} groups.`,
+        description: groupCount > 0
+          ? `Roll-call vote analyses for ${currentMpCount} current assembly members across ${groupCount} groups.`
+          : `Roll-call vote data and available analyses for ${currentMpCount} current assembly members.`,
       },
     ],
   };
@@ -109,6 +114,7 @@ export default async function CityHomePage({ params }: Props) {
         lang={lang}
         currentMpCount={currentMps.length}
         groupCount={parties.length}
+        analyses={city.analyses}
       />
 
       <section>
@@ -149,10 +155,12 @@ export default async function CityHomePage({ params }: Props) {
           <h2 className="text-xl font-semibold mb-1">{t.home.membersCardTitle}</h2>
           <p className="text-sm text-muted-foreground">{t.home.membersCardDescription}</p>
         </a>
-        <a href={`${basePath}/groups`} className="block p-6 bg-surface-2 rounded-badge hover:bg-surface-3 transition-colors">
-          <h2 className="text-xl font-semibold mb-1">{t.home.groupsCardTitle}</h2>
-          <p className="text-sm text-muted-foreground">{t.home.groupsCardDescription}</p>
-        </a>
+        {city.organizations.some((org) => org.classification === "group" && org.hasPage) && (
+          <a href={`${basePath}/groups`} className="block p-6 bg-surface-2 rounded-badge hover:bg-surface-3 transition-colors">
+            <h2 className="text-xl font-semibold mb-1">{t.home.groupsCardTitle}</h2>
+            <p className="text-sm text-muted-foreground">{t.home.groupsCardDescription}</p>
+          </a>
+        )}
       </section>
     </div>
   );

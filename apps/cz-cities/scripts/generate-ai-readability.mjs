@@ -1,4 +1,4 @@
-import { mkdir, writeFile, readFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createHash } from "node:crypto";
@@ -11,13 +11,15 @@ const publicDir = path.join(appRoot, "public");
 // is the eventual shape per plan.md D1.
 const baseUrl = "https://mesta.datatimes.cz";
 
-// Real Praha data (task A2) lives under src/fixtures/<citySlug>/... — mirrors
-// src/lib/data.ts's fixture layout. Only "praha" is configured for now (see
-// src/lib/city.config.ts); this script has no independent city list — it
-// derives one from src/fixtures/ so it stays honest if a fixture ever exists
-// without an entry in city.config.ts, or vice versa (a warning, not a crash).
-const fixturesRoot = path.join(appRoot, "src", "fixtures");
-const CITY_SLUGS = ["praha"];
+// Keep in sync with CITIES in src/lib/city.config.ts. Published city data is
+// read from the standard data repository, just like the dashboard runtime;
+// the old local-Praha-fixture-only list caused production builds to emit a
+// Prague-only sitemap and empty member counts after the fixture migration.
+const DATA_REPO_BASE = "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main";
+const CITY_SLUGS = [
+  "praha", "brno", "ostrava", "plzen", "ceske-budejovice", "hradec-kralove",
+  "pardubice", "usti-nad-labem", "most", "plasy", "most-rada",
+];
 
 // Languages this script builds sitemap/llms.txt URLs for — mirrors
 // src/lib/i18n.ts's LANG_CODES. Duplicated as a plain array here because this
@@ -42,7 +44,10 @@ function groupSlug(id) {
 }
 
 async function fetchAnalysisJson(citySlug, pathname) {
-  const text = await readFile(path.join(fixturesRoot, citySlug, "analyses", pathname), "utf-8");
+  const url = `${DATA_REPO_BASE}/${citySlug}/analyses/${pathname}`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Could not fetch ${url}: ${response.status}`);
+  const text = await response.text();
   return JSON.parse(text.replace(/:\s*NaN/g, ": null"));
 }
 
@@ -95,24 +100,33 @@ function parseCsv(text) {
 }
 
 async function readCityCsv(citySlug, table) {
-  const text = await readFile(path.join(fixturesRoot, citySlug, "data", `${table}.csv`), "utf-8");
+  const url = `${DATA_REPO_BASE}/${citySlug}/data/${table}.csv`;
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Could not fetch ${url}: ${response.status}`);
+  const text = await response.text();
   return parseCsv(text);
 }
 
 async function getCityDashboardData(citySlug) {
   try {
-    const [organizations, memberships, attendance] = await Promise.all([
+    const [organizations, memberships, attendance, voteEvents] = await Promise.all([
       readCityCsv(citySlug, "organizations"),
       readCityCsv(citySlug, "memberships"),
       fetchAnalysisJson(citySlug, "attendance/outputs/attendance.json"),
+      citySlug === "plasy"
+        ? fetch(`${DATA_REPO_BASE}/${citySlug}/data/vote_events.json`).then((response) => {
+            if (!response.ok) throw new Error(`Could not fetch Plasy vote events: ${response.status}`);
+            return response.json();
+          })
+        : Promise.resolve([]),
     ]);
 
-    const candidateListIds = new Set(
-      organizations.filter((o) => o.classification === "candidate_list").map((o) => o.id),
+    const groupIds = new Set(
+      organizations.filter((o) => o.classification === "group" || o.classification === "candidate_list").map((o) => o.id),
     );
     const currentGroupIds = new Set(
       memberships
-        .filter((m) => !m.end_date && candidateListIds.has(m.organization_id))
+        .filter((m) => !m.end_date && groupIds.has(m.organization_id))
         .map((m) => m.organization_id),
     );
     const orgById = new Map(organizations.map((o) => [o.id, o]));
@@ -120,10 +134,10 @@ async function getCityDashboardData(citySlug) {
 
     const members = attendance.map((a) => ({ id: a.person_id, name: a.name }));
 
-    return { members, groups };
+    return { members, groups, voteEvents };
   } catch (error) {
-    console.warn(`[ai-readability] Could not read fixtures for ${citySlug}: ${error.message}`);
-    return { members: [], groups: [] };
+    console.warn(`[ai-readability] Could not read published data for ${citySlug}: ${error.message}`);
+    return { members: [], groups: [], voteEvents: [] };
   }
 }
 
@@ -178,12 +192,18 @@ function buildSitemap(perCity) {
       const base = cityBasePath(lang, citySlug);
       routes.push({ path: base, priority: "1.0", changefreq: "hourly" });
       routes.push({ path: `${base}/members`, priority: "0.9", changefreq: "hourly" });
-      routes.push({ path: `${base}/groups`, priority: "0.8", changefreq: "hourly" });
+      if (data.groups.length > 0) routes.push({ path: `${base}/groups`, priority: "0.8", changefreq: "hourly" });
       for (const member of data.members) {
         routes.push({ path: `${base}/member/${personSlug(member.id)}`, priority: "0.7", changefreq: "hourly" });
       }
       for (const group of data.groups) {
         routes.push({ path: `${base}/group/${groupSlug(group.id)}`, priority: "0.7", changefreq: "hourly" });
+      }
+      if (data.voteEvents.length > 0) {
+        routes.push({ path: `${base}/vote-events`, priority: "0.8", changefreq: "hourly" });
+        for (const event of data.voteEvents) {
+          routes.push({ path: `${base}/vote-event/${encodeURIComponent(event.id)}`, priority: "0.6", changefreq: "hourly" });
+        }
       }
     }
   }
@@ -214,7 +234,7 @@ function buildLlmsTxt(perCity) {
       const listedGroups = data.groups.slice(0, 10);
       return `### ${citySlug}
 ${baseUrl}${base}
-${data.members.length} assembly members, ${data.groups.length} groups (2022-2026 term).
+${data.members.length} assembly members, ${data.groups.length} groups and ${data.voteEvents.length} recorded votes (2022-2026 term).
 
 Groups: ${listedGroups.map((g) => g.name).join(", ") || "none yet"}
 Sample assembly members: ${listedMembers.map((m) => m.name).join(", ") || "none yet"}`;
@@ -223,19 +243,18 @@ Sample assembly members: ${listedMembers.map((m) => m.name).join(", ") || "none 
 
   return `# Města.DataTimes.cz
 
-> Open dashboard of roll-call voting behaviour in Czech municipal (city) assemblies.
+> Open dashboard of attendance and roll-call voting behaviour in Czech municipal (city) assemblies.
 
 ## About
 
-Města.DataTimes.cz analyses attendance, rebelliousness, coalition alignment, and voting positions
-(WPCA) in Czech municipal assemblies, derived from each city's own roll-call vote data. Currently
-covers: ${Object.keys(perCity).join(", ") || "none yet"}. More cities are added over time — see
+Města.DataTimes.cz publishes attendance and, where the source supports it, rebelliousness, coalition
+alignment, voting positions (WPCA), and named vote events. Currently covers: ${Object.keys(perCity).join(", ") || "none yet"}. More cities are added over time — see
 DIVERGENCE.md in the app repository for the current rollout status.
 
 - Web: ${baseUrl}
 - Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
-- Update model: nightly data pipeline (scrape -> standardize -> validate -> analyse -> publish),
-  dashboard revalidates on a schedule
+- Update model: city-specific; some data is updated nightly, while Plasy is updated manually from
+  official minutes and published as standard data tables
 - Generated: ${generatedAt}
 
 ## Cities

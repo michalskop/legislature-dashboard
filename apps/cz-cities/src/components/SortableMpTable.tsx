@@ -154,6 +154,7 @@ export interface SortableMpTableProps {
   defaultSort?: SortKey;
   defaultDir?: SortDir;
   showPartyFilter?: boolean;
+  showPartyColumn?: boolean;
   formerLabel?: string;
   /**
    * Which metric columns to show. Typed against the wider, shared
@@ -175,6 +176,7 @@ export function SortableMpTable({
   defaultSort = "attendance",
   defaultDir = "desc",
   showPartyFilter = true,
+  showPartyColumn = true,
   formerLabel,
   columns,
   basePath,
@@ -213,7 +215,7 @@ export function SortableMpTable({
   const currentMps = sortMps(filtered.filter((mp) => mp.isCurrent), sortKey, sortDir, lang);
   const formerMps = sortMps(filtered.filter((mp) => !mp.isCurrent), sortKey, sortDir, lang);
 
-  const colCount = 2 + visibleCols.length;
+  const colCount = 1 + Number(showPartyColumn) + visibleCols.length;
 
   const thProps = { current: sortKey, dir: sortDir, onSort: handleSort, sortAsc: labels.sortAsc, sortDesc: labels.sortDesc };
 
@@ -225,9 +227,11 @@ export function SortableMpTable({
             {mp.familyName} {mp.givenName}
           </a>
         </td>
-        <td className="py-2 pr-4">
-          {mp.partyId && <PartyFace partyId={mp.partyId} size={24} title={mp.groupName ?? mp.partyId} />}
-        </td>
+        {showPartyColumn && (
+          <td className="py-2 pr-4">
+            {mp.partyId && <PartyFace partyId={mp.partyId} size={24} title={mp.groupName ?? mp.partyId} />}
+          </td>
+        )}
         {visibleCols.includes("attendance") && (
           <td className="py-2 pr-4 text-right tabular-nums">
             {/* Praha reconciliation (2026-08-06): checking only that the
@@ -271,7 +275,7 @@ export function SortableMpTable({
           <thead>
             <tr className="border-b border-border text-left">
               <Th label={labels.name}        sortKey="name"        {...thProps} />
-              <Th label={labels.party}       sortKey="party"       {...thProps} />
+              {showPartyColumn && <Th label={labels.party} sortKey="party" {...thProps} />}
               {visibleCols.includes("attendance")  && <Th label={labels.attendance}  sortKey="attendance"  {...thProps} className="text-right" />}
               {visibleCols.includes("rebelity")    && <Th label={labels.rebelity}    sortKey="rebelity"    {...thProps} className="text-right" />}
               {visibleCols.includes("govity")      && <Th label={labels.govity}      sortKey="govity"      {...thProps} className="text-right" />}

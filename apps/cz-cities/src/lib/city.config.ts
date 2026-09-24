@@ -19,6 +19,8 @@ import { pardubiceCs } from "./dictionaries/pardubice.cs";
 import { pardubiceEn } from "./dictionaries/pardubice.en";
 import { ceskeBudejoviceCs } from "./dictionaries/ceske-budejovice.cs";
 import { ceskeBudejoviceEn } from "./dictionaries/ceske-budejovice.en";
+import { plasyCs } from "./dictionaries/plasy.cs";
+import { plasyEn } from "./dictionaries/plasy.en";
 
 // Owner fix (2026-08-05, DIVERGENCE.md §8 round 4): the shared
 // ParliamentTranslations.charts.wpca (packages/parliament-core, read-only)
@@ -64,6 +66,8 @@ export type CityTranslations = Omit<ParliamentTranslations, "charts"> & {
 export type CityConfig = Omit<ParliamentConfig, "translations"> & {
   /** URL segment for this city, e.g. "praha" -> /praha, /en/praha */
   citySlug: string;
+  /** Show the shared recorded-votes list backed by the city's standard vote tables. */
+  hasVoteEvents?: boolean;
   translations: Record<string, CityTranslations>;
 };
 
@@ -1688,6 +1692,45 @@ const MOST_RADA: CityConfig = {
   },
 };
 
+// Plasy (added 2026-09-24): the archive provides named votes and meeting attendance but no
+// group/coalition affiliations. Keep the city page to the supported attendance analysis and
+// member/vote data; do not imply group metrics from absent evidence. Data is refreshed manually.
+const PLASY: CityConfig = {
+  id: "plasy",
+  citySlug: "plasy",
+  hasVoteEvents: true,
+  name: "Zastupitelstvo města Plasy",
+  defaultLang: "cs",
+  dataBase:
+    "https://raw.githubusercontent.com/michalskop/cz-municipalities-votes-2022-2026/main/plasy/analyses",
+  analyses: ["attendance"],
+  organizations: [],
+  translations: { cs: plasyCs, en: plasyEn },
+  pages: {
+    home: [
+      {
+        id: "attendance-swarm",
+        config: { type: "swarm-chart", analysis: "attendance", referenceLines: [{ value: 0.5, label: "50 %" }] },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Účast zastupitelů a zastupitelek na jmenovitých hlasováních." },
+          en: { title: "Attendance", description: "Assembly members' attendance at recorded votes." },
+        },
+      },
+    ],
+    memberDetail: [
+      {
+        id: "attendance-swarm",
+        config: { type: "swarm-chart", analysis: "attendance", referenceLines: [{ value: 0.5, label: "50 %" }] },
+        labels: {
+          cs: { title: "Účast na hlasováních", description: "Pozice v rámci zastupitelstva." },
+          en: { title: "Attendance", description: "Position within the assembly." },
+        },
+      },
+    ],
+    groupDetail: [],
+  },
+};
+
 // Ordered by population (owner preference, 2026-08-28), latest ČSÚ figures (1 Jan 2026): Praha
 // (~1.27M), Brno (~384k), Ostrava (~302k), Plzeň (~188k), České Budějovice (97,128), Hradec
 // Králové (93,354), Pardubice (92,713), Ústí nad Labem (90,035), Most (~63k). České Budějovice,
@@ -1695,7 +1738,7 @@ const MOST_RADA: CityConfig = {
 // by the 1 Jan 2026 figure — same "list by size, not build order" rule the owner gave for
 // Plzeň-vs-Most. most-rada sits last: a bonus second body for Most, not a separate real city,
 // listed after every real city regardless of size.
-export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, PLZEN, CESKE_BUDEJOVICE, HRADEC_KRALOVE, PARDUBICE, USTI_NAD_LABEM, MOST, MOST_RADA];
+export const CITIES: CityConfig[] = [PRAHA, BRNO, OSTRAVA, PLZEN, CESKE_BUDEJOVICE, HRADEC_KRALOVE, PARDUBICE, USTI_NAD_LABEM, MOST, PLASY, MOST_RADA];
 
 export function getCityConfig(citySlug: string): CityConfig | undefined {
   return CITIES.find((c) => c.citySlug === citySlug);

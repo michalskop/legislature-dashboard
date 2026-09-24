@@ -8,7 +8,7 @@ description: Discover public dashboard pages and metrics for Czech municipal ass
 ## Overview
 
 Use this skill to discover public pages, dashboard sections, and machine-readable summaries for
-Města.DataTimes.cz. Currently covers: praha.
+Města.DataTimes.cz. Currently covers: praha, brno, ostrava, plzen, ceske-budejovice, hradec-kralove, pardubice, usti-nad-labem, most, plasy, most-rada.
 
 ## Content Categories
 

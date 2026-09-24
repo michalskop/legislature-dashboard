@@ -9,6 +9,7 @@ A project by [KohoVolit.eu](https://kohovolit.eu) / [DataTimes.cz](https://datat
 | App | URL | Description |
 |-----|-----|-------------|
 | `apps/cz-psp` | snemovna.datatimes.cz | Czech Poslanecká sněmovna 2025–2029 |
+| `apps/cz-cities` | mesta.datatimes.cz | Czech municipal assemblies, including Plasy |
 
 ## Packages
 

@@ -6,7 +6,7 @@
       "type": "skill-md",
       "description": "Discover public dashboard pages and metrics for Města.DataTimes.cz.",
       "url": "/.well-known/agent-skills/city-assembly-dashboard/SKILL.md",
-      "digest": "sha256:60a75230c0a81f8c500c391f10847f562af2bbb2ab67605b8fb249f35fcc111b"
+      "digest": "sha256:89008310fe876efa20a6d3ea25f64b1a9fce517e27efd053f4e17573c4bf6c01"
     },
     {
       "name": "city-assembly-datasets",

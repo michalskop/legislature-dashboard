@@ -56,7 +56,7 @@ export interface AttendanceRecord {
   present: number;
   absent: number;
   present_share: number;
-  organizations: OrgMembership[];
+  organizations?: OrgMembership[];
   extras?: { image?: string };
 }
 
@@ -138,4 +138,3 @@ export interface GovernmentAxisRecord {
 // organization, and the /region, /regions routes were removed entirely in
 // task A2 (they were structurally dead for every city config, not just
 // Praha — see DIVERGENCE.md).
-

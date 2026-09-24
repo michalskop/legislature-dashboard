@@ -138,6 +138,8 @@ export async function fetchRunStatus(citySlug: string): Promise<RunStatus | null
 export async function getGovernmentAxisPlacement(
   citySlug: string,
 ): Promise<{ onX: boolean; sign: number }> {
+  const city = getCityConfig(citySlug);
+  if (city && !city.analyses.includes("wpca")) return { onX: true, sign: 1 };
   const axis = await fetchGovernmentAxis(citySlug);
   return { onX: axis.effective_dim_index === 0, sign: axis.government_sign };
 }
@@ -325,8 +327,9 @@ export async function getAllMpProfiles(citySlug: string): Promise<MpProfile[]> {
     // PARTY_META), with the historical fact preserved separately via
     // `previousGroupIds` below (already end_date-filtered, unaffected by
     // this change).
-    const groupOrg = a.organizations.find((o) => o.classification === "group" && !o.until);
-    const candidateOrg = a.organizations.find((o) => o.classification === "candidate_list" && !o.until);
+    const organizations = a.organizations ?? [];
+    const groupOrg = organizations.find((o) => o.classification === "group" && !o.until);
+    const candidateOrg = organizations.find((o) => o.classification === "candidate_list" && !o.until);
 
     const groupId = groupOrg?.id ?? null;
     const partyId = groupId ? groupIdToPartyId(groupId) : null;

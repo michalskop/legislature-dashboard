@@ -48,7 +48,8 @@ export function NavLinks({ lang, city }: Props) {
   const LINKS = [
     { href: basePath, label: t.nav.overview },
     { href: `${basePath}/members`, label: t.nav.members },
-    { href: `${basePath}/groups`, label: groupOrg?.labels[lang]?.plural ?? groupOrg?.labels[city.defaultLang]?.plural ?? "Groups" },
+    ...(city.hasVoteEvents ? [{ href: `${basePath}/vote-events`, label: lang === "en" ? "Votes" : "Hlasování" }] : []),
+    ...(groupOrg?.hasPage ? [{ href: `${basePath}/groups`, label: groupOrg.labels[lang]?.plural ?? groupOrg.labels[city.defaultLang]?.plural ?? "Groups" }] : []),
     { href: `${globalBasePath(lang)}/about`, label: site.aboutNavLabel },
   ];
 
