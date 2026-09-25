@@ -16,6 +16,13 @@ interface StandardVoteEvent {
   };
 }
 
+interface MembershipRow {
+  person_id: string;
+  organization_id: string;
+  start_date: string;
+  end_date: string;
+}
+
 export interface CityVoteEvent {
   id: string;
   parliament_id: string;
@@ -51,15 +58,35 @@ function polarity(option: string): VoteEventVoter["polarity"] {
 
 export async function getCityVoteEvents(citySlug: string): Promise<CityVoteEvent[]> {
   const base = dataBaseFor(citySlug);
-  const [eventText, voteText, personText] = await Promise.all([
+  const [eventText, voteText, personText, organizationText, membershipText] = await Promise.all([
     fetchText(`${base}/vote_events.json`),
     fetchText(`${base}/votes.csv`),
     fetchText(`${base}/persons.csv`),
+    fetchText(`${base}/organizations.csv`),
+    fetchText(`${base}/memberships.csv`),
   ]);
 
   const standardEvents = JSON.parse(eventText) as StandardVoteEvent[];
   const votesByEvent = new Map<string, VoteEventVoter[]>();
   const people = new Map(parseCsv(personText).map((person) => [person.id ?? "", person.name ?? ""]));
+  const groupIds = new Set(
+    parseCsv(organizationText)
+      .filter((organization) => organization.classification === "group")
+      .map((organization) => organization.id ?? ""),
+  );
+  const memberships: MembershipRow[] = parseCsv(membershipText).map((row) => ({
+    person_id: row.person_id ?? "",
+    organization_id: row.organization_id ?? "",
+    start_date: row.start_date ?? "",
+    end_date: row.end_date ?? "",
+  }));
+  const groupsByPerson = new Map<string, MembershipRow[]>();
+  for (const membership of memberships) {
+    if (!groupIds.has(membership.organization_id)) continue;
+    const personGroups = groupsByPerson.get(membership.person_id) ?? [];
+    personGroups.push(membership);
+    groupsByPerson.set(membership.person_id, personGroups);
+  }
   for (const row of parseCsv(voteText)) {
     const eventId = row.vote_event_id ?? "";
     const voterId = row.voter_id ?? "";
@@ -80,7 +107,13 @@ export async function getCityVoteEvents(citySlug: string): Promise<CityVoteEvent
     .filter((event) => event.status === "valid")
     .map((event) => {
       const counts = new Map(event.counts.map((count) => [count.option, count.value]));
-      const votes = votesByEvent.get(event.id) ?? [];
+      const voteDate = event.start_date.slice(0, 10);
+      const votes = (votesByEvent.get(event.id) ?? []).map((vote) => {
+        const membership = (groupsByPerson.get(vote.voter_id) ?? []).find((group) =>
+          group.start_date <= voteDate && (!group.end_date || voteDate < group.end_date),
+        );
+        return { ...vote, group_id: membership?.organization_id ?? null };
+      });
       const support = counts.get("yes") ?? 0;
       const oppose = counts.get("no") ?? 0;
       const abstain = counts.get("abstain") ?? 0;

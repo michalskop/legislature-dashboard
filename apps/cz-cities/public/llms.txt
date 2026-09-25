@@ -12,7 +12,7 @@ DIVERGENCE.md in the app repository for the current rollout status.
 - Languages: Czech (unprefixed URLs) and English (/en/... URLs), more may be added
 - Update model: city-specific; some data is updated nightly, while Plasy is updated manually from
   official minutes and published as standard data tables
-- Generated: 2026-09-24
+- Generated: 2026-09-25
 
 ## Cities
 
@@ -81,9 +81,9 @@ Sample assembly members: Alexandr Agh, Hana Aulická Jírovcová, Lukáš Bedna�
 
 ### plasy
 https://mesta.datatimes.cz/plasy
-16 assembly members, 0 groups and 274 recorded votes (2022-2026 term).
+16 assembly members, 6 groups and 274 recorded votes (2022-2026 term).
 
-Groups: none yet
+Groups: ČSSD, Nezávislí pro Plasko, ODS, MY, JdeTo s podporou TOP 09, KDU-ČSL
 Sample assembly members: Emanuel Belbl, Jitka Bezdíčková, Václav Gross, Zdeněk Hanzlíček, Martina Ježková, Eva Kantor Pořádková, Ivo Kornatovský, Tomáš Kouba, Petr Kovářík, Petr Neuman, Jiří Novotný, Eliška Palmová, Lukáš Pfeifer, Zdenka Tyrpeklová, Veronika Urbanová, Michal Škop
 
 ### most-rada

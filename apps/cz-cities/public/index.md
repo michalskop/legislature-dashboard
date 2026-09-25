@@ -23,4 +23,4 @@ Open dashboard of Czech municipal assembly roll-call votes.
 - Alignment with the governing coalition.
 - WPCA voting-position map.
 
-Generated: 2026-09-24
+Generated: 2026-09-25
