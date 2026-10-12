@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "@legislature/ui/tokens.css";
+
+@source "../../../../packages/charts/src/**/*.{ts,tsx}";
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
+/* =====================================================
+ * Party colors — kept in sync with src/lib/parties.ts PARTY_COLORS.
+ * A functional, distinct palette (real Praha candidate-list slugs), NOT
+ * official party branding — that's task A3 ("City branding + translations").
+ * ===================================================== */
+@theme {
+  --color-party-spolu-pro-prahu: #0047ab;
+  --color-party-ceska-piratska-strana: #000000;
+  --color-party-starostove-a-nezavisli: #f39200;
+  --color-party-ano-2011: #f4c400;
+  --color-party-praha-sobe: #7a1fa2;
+  --color-party-spd-trik-pes-a-nez-pro-prahu: #8b3a3a;
+  --color-party-other: #bcbcb0;
+}
+
+/* ---- Prose styles for static content ---- */
+.prose-static {
+  line-height: 1.75;
+  color: var(--color-foreground);
+}
+.prose-static h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.prose-static h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+.prose-static p {
+  margin-bottom: 1rem;
+}
+.prose-static a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.prose-static a:hover {
+  opacity: 0.8;
+}
+
+:root { --font-roboto-slab: Georgia; }

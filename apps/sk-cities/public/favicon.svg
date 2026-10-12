@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" overflow="visible">
+  <!-- Badge shape — rounded except top-right corner -->
+  <path
+    d="M36 8 H120 V92 Q120 120 92 120 H36 Q8 120 8 92 V36 Q8 8 36 8 Z"
+    fill="#de1743"
+  />
+  <!-- S overflowing the badge for max legibility at small sizes -->
+  <text
+    x="64" y="70"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Roboto Slab, ui-serif, Georgia, serif"
+    font-size="128"
+    font-weight="700"
+    fill="#ffffff"
+  >M</text>
+</svg>
