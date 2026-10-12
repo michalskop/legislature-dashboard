@@ -10,7 +10,7 @@ interface Props {
 }
 
 // Tracks page views on SPA route changes
-function MatomoPageView({ url, siteId }: Props) {
+function MatomoPageView() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const initialized = useRef(false);
@@ -51,7 +51,7 @@ export function MatomoScript({ url, siteId }: Props) {
         strategy="afterInteractive"
         async
       />
-      <MatomoPageView url={url} siteId={siteId} />
+      <MatomoPageView />
     </>
   );
 }
