@@ -59,6 +59,12 @@ request duration, time waiting for downloads, and build execution time.
   default-language path rewritten to `/sk/...` repeatedly rendered with private,
   no-store headers. A build's static route label alone did not catch this.
   The Slovak app uses an explicit default-language vote route to preserve ISR.
+- Do not force static rendering merely to suppress a layout query's dynamic
+  behavior. With `force-static`, server-side `useSearchParams` can return empty
+  values while the browser sees the real query, producing hydration mismatches.
+  Keep query selection behind a client/Suspense boundary and prove deep-link
+  hydration in a clean production build and on the live site. Reused on-demand
+  HTML from a previous local build can hide this defect.
 - Disable automatic prefetching on long lists of votes unless its cost is measured
   and bounded. Opening or scrolling an index must not silently generate thousands
   of detail pages.
@@ -104,13 +110,18 @@ the app directory against a production build and the deployment. This warms
 each path and query variant, then requires a real cache hit and rejects private
 or no-store responses. Chromium may refresh the static favicon after history
 changes; exclude that browser behavior when checking for page/RSC/data requests.
+With Python Playwright and Chromium installed, run `python3
+scripts/check-vote-browser.py DEFAULT_VOTE_URL ENGLISH_VOTE_URL`. It requires
+correct layout deep links and Back/Forward, no hydration errors, and no page/data
+requests while switching layouts. Use a clean build directory to avoid stale
+on-demand HTML from an earlier implementation.
 
 ## Other apps reviewed on 14 October 2026
 
 | App | Current source risk | Follow-up |
 | --- | --- | --- |
 | `sk-cities` | Full-history reconstruction and dynamic layouts were confirmed | Small per-vote exports, client layouts, bounded indexes, explicit default route and ISR are the remediation in this change |
-| `cz-cities` | Same `getCityVoteEvents(...).find(...)` detail loader and server `searchParams`; the whole-history branch is conditional on `hasVoteEvents` | Migrate applicable cities to small per-vote exports and client layouts; audit active datasets and cache warnings before enabling more cities |
+| `cz-cities` | Same `getCityVoteEvents(...).find(...)` detail loader and server `searchParams`; the whole-history branch is currently enabled for Plasy | Migrate applicable cities to small per-vote exports and client layouts; audit active datasets and cache warnings before enabling more cities |
 | `cz-psp` | Already reads one local vote JSON, but server layout query handling renders detail pages dynamically | Move presentation-only layout switching to the client and verify route caching; the Slovak CSV-rebuild defect is not present in this loader |
 | `sk-nrsr` | Already reads one local vote JSON, but server layout query handling renders detail pages dynamically | Same rendering follow-up as `cz-psp` |
 
