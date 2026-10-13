@@ -15,10 +15,9 @@ export function generateStaticParams() {
   return LANG_CODES.map((lang) => ({ lang }));
 }
 
-// Any [lang] value outside LANG_CODES 404s instead of falling back to a
-// default — required by task A2's acceptance checks ("generateStaticParams
-// covers configured cities/langs only, others 404").
-export const dynamicParams = false;
+// Allow cached vote pages to be generated on their first visit. Unknown
+// languages still return 404 through isValidLang below.
+export const dynamicParams = true;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

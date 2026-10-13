@@ -56,6 +56,9 @@ Analysis outputs are fetched from [`michalskop/cz-psp-data-2025-202x`](https://g
 
 The site uses Next.js ISR — pages are statically generated at build time and revalidated every hour.
 
+Before adding or copying a vote dashboard, follow the incident lessons and release
+checks in [Vote dashboard performance](docs/vote-dashboard-performance.md).
+
 ### Force data refresh
 
 ```

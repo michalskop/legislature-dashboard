@@ -88,6 +88,13 @@ export function middleware(request: NextRequest) {
     return handleMarkdownAndDiscovery(request, pathname);
   }
 
+  // Default-language votes have an explicit route so on-demand ISR keys
+  // match the public path. Rewriting an unbuilt vote path disables the
+  // full-route cache in the deployed Next.js 15.5 runtime.
+  if (/^\/[^/]+\/vote-event\/[^/]+$/.test(pathname)) {
+    return withAiDiscoveryHeaders(NextResponse.next());
+  }
+
   // No language prefix at all -> internally rewrite to the default language
   // so the actual route tree only ever sees `/[lang]/...`. The browser URL
   // bar / usePathname() still show the unprefixed path.

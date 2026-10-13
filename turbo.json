@@ -10,7 +10,9 @@
         "SUPABASE_SERVICE_ROLE_KEY",
         "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
         "STRIPE_SECRET_KEY",
-        "STRIPE_WEBHOOK_SECRET"
+        "STRIPE_WEBHOOK_SECRET",
+        "SK_DATA_BASE",
+        "SK_PUBLISHED_CITIES"
       ]
     },
     "dev": {

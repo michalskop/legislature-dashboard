@@ -28,3 +28,9 @@ pnpm typecheck    # Typecheck all packages
    - Sourced from GitHub raw outputs:
      - CZ PSP: `michalskop/cz-psp-data-2025-202x`
      - SK Municipalities: `michalskop/sk-municipalities-votes-2022-2026`
+5. **Vote Dashboard Performance**:
+   - Read `docs/vote-dashboard-performance.md` before adding/copying a vote dashboard or changing its data loaders/rendering.
+   - A vote-detail request must load only that event, never parse/rebuild the entire vote history.
+   - Keep fetched/cacheable artifacts within an enforced byte budget; treat cache-size warnings as release failures.
+   - Keep presentation-only layout switching in the browser, and verify actual ISR/cache hits for every public language route, including middleware rewrites.
+   - Disable automatic vote-detail prefetching on long indexes unless its resource cost is measured and bounded.
